@@ -1,0 +1,16 @@
+import tkinter as tk
+
+root = tk.Tk()
+root.title("Cursor Example")
+
+# הגדרת סוג הסמן של העכבר על חלון Tkinter
+root.config(cursor="arrow")  # אפשר גם להחליף ל-hand2, crosshair, ועוד.
+
+# יצירת תווית להמחשה
+label = tk.Label(root, text="Hover here to see the cursor change")
+label.pack(pady=20)
+
+# שינוי הסמן עבור תווית מסוימת
+label.config(cursor="hand2")
+
+root.mainloop()

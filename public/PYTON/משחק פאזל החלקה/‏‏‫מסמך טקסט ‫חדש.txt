@@ -1,0 +1,64 @@
+ משחק פאזל 
+יש 8 חלקים של תמונה ומקום ריק זה שלוש שורות ושלוש עמודות, ואפשר להוזיז את החלקים רק בשטח המסגרת של שורות ועמודות אלו, ואי אפשר להוזיז חלק למיקום שיש בו חלק אחר רק למקום הריק ובתנאי שהחלק נמצא לידו בצורה אנכית או אופקית ולא באלכסון
+ליצירת משחק הפאזל, הספרייה המתאימה ביותר למטרותיך היא Tkinter, שמתאימה לבניית ממשקי משתמש (GUI) בפייתון. תוכל להשתמש ב-Canvas או ב-Frame של Tkinter כדי להציג את הרשת 3x3 ולנהל את החלקים של התמונה.
+הנה שלבי העבודה:
+Tkinter לממשק משתמש: תוכל להשתמש בכפתורים או ב-Canvas כדי לייצג את התאים של הרשת.
+חלקי תמונה: טען את התמונות בעזרת PIL (מהספרייה Pillow) וחתוך אותן ל-8 חלקים.
+לוגיקת תנועה: תעקוב אחרי המיקום של כל חלק ושל המקום הריק. וודא שהחלקים יכולים לזוז רק למקום הריק אם הם סמוכים אליו (בצורה אנכית או אופקית בלבד).
+קשירת אירועים: תוכל לקשור אירועים לחיצה לכל חלק כך שכשמישהו לוחץ עליו, החלק יזוז אם המהלך חוקי.
+
+
+import tkinter as tk
+from PIL import Image, ImageTk
+import random
+
+# הגדרת המשחק
+class PuzzleGame:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("משחק פאזל 3x3")
+        
+        self.grid_size = 3  # גודל הרשת
+        self.piece_size = 100  # גודל כל חלק
+        
+        # יצירת לוח
+        self.board = [[None for _ in range(self.grid_size)] for _ in range(self.grid_size)]
+        self.empty_spot = (2, 2)  # מיקום הריק בהתחלה (אמצע למטה)
+        self.init_board()
+
+    def init_board(self):
+        # טעינת התמונה וחיתוכה לחלקים
+        image = Image.open("image.jpg")
+        image = image.resize((self.piece_size * self.grid_size, self.piece_size * self.grid_size))
+        pieces = [image.crop((x*self.piece_size, y*self.piece_size, (x+1)*self.piece_size, (y+1)*self.piece_size))
+                  for y in range(self.grid_size) for x in range(self.grid_size)]
+        
+        # ערבוב החלקים (ללא החלק האחרון שהוא הריק)
+        random.shuffle(pieces[:-1])
+        
+        # מיקום החלקים על הלוח (מלבד החלק הריק)
+        for i in range(self.grid_size):
+            for j in range(self.grid_size):
+                if (i, j) != self.empty_spot:
+                    piece_image = ImageTk.PhotoImage(pieces.pop(0))
+                    self.board[i][j] = tk.Label(self.root, image=piece_image)
+                    self.board[i][j].image = piece_image  # שמירה על רפרנס כדי שהתמונה לא תיעלם
+                    self.board[i][j].grid(row=i, column=j)
+                    self.board[i][j].bind("<Button-1>", lambda e, i=i, j=j: self.move_piece(i, j))
+
+    def move_piece(self, row, col):
+        # בדיקה אם החלק ליד המקום הריק
+        if (abs(self.empty_spot[0] - row) == 1 and self.empty_spot[1] == col) or \
+           (abs(self.empty_spot[1] - col) == 1 and self.empty_spot[0] == row):
+            # החלפת מיקום החלק עם המקום הריק
+            self.board[self.empty_spot[0]][self.empty_spot[1]] = self.board[row][col]
+            self.board[row][col] = None
+            self.board[self.empty_spot[0]][self.empty_spot[1]].grid(row=self.empty_spot[0], column=self.empty_spot[1])
+            self.empty_spot = (row, col)
+        
+# הרצה
+root = tk.Tk()
+game = PuzzleGame(root)
+root.mainloop()
+
+

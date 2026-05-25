@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guess Who Game Board</title>
+    <link rel="stylesheet" href="GuessWho.css">
+    <link rel="stylesheet" href="menu.css">
+</head>
+<body id="body">
+    
+    <!-- מונה בראש העמוד -->
+    <div id="counter-container">
+        <h1>Total Clicks: <span id="click-counter">0</span></h1>
+    </div>
+
+
+    <div id="board"></div>
+    <div id="sidebar" class="sidebar">
+       <!-- <button class="close-btn" onclick="toggleSidebar()">x</button> -->
+        <div class="buttons-container">
+            <div class="menu-item">
+                <button class="menu-button" onclick="toggleSubButtons(this)">gender</button>
+                <div class="sub-buttons">
+                    <button class="menu-button" onclick="filterByAttribute('gender', 'male',this)">Male</button>
+                    <button class="menu-button" onclick="filterByAttribute('gender', 'female',this)">Female</button>
+                </div>
+            </div>
+            <div class="menu-item">
+                <button class="menu-button" onclick="toggleSubButtons(this)">hairColor</button>
+                <div class="sub-buttons">
+                    <button class="menu-button" onclick="filterByAttribute('hairColor', 'brown',this)">Brown</button>
+                    <button class="menu-button" onclick="filterByAttribute('hairColor', 'blonde',this)">Blonde</button>
+                    <button class="menu-button" onclick="filterByAttribute('hairColor', 'black',this)">Black</button>
+                    <button class="menu-button" onclick="filterByAttribute('hairColor', 'white',this)">white</button>
+                </div>
+            </div>
+            <div class="menu-item">
+                <button class="menu-button" onclick="toggleSubButtons(this)">glasses</button>
+                <div class="sub-buttons">
+                    <button class="menu-button" onclick="filterByAttribute('glasses', true,this)">Yes</button>
+                    <button class="menu-button" onclick="filterByAttribute('glasses', false,this)">No</button>
+                </div>
+            </div>
+            <div class="menu-item">
+                <button class="menu-button" onclick="toggleSubButtons(this)">age</button>
+                <div class="sub-buttons">
+                    <button class="menu-button" onclick="filterByAttribute('age', 'young',this)">Young</button>
+                    <button class="menu-button" onclick="filterByAttribute('age', 'old',this)">Old</button>
+                </div>
+            </div>
+            <div class="menu-item">
+                <button class="menu-button" onclick="toggleSubButtons(this)">skinColor</button>
+                <div class="sub-buttons">
+                    <button class="menu-button" onclick="filterByAttribute('skinColor', 'dark',this)">Dark</button>
+                    <button class="menu-button" onclick="filterByAttribute('skinColor', 'light',this)">Light</button>
+                </div>
+            </div>
+            <div class="menu-item">
+                <button class="menu-button" onclick="toggleSubButtons(this)">facialExpression</button>
+                <div class="sub-buttons">
+                    <button class="menu-button" onclick="filterByAttribute('facialExpression', 'smiling',this)">Smiling</button>
+                    <button class="menu-button" onclick="filterByAttribute('facialExpression', 'angry',this)">Angry</button>
+                    <button class="menu-button" onclick="filterByAttribute('facialExpression', 'neutral',this)">Neutral</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <button id="openSidebarBtn" onclick="toggleSidebar()">☰</button>
+    
+    <script src="GuessWho.js"></script>
+    <script src="menu.js"></script>
+</body>
+</html>

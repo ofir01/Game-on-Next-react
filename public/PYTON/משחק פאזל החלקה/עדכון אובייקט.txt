@@ -1,0 +1,55 @@
+כדי להזיז את הווידג'ט (לדוגמה, Label ב-Tkinter) באמצעות widget.config(), לא ניתן להשתמש ישירות בפקודה זו לשינוי מיקום ב-grid או ב-place. עם זאת, ניתן להשתמש ב-widget.config() כדי לשנות את תכונות כמו רקע, צבע, טקסט וכדומה. לעומת זאת, את מיקום הווידג'ט ב-grid יש לעדכן באמצעות פקודות כמו widget.grid() או widget.place().
+
+import tkinter as tk
+
+def on_drag_start(event):
+    widget = event.widget
+    widget.startX = event.x
+    widget.startY = event.y
+    widget.start_row = widget.grid_info()['row']
+    widget.start_column = widget.grid_info()['column']
+
+def on_drag_motion(event):
+    widget = event.widget
+    delta_x = event.x - widget.startX
+    delta_y = event.y - widget.startY
+
+    # הזזה על בסיס הכיוון של העכבר
+    if abs(delta_x) > abs(delta_y):  # תזוזה ימינה או שמאלה
+        if delta_x > 0 and widget.start_column < 2:  # ימינה
+            new_column = widget.start_column + 1
+        elif delta_x < 0 and widget.start_column > 0:  # שמאלה
+            new_column = widget.start_column - 1
+        else:
+            new_column = widget.start_column
+        widget.grid(row=widget.start_row, column=new_column)
+    else:  # תזוזה למעלה או למטה
+        if delta_y > 0 and widget.start_row < 2:  # למטה
+            new_row = widget.start_row + 1
+        elif delta_y < 0 and widget.start_row > 0:  # למעלה
+            new_row = widget.start_row - 1
+        else:
+            new_row = widget.start_row
+        widget.grid(row=new_row, column=widget.start_column)
+
+    # עדכון השורה והעמודה לאחר הגרירה
+    widget.start_row = new_row
+    widget.start_column = new_column
+
+def create_draggable_item(row, column):
+    label = tk.Label(root, text=f"({row},{column})", bg="lightblue", width=10, height=5)
+    label.grid(row=row, column=column, padx=5, pady=5)
+    
+    label.bind("<Button-1>", on_drag_start)
+    label.bind("<B1-Motion>", on_drag_motion)
+
+# יצירת חלון Tkinter
+root = tk.Tk()
+root.geometry("300x300")
+
+# הוספת אובייקטים עם גרירה
+for i in range(3):
+    for j in range(3):
+        create_draggable_item(i, j)
+
+root.mainloop()

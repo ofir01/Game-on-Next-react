@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Start</title>
+    <style>
+        body {
+        display: flex;
+        flex-direction: column; /* סדר את התוכן בעמודה */
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f0f0f0;
+        font-family: Arial, sans-serif;
+        margin: 0;
+    }
+    .buttons-row {
+        display: flex; /* מסדר את הכפתורים בשורה */
+        justify-content: center; /* ממקם את הכפתורים במרכז */
+        gap: 20px; /* רווח קבוע בין הכפתורים */
+        margin-top: 20px; /* מרווח מעל השורה */
+    }
+
+   
+    .animated-button {
+    position: relative;
+    width: 145px;
+    height: 35px;
+    background-color: #fafafa;
+    color: #0b0b0b;
+    border: none;
+    border-radius: 15px;
+    font-size: 24px;
+    font-family: Arial, sans-serif;
+    cursor: pointer;
+    overflow: hidden;
+    display: flex;
+    justify-content: center; /* ממקם את הטקסט במרכז אופקית */
+    align-items: center; /* ממקם את הטקסט במרכז אנכית */
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.animated-button span {
+    position: absolute; /* הכיתוב נמצא תמיד במרכז הכפתור */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* ממקם את הטקסט במרכז */
+    z-index: 1;
+}
+
+.animated-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, rgba(150, 93, 233, 1) 10%, rgba(246, 114, 128, 1) 90%);
+    transform: scaleX(0);
+    transform-origin: 0 50%;
+    transition: transform 0.4s ease-out;
+    z-index: 0;
+}
+
+.animated-button:hover::before {
+    transform: scaleX(1);
+}
+
+.animated-button:hover {
+    background-color: #d6d6d6;
+    transform: scale(1.1);
+}
+
+.default-text, .hover-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: opacity 0.7s ease-in-out;
+    white-space: nowrap;
+}
+
+.hover-text {
+    opacity: 0;
+}
+
+.animated-button:hover .default-text {
+    opacity: 0;
+}
+
+.animated-button:hover .hover-text {
+    opacity: 1;
+}
+
+
+    
+    .button-container {
+        flex: 0 1 auto; /* כל כפתור שומר על גודלו הטבעי */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        font-weight: bold;
+        text-align: center;
+        z-index: 1;
+    }
+    
+    @property --angle {
+        syntax: "<angle>";
+        initial-value: 0deg;
+        inherits: false;
+    }
+    
+    .button-container::after,
+    .button-container::before {
+        content: "";
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        border-radius: 15px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: -1;
+        padding: 1.8px; /* עובי מסגרת */
+        background-image: conic-gradient(
+        from var(--angle),
+        red,
+        orange,
+        yellow,
+        green,
+        blue,
+        indigo,
+        violet,
+        red
+        );
+        animation: spin 2s linear infinite;
+    }
+    
+    .button-container::before {
+        filter: blur(2rem);
+        opacity: 0.5;
+    }
+    
+    
+    .animated-button:hover::before {
+        background-color: #fafafa; /* צבע רקע שיתפשט */
+        opacity: 0.7; /* שקיפות */
+        filter: none; /* מבטל את הטשטוש כאשר העכבר מעל הכפתור */
+    }
+    
+    @keyframes spin {
+        from {
+        --angle: 0deg;
+        }
+        to {
+        --angle: 360deg;
+        }
+    }
+    
+
+    header img {
+        width: 100%;
+        max-width: 500px;
+        height: auto;
+        margin-top: 20px;
+    }
+    
+    </style>
+</head>
+<body>
+    <header>
+        <!-- תמונה בחלק העליון -->
+        <img src="7Boom.webp" alt="Victory Image">
+    </header>
+
+
+
+        <!-- תפריט כפתורים -->
+    <div class="buttons-row">
+        <div class="button-container">
+            <button class="animated-button" onclick="startGame(100)">
+                <span class="default-text">Easy</span>
+                <span class="hover-text">Ready</span>
+            </button>
+        </div>
+        <div class="button-container">
+            <button class="animated-button" onclick="startGame(500)">
+                <span class="default-text">Normal</span>
+                <span class="hover-text">Challenge</span>
+            </button>
+        </div>
+        <div class="button-container">
+        <button class="animated-button" onclick="startGame(1000)">
+            <span class="default-text">Hard</span>
+            <span class="hover-text">Brave</span>
+        </button>
+</div>
+    </div>
+
+    <script>
+        function startGame(value) {
+            // שמירת ערך הדרגה ב-Session Storage
+            sessionStorage.setItem("level", value);//הערך ימחק לאחר סגירת התו
+            window.location.href = "7Boom.html"; // קישור לדף המשחק
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,98 @@
+/* עיצוב הכללי של הדף */
+body {
+    font-family: Arial, sans-serif;
+    background-image: url('./image/background.png');
+    background-size: cover;          /* מכסה את כל המסך */
+    background-position: center;     /* מרכז את התמונה */
+    background-repeat: no-repeat;    /* לא חוזר על עצמו */
+    height: 100vh;
+    margin: 0;
+}
+
+/* קונטיינר המכיל את הריבועים */
+.container {
+    display: flex;
+    justify-content: space-between; /* פיזור בין הילדים: אחד יישב שמאל ואחד ימין */
+    align-items: center;
+    padding: 0 20px; /* מוסיף ריווח פנימי מכל צד (אופציונלי) */
+    margin-top: 40px; /* מוסיף ריווח עליון */
+}
+
+h1{
+        text-align: center;
+
+}
+.left, .right {
+    display: grid;
+    grid-template-columns: repeat(3, 120px);
+    gap: 20px;
+}
+
+.right{
+    margin-left: 40px;
+}
+.left{
+    margin-right: 40px;
+}
+
+
+/* הגדרת המעבר של הריבוע */
+.square {
+    width: 100px;
+    height: 100px;
+    background-color: #333;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.6s ease; /* מעבר חלק לסיבוב */
+}
+
+/* תמונה מוסתרת עם סיבוב */
+.square img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0; /* התמונה מוסתרת בהתחלה */
+    transition: opacity 0.3s ease; /* מעבר חלק לחשיפת התמונה */
+}
+
+/* כאשר הריבוע פעיל, סיבוב והתמונה נחשפת */
+.square.active {
+    transform: rotateY(180deg); /* סיבוב 180 מעלות */
+}
+
+.square.active img {
+    opacity: 1; /* התמונה נחשפת */
+}
+
+/* כשהתמונה נחשפת, הריבוע משחיר */
+/*.square.exposed img { */
+ /*   filter: brightness(0.70); /* חושך לתמונה */
+
+
+
+ /*אפקט האור */
+ .glow-effect {
+       position: absolute;
+      pointer-events: none;
+      z-index: 0;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,100,0.8), transparent 100%);
+      filter: blur(20px); /* מוסיף טשטוש יפה */
+      opacity: 0.9;
+    }
+
+    /*
+     position: absolute;
+      pointer-events: none;
+      z-index: 0;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,100,0.8), transparent 100%);
+      filter: blur(20px); 
+      opacity: 0.9;
+    */

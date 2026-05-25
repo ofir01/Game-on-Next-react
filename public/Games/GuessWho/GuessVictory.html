@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Victory Page</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f8f9fa;
+        }
+
+        header img {
+            width: 100%;
+            max-width: 600px;
+            height: auto;
+            margin-top: 20px;
+        }
+
+        nav {
+            margin: 20px 0;
+        }
+
+        nav button {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        nav button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <!-- תמונה בחלק העליון -->
+        <img src="GuessVictory.webp" alt="Victory Image">
+    </header>
+
+    <nav>
+        <!-- תפריט כפתורים -->
+        <button onclick="newGame()">חזרה למשחק חדש</button>
+    </nav>
+
+    <script>
+        // פונקציה לפתיחת משחק חדש
+        function newGame() {
+            alert('חוזרים למשחק חדש!');
+            // ניתן להוסיף כאן הפניה לדף אחר
+            window.location.href = 'GameMenu.html'; // לדוגמה
+        }
+    </script>
+</body>
+</html>

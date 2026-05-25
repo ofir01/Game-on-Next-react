@@ -1,0 +1,98 @@
+/* עיצוב עתידני ומודרני לבר ההתקדמות והסטטיסטיקה */
+
+.mixed-bar-container {
+  margin: 24px auto;
+  width: 100%;
+  max-width: 620px;
+  padding: 20px;
+  /* מראה זכוכית עמוק ויוקרתי */
+  background: rgba(30, 41, 59, 0.4);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  
+  font-family: 'Heebo', system-ui, sans-serif;
+  color: #f8fafc; /* טקסט בהיר וקריא */
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+  direction: rtl;
+}
+
+/* כותרת הבר */
+.mixed-title {
+  text-align: center;
+  font-weight: 800;
+  font-size: 16px;
+  letter-spacing: 0.5px;
+  margin-bottom: 16px;
+  color: #00d2ff; /* כותרת בצבע ניאון מוביל */
+  text-shadow: 0 0 10px rgba(0, 210, 255, 0.3);
+  line-height: 1.3;
+}
+
+/* המסלול של הבר (הרקע הריק) */
+.mixed-bar-track {
+  width: 100%;
+  height: 18px; /* קצת יותר דק ואלגנטי */
+  border-radius: 999px;
+  /* רקע מסלול כהה שקוף עם עומק פנימי */
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  overflow: hidden; 
+  position: relative;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* ה-fill הזוהר שמתקדם באנימציה */
+.mixed-bar-fill {
+  height: 100%;
+  width: 0%; 
+  transform-origin: right; /* התחלה מימין בגלל ה-RTL */
+  
+  /* גרדיאנט ניאון זורם ועתידני (Cyan to Blue) */
+  background: linear-gradient(90deg, #00d2ff, #3a7bd5);
+  /* אפקט זוהר פנימי עדין */
+  box-shadow: 0 0 12px rgba(0, 210, 255, 0.6);
+  
+  animation-name: fillWidth;
+  animation-timing-function: cubic-bezier(0.25, 1, 0.5, 1);
+  animation-fill-mode: forwards;
+  animation-duration: 1.6s;
+}
+
+/* אנימציה שמגדילה את ה-width ל-100% */
+@keyframes fillWidth {
+  from { width: 0%; }
+  to { width: 100%; }
+}
+
+/* מקרא האחוזים והסטטוסים למטה */
+.mixed-info {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 14px;
+  font-size: 13px;
+  font-weight: 700;
+  /* מונע חיתוך אותיות מהזנב מלמטה */
+  line-height: 1.4; 
+  padding-bottom: 2px;
+}
+
+/* צבעי ניאון עתידניים, בוהקים וקריאים על רקע כהה */
+.mixed-info .done { 
+  color: #4ade80; /* ירוק ניאון בהיר */
+  text-shadow: 0 0 8px rgba(74, 222, 128, 0.2);
+}    
+.mixed-info .pending { 
+  color: #fbbf24; /* צהוב/זהב עמוק */
+  text-shadow: 0 0 8px rgba(251, 191, 36, 0.2);
+} 
+.mixed-info .turned { 
+  color: #60a5fa; /* כחול שמיים בהיר */
+  text-shadow: 0 0 8px rgba(96, 165, 250, 0.2);
+}  
+.mixed-info .failed { 
+  color: #f87171; /* אדום פסטל מודרני */
+  text-shadow: 0 0 8px rgba(248, 113, 113, 0.2);
+}

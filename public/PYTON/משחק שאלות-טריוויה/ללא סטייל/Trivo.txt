@@ -1,0 +1,360 @@
+import time # לזמן
+from tkinter import * # לחלון
+from tkinter import messagebox  # ספריה להודעות
+import pygame # למוזיקה
+import os # ספריה לקריאת קבצים
+import MySQLdb # DB
+from PIL import Image, ImageTk  # כדי להקטין את התמונה
+
+# --------------------------------------------------------------משתנה גלובלי
+current_question = 0  # מייצג את השאלה הנוכחית
+ListAnswers = []  # מייצג את התשובות מהמשתמש
+time_left = None  # הזמן שנותר לכל שאלה (בשניות)
+reset_time_left = None
+timer_id = None  # משתנה לאחסון מזהה הטיימר הפעיל
+help_window = None  # משתנה לשמירת חלון העזר
+first_name = None
+last_name = None
+quiz = []  # רשימה לשמירת השאלות
+
+#MySQLdb-----------------------------------------------------------------------------------------------------
+
+connection = MySQLdb.connect(
+    host="localhost",
+    user="root",
+    password="11211121",
+    db="Trivo"   #רק לאחר שנוצרה DATABASE כזו אפשר לרשום שורה זו, אז אפשר להריץ את הקוד שיוצר טבלה בלי שורה זו ואח''כ לחזור לזה
+)
+cursor = connection.cursor()
+cursor.execute("CREATE DATABASE IF NOT EXISTS Trivo") # יוצר DATABASE רק אם לא קיימת כזו
+
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS students (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    first_name TEXT,
+    last_name TEXT,
+    score VARCHAR(10),
+    user_answers TEXT
+)
+''')
+
+
+# ---------------------------------------------------פונקציה לטעינת השאלות מקובץ טקסט
+def load_quiz_from_file():
+    global quiz, reset_time_left
+    quiz_file_path = os.path.join("assets", "quiz.txt")
+
+    # בדיקת קיום הקובץ
+    if not os.path.exists(quiz_file_path):
+        messagebox.showerror("Error", "File 'quiz.txt' not found in assets folder.")
+        return
+
+    with open(quiz_file_path, "r", encoding="utf-8") as file:
+        lines = [line.strip() for line in file if line.strip()]  # מסיר שורות ריקות
+
+    if lines[-1].startswith("TIME:"):
+        reset_time_left = int(lines[-1].split(":")[1])
+        lines = lines[:-1]  # הסרת שורת הזמן מרשימת השאלות
+
+    # לולאה שעוברת על השורות ויוצרת את רשימת השאלות
+    i = 0
+    while i < len(lines):
+        if i + 2 < len(lines):  # ודא שיש לפחות שלוש שורות
+            question = lines[i]
+            correct_answer = lines[i + 1]
+            options = [option.strip() for option in lines[i + 2].split(',')]
+
+            # בדיקה שהאפשרויות לא ריקות
+            if options:
+                quiz.append({
+                    "question": question,
+                    "correct_answer": correct_answer,
+                    "options": options
+                })
+            i += 3  # מעבר לשאלה הבאה
+        else:
+            print("Error: Missing lines for question, answer, or options")
+            break
+
+
+# ---------------------------------------------------------------אתחול רכיב השמע
+pygame.mixer.init()
+
+
+def success():
+    pygame.mixer.music.load("assets/success.mp3")
+    pygame.mixer.music.play()
+
+
+def fail():
+    pygame.mixer.music.load("assets/fail.mp3")
+    pygame.mixer.music.play()
+
+def MusicCorrectAnswer():
+    pygame.mixer.music.load("assets/MusicCorrectAnswer.mp3")
+    pygame.mixer.music.play()
+
+def wrongAnswer():
+    pygame.mixer.music.load("assets/wrongAnswer.mp3")
+    pygame.mixer.music.play()
+
+# --------------------------------------------------------------פונקציה להדפסת השאלה והאפשרויות
+def display_question():
+    global reset_time_left, timer_id,time_left, help_window
+
+    # עדכון מספר השאלה הנוכחית מתוך סך השאלות
+    question_count_label.config(text=f"Question {current_question + 1} of {len(quiz)}")
+
+    # ביטול טיימר קיים
+    if timer_id:
+        root.after_cancel(timer_id)
+
+    # סגירת חלון העזר (אם פתוח)
+    if help_window:
+        close_help_window()
+
+    time_left = reset_time_left  # אתחול הטיימר
+    update_timer()  # התחלת הטיימר
+
+    # מחיקת כפתורים ישנים
+    for buttons in option_buttons:
+        buttons.destroy() # מחיקה מהחלון
+    option_buttons.clear() # מחיקה מהרשימה
+
+    question_data = quiz[current_question]  # מוציא מהרשימה מילון במיקום מסוים
+    question_label.config(text=question_data["question"])  # ידפיס רק את השאלה
+
+    # יצירת כפתורים בהתאם למספר האפשרויות בשאלה הנוכחית
+    for option in question_data["options"]:
+        radio_btn = Radiobutton(root, text=option, variable=selected_option, value=option, font=('Arial', 14))
+        radio_btn.pack(anchor=S,pady=2)
+        option_buttons.append(radio_btn)
+
+    # בשאלה האחרונה שנה את שם הכפתור לסיום
+    if current_question == len(quiz) - 1:
+        next_button.config(text="finish", command=next_question)  # הכפתור
+
+
+# ------------------------------------------------פונקציה לעדכון הטיימר בכל שנייה
+def update_timer():
+    global time_left, timer_id
+    if time_left >= 0:
+        timer_label.config(text=f"Time left: {time_left} seconds")
+        time_left -= 1
+        timer_id = root.after(1000, update_timer)
+    else:
+        next_question()
+
+
+# ------------------------------------------------כפתור קדימה, ושמירת התשובה במערך התשובות
+def next_question():
+    global current_question, help_window
+    selected_answer = selected_option.get()
+    ListAnswers.append(selected_answer)  # שמירת הערך ברשימה
+    selected_option.set("")  # אתחול המשתנה ששומר את הבחירה
+
+    # בדיקה האם התשובה נכונה והשמעת מנגינה בהתאם
+    question_data = quiz[current_question]
+    correct_answer = question_data["correct_answer"]
+
+    # מציאת הכפתור שנלחץ
+    # אם לא נבחר אף תשובה ימשיך לשאלה הבאה ללא ביצוע לולאה זו
+    for button in option_buttons:
+        #הבחירה לא נכונה
+        if button.cget("value") == selected_answer and selected_answer != correct_answer:
+            button.config(bg="red")
+            wrongAnswer()  # השמעת צליל כישלון
+
+        elif button.cget("value") == correct_answer:
+            # צבע ירוק לכפתור הנכון בכל מצב
+            button.config(bg="green")
+            if selected_answer == correct_answer: # אם בנוסף גם בחר את התשובה הנכונה
+                MusicCorrectAnswer()  # השמעת צליל הצלחה
+
+    root.update_idletasks()  # רענון של החלון להצגת הצבע
+
+    time.sleep(1) # עוצר את הזמן לשניה
+
+    # בודק אם נגמר השאלות
+    current_question += 1
+    if current_question == len(quiz):
+        finish()
+    else:
+        display_question()
+
+
+# ----------------------------------------------------------------------סיום
+def finish():
+    print(ListAnswers)
+
+    # ביטול הטיימר כאשר השעון האחרון עוד לא נגמר
+    if timer_id:
+        root.after_cancel(timer_id)
+
+    # השוואת כל התשובות, הצורך לשמור את התשובות ברשימה , בשביל שיהיה אפשר להדפיס את התשובות אם נרצה
+    correct = 0  # כמה תשובות נכונות
+    for i in range(len(ListAnswers)):
+        if quiz[i]["correct_answer"] == ListAnswers[i]:
+            correct += 1
+
+    # מנגינה לניצחון או הפסד
+    if correct >= len(ListAnswers) - 1:
+        success()
+    else:
+        fail()
+
+    #next_button.config(state="disabled")  # normal סגירת הכפתור ההפך מ-
+    # הודעה על הציון וסגירת המבחן
+    percentage = str(int(correct * 100 / len(quiz))) + "%"
+    messagebox.showinfo(title='score ' + percentage,
+                        message=f"Correct answers: {correct} out of {len(quiz)}", )
+    # שמירה במסד הנתונים
+    cursor.execute('''
+       INSERT INTO students (first_name, last_name, score, user_answers)
+       VALUES (%s, %s, %s, %s)
+       ''', ( first_name, last_name, percentage, ",".join(ListAnswers)))
+
+
+    #רק כשיגיע לכאן ישמר הכל בתוכנה, אם יצאת באמצע לא ישמר גם החלק שהוכנס
+    connection.commit()  # שמירת השינויים
+
+    root.destroy()  # סגירת החלון
+
+
+# ----------------------------------------------------------פונקציה לפתיחת חלון עזר
+def open_help_window():
+    global help_window
+    help_window = Toplevel()
+    help_window.title("חלון עזר")
+    help_window.geometry("300x200")
+
+    # קריאה של תוכן הקובץ והצגה בחלון
+    help_file_path = os.path.join("assets", "help.txt")
+    if os.path.exists(help_file_path):
+        with open(help_file_path, "r", encoding="utf-8") as file:
+            help_text = file.read()
+    else:
+        help_text = "קובץ help לא נמצא."
+
+    label = Label(help_window, text=help_text, wraplength=250, justify=LEFT)
+    label.pack(pady=20)
+
+    help_window.protocol("WM_DELETE_WINDOW", close_help_window)  # קישור לאירוע סגירה
+    disable_help_button()
+
+
+# פונקציה לסגירת חלון העזר והפעלת כפתור ה-Help מחדש
+def close_help_window():
+    global help_window
+    if help_window:
+        help_window.destroy()
+        help_window = None
+        enable_help_button()
+
+
+# הפעלת כפתור ה-Help מחדש
+def enable_help_button():
+    Help_button.config(state="normal")
+
+
+# נטרול כפתור ה-Help כאשר חלון עזר פתוח
+def disable_help_button():
+    Help_button.config(state="disabled")
+
+
+# ---------------------------------------------------------------------------התחלה
+def start():
+    root.title("Welcome to the Trivia!")
+    root.geometry("900x350")
+
+    timer_label.pack(pady=10)    # תווית הזמן
+    question_count_label.pack(pady=5)
+
+    question_label.pack(pady=20)    # תווית השאלות
+    next_button.pack(side=RIGHT, padx=30, pady=1) # כפתור הבא
+    Help_button.pack(side=LEFT, padx=30, pady=1) # חלון עזרה
+
+    # טעינת השאלות מקובץ הטקסט
+    load_quiz_from_file()
+    # הצגת השאלה הראשונה אם יש שאלות
+    if quiz:
+        display_question()
+    else:
+        messagebox.showinfo("Error", "No questions available to display.")
+
+#--------------------------------------------------------------------------------------
+def open_registration_window():
+    root.title("Registration")
+    root.geometry("500x500")
+
+
+
+    # יצירת מסגרת עבור שני המסגרות
+    # מסגרת בעבור כל תיבה ותווית שלו, כדי שיהיו אחד מתחת לשני
+    frame = Frame(root)
+    frame.pack(pady=60)  # מרווח מלמעלה
+
+    image = Image.open('assets/background.png')  # פתיחת התמונה באמצעות PIL
+    image = image.resize((400, 250))  # שינוי גודל התמונה (הגודל שתבחר)
+    image_icon = ImageTk.PhotoImage(image)  # המרת התמונה ל-PhotoImage
+
+    # יצירת Label עם התמונה והרקע
+    background_label = Label(frame, image=image_icon)
+    background_label.image = image_icon  # שימור הפניה לתמונה
+    background_label.pack(fill="both", expand=True)  # התמונה תכסה את כל ה-frame
+
+    # מסגרת בעבור השם
+    frame_name = Frame(frame)
+    frame_name.pack(pady=10)  # מרווח מלמעלה
+    # תווית ושדה קלט עבור השם
+    Label(frame_name, text="Your name:").pack(side=LEFT, padx=10)  # יישור התווית לשמאל
+    first_name_entry = Entry(frame_name)
+    first_name_entry.pack(side=LEFT, pady=5)  # הוספת מרווח בין התווית לשדה הקלט
+
+    # מסגרת בעבור הסיסמה
+    frame_password = Frame(frame)
+    frame_password.pack(padx=10)  # מרווח מלמעלה
+
+    # תווית ושדה קלט עבור הסיסמה
+    Label(frame_password, text="     Last Name:").pack(padx=4,side=LEFT)  # יישור התווית לשמאל
+    last_name_entry = Entry(frame_password)
+    last_name_entry.pack(padx=5, side=LEFT)  # הוספת מרווח בין התווית לשדה הקלט
+
+
+    def submit_registration():
+        global first_name, last_name
+        first_name = first_name_entry.get()
+        last_name = last_name_entry.get()
+
+        if first_name and last_name:
+            #לא להרוס או לנקות את החלון כי זה יהרוס את כל המשתנים של החלון הבא, אלא להרוס את המסגרת בלבד
+            frame.destroy()
+
+            start()  # מעבר לפעולת ההתחלה
+
+        else:
+            messagebox.showwarning("Warning", "Please enter both first and last names.")
+
+    Button(frame, text="Submit", command=submit_registration).pack(pady=10)
+
+
+# יצירת ממשק משתמש ב-Tkinter
+root = Tk()
+image_icon = PhotoImage(file='assets/Icon.png')  # אייקון
+root.iconphoto(True, image_icon)  # האייקון בכותרת החלון בצד שמאל
+
+timer_label = Label(root, text="", font=('Arial', 14))# תווית הזמן
+question_label = Label(root, text="", font=('Arial', 16))# תווית השאלות
+question_count_label = Label(root, text="", font=('Arial', 14)) # תווית למספר השאלות
+next_button = Button(root, text="Next", command=next_question)  # כפתןר הבא
+
+Help_icon = PhotoImage(file='assets/Help.png')
+Help_button = Button(root,image=Help_icon, command=open_help_window)  # כפתור עזרה
+# משתנה שמחזיק את ערך הבחירה הסופית בכל שאלה
+selected_option = StringVar()
+option_buttons = []  # רשימה שמחזיקה כפתורים
+
+open_registration_window()
+
+# הרצת חלון Tkinter
+root.mainloop()

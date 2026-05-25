@@ -1,0 +1,15 @@
+const path = require('path');
+
+module.exports = {
+    // הנתיב לקובץ ההגדרות החדש שלך
+    'config': path.resolve('db', 'config', 'config.json'),
+
+    // הנתיב לתיקיית המודלים החדשה
+    'models-path': path.resolve('db', 'models'),
+
+    // הנתיב לתיקיית הסידרים
+    'seeders-path': path.resolve('db', 'seeders'),
+
+    // הנתיב לתיקיית המיגרציות
+    'migrations-path': path.resolve('db', 'migrations')
+};

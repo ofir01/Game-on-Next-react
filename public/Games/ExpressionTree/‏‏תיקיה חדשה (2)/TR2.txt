@@ -1,0 +1,8 @@
+<div class="svg-container">
+    <svg id="tree-svg" width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+        <!-- קו מחבר אלכסוני מצד ימין -->
+        <line x1="200" y1="200" x2="300" y2="100" stroke="black" />
+        <!-- עיגול -->
+        <circle cx="200" cy="200" r="30" fill="blue" stroke="black" stroke-width="3" />
+    </svg>
+</div>

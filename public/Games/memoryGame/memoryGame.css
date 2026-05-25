@@ -1,0 +1,137 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: monospace;
+}
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, rgba(0,212,255,1) 0%, rgba(9,9,121,1) 50%, rgba(2,0,36,1) 100%); /* גרדיאנט כחול עמוק מהפנט */
+}
+.container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 30px;
+    background-color: rgba(255, 255, 255, 0.9); /* לבן עם שקיפות עדינה */
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    padding: 40px 60px; 
+    cursor: url('mouse-cursor-removebg-preview.png') , pointer; 
+}
+
+h2 {
+    font-size: 3em;
+    color: rgba(255, 215, 0, 0.9); /* זהב יוקרתי */
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+.score-container {
+    display: flex;
+    justify-content: space-between; /* מפזר את האלמנטים לימין ושמאל */
+    background-color: rgba(255, 255, 255, 0.1); /* רקע שקוף-לבן */
+    font-size: 18px;
+}
+
+#attempts {
+    margin: 0px 70px 0px 0px;
+    position: Left;
+    color: #ff4500; /* כתום-אדום */
+}
+
+#successes {
+    margin: 0px 0px 0px 70px;
+    position: right;
+    color: #1e90ff; /* כחול עז */
+}
+
+
+.reset {
+    padding: 15px 20px;
+    background-color: rgba(255, 69, 0, 0.85); /* כתום-אדום חי */
+    color: rgba(255, 255, 255, 1);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    border: none;
+    font-size: 1.5em;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 600;
+
+}
+
+.reset:hover {
+    background-color: rgba(255, 69, 0, 0.85); /* כתום-אדום חי */
+    color: rgb(255, 255, 255); /* צבע טקסט לבן */
+    box-shadow: 0 0 10px rgba(0, 0, 255, 0.7); /* זוהר כחול סביב הכפתור */
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.8); /* הוספת זוהר לטקסט */
+
+}
+.game {
+    width: 440px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 קלפים בכל שורה */
+    gap: 10px;
+    perspective: 500px;
+}
+
+  
+  .card {
+    width: 80px;
+    height: 90px;
+    position: relative;
+    transform-style: preserve-3d;
+    transform: rotateY(180deg);
+    transition: transform 0.5s ease;
+    /*cursor: pointer;*/
+  }
+  
+  .card .front, .card .back {
+    border-radius: 10px; /* מעגל פינות */
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2em;
+  }
+  
+  .card .front {
+    background-color: white;
+  }
+  
+  .card .back {
+    background: url('cardbackground.jpg') no-repeat center center/cover; /* תמונת הרקע */
+    transform: rotateY(180deg);
+  }
+  
+  .card.flip {
+    transform: rotateY(0deg);
+  }
+
+  .card.matched {
+    opacity: 0.5;
+    transform: rotateY(360deg);
+    pointer-events: none; /* למנוע לחיצה על קלפים שכבר הותאמו */
+  }
+
+
+  .game.gameOver .card {
+    pointer-events: none; /* מבטל לחיצות על כל הקלפים */
+    opacity: 0.6; /* הופך את הקלפים ליותר כהים */
+    filter: grayscale(80%); /* הופך את הקלפים לאפורים */
+}
+  
+.card .front img {
+  width: 100%;
+  height: 100%;
+  object-fit: fill; /* מותח את התמונה כך שתתפוס את כל הקלף */
+  /*object-fit: cover; /* שומר על יחס ממדי התמונה מבלי לעוות */
+  border-radius: 10px; /* מעגל פינות */
+
+}

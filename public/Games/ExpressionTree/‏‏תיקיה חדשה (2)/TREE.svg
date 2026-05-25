@@ -1,0 +1,8 @@
+<svg width="100" height="200" xmlns="http://www.w3.org/2000/svg">
+  <!-- עיגול עם מספר בתוכו -->
+  <circle cx="50" cy="50" r="30" stroke="#228B22" stroke-width="3" fill="lightblue" />
+  <text x="50" y="55" font-size="20" text-anchor="middle" fill="black">5</text>
+  
+  <!-- קו עומד -->
+  <line x1="50" y1="80" x2="50" y2="200" stroke="#8B4513" stroke-width="20"/>
+</svg>

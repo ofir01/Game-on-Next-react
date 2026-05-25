@@ -1,0 +1,63 @@
+לעשות משתנה גלובלי כדי שיהיה אפשר להכניס את החלון הראשי לפעולה
+ואז לעשות כפתור ריסט במשחק, וגם כפתור לחזור לתפריט הראשי
+לעשות שמירת ניקוד, ושבירת שיא
+לעשות משתנה לניחושים.
+לעשות כפתור שמאשר את הניחוש ואז בודק האם הוא נכון
+לעשות הגרלה לקלפים
+לעשות את הקלפים בצד ימין בגודל שווה.
+לעשות גרירה עם עכבר רק למקומות המותרים.
+לעשות כל הכבוד בניצחון, והפסד לאחר כמה מהלכים
+לעשות בצד ימין צבעים שמראים שיש כמה במקום הנכון, וכמה לא.
+לעשות אפשרות להציב רק כמה ולא את כולם בבדיקה.
+לעשות חלון לדרגות קושי, שמגדיל את כמות הקלפים לניחוש.
+לעשות חלון שיורד מלמעלה כדי שיהיה אפשר לאתחל או לצאת.
+-לשים תמונה בצד של כל דרגת קושי, שתשתנה לפי העכבר.
+לעשות שני מלאים שיתמלאו בכל ניחוש אחד יציג בצבע ירוק את המקום הנכון,ויהיה מספר בתחתית של כמה מתוך כמה, ואחד יציג בצבע צהוב מקום לא נכון אבל קיים, ויהיה רק כמה בלי מתוך כמה.
+לעשות במקום התמונה של הסיפרייה , תמונות קטנות של סימן שאלה שלתוכם יגררו התמונות. ועם כפתור בדיקה במקום סיום
+
+אני רוצה ליצור משחק בפייתון של משחק ניחושים, הרעיון הוא כזה: יש חלון ראשי של של התחלה ויציאה, לאחר לחיצה על התחלה יש עוד חלון של דרגת קושי, לאחר בחירה באחת מהם יש עוד חלון שבו יש תמונה של ארון עם מדפים, ובצד שמאל יש 9 תמונות שצריך עם העכבר לגרור אותם למקום הנכון במדף
+
+הקוד:
+from tkinter import *
+
+
+def create_game():
+    old_window.destroy() #חובה להרוס את החלון המקורי לפני פתיחת החלון המשני אחרת יהיה שגיאה
+    new_window =Tk() #  חלון משני
+    new_window.title("!!! START !!!")  # כותרת החלון
+    #התמונה חייבת להיות כאן, כי כשהחלון הראשי נסגר, התוכנה לא מכירה את התמונה
+    image_background = PhotoImage(file='main background.png')# רקע אחורי
+    canvas = Canvas(new_window, width=1800, height=900)
+    canvas.pack(fill=BOTH, expand=YES)
+    new_window.config(background="#5cfcff")  # רקע אחורי תכלת
+    background = canvas.create_image(0, 0, image=image_background, anchor=NW)
+    new_window.mainloop() # חובה כדי שהכל יעבוד טוב
+
+
+
+def exit_game(): #יציאה מהמשחק
+    old_window.destroy()
+
+
+old_window = Tk() #החלון הראשי
+old_window.geometry("620x480") #גודל החלון
+old_window.title("Welcome to the guessing game !")# כותרת החלון
+old_window.config(background = "#5cfcff") #רקע אחורי תכלת
+
+
+#התמונות
+# חובה לשים את התמונה במשתנה אחרת התמונה לא תישמר בזיכרון ואז לא תיראה
+image_START=PhotoImage(file = 'Starting a game.png')
+image_exit=PhotoImage(file = 'exit.png')
+image_icon=PhotoImage(file = 'icon.png')
+old_window.iconphoto(True, image_icon) # האייקון בכותרת החלון בצד שמאל
+
+
+
+#הכפתורים
+Button(old_window, command = create_game,image=image_START,relief = RAISED,bd = 10,padx = 20,pady = 20,).pack(padx=20, pady=20)# כפתור התחלה
+Button(old_window, command = exit_game,image=image_exit,relief = RAISED,bd = 10,padx = 20,pady = 20,).pack() # כפתור יציאה
+
+old_window.mainloop() # שומר על החלון המקורי פתוח עד ליציאה או התחלה
+
+

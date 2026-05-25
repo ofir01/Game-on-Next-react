@@ -1,0 +1,106 @@
+/* עיצוב עתידני ומודרני לכפתור הבחירה והרשימה הנגררת */
+
+/* כפתור ה-Select הראשי שפותח את התפריט */
+.select-btn {
+  /* מונע חיתוך אותיות וממרכז את הטקסט/חץ אנכית */
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  
+  /* פדינג תחתון מעט גדול יותר למניעת חיתוך (12px) */
+  padding: 10px 16px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  /* רקע זכוכית כהה ועמוק */
+  background: rgba(30, 41, 59, 0.4);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  
+  color: #ffffff;
+  cursor: pointer;
+  font-family: 'Heebo', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 1.2;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* אפקט ריחוף על כפתור הבחירה */
+.select-btn:hover {
+  border-color: rgba(0, 210, 255, 0.4);
+  background: rgba(30, 41, 59, 0.6);
+  box-shadow: 0 0 15px rgba(0, 210, 255, 0.15);
+  transform: translateY(-1px);
+}
+
+.dropdown-wrap {
+  position: relative;
+}
+
+/* רשימת האופציות שנפתחת (התפריט הצף) */
+.options-list {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  min-width: 220px;
+  
+  /* מראה זכוכית אטומה יותר לרקע צף כדי שיקראו טוב על פני אלמנטים אחרים */
+  background: rgba(15, 23, 42, 0.9);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  
+  border-radius: 14px;
+  padding: 8px;
+  border: 1px solid rgba(0, 210, 255, 0.2); /* מסגרת ניאון עדינה */
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+  z-index: 50;
+  list-style: none;
+  
+  /* אנימציית הופעה חלקה מלמטה */
+  animation: dropdownFadeIn 0.25s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* כל שורה/אופציה ברשימה */
+.option-item {
+  display: flex;
+  align-items: center;
+  /* מרווח ביטחון תחתון של 10px מונע חיתוך מהזנב של האותיות */
+  padding: 8px 12px 10px;
+  border-radius: 10px;
+  color: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1.2;
+  transition: all 0.2s ease;
+}
+
+/* ריחוף מעל אופציה ברשימה */
+.option-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #00d2ff; /* הופך לצבע הניאון המרכזי */
+  padding-right: 16px; /* אפקט תזוזה קטן ויפה ימינה */
+}
+
+/* האופציה שנבחרה כרגע מתוך הרשימה */
+.option-item.active {
+  /* גרדיאנט עתידני כחול-ירוק (Cyan to Teal) עדין וחצי שקוף */
+  background: linear-gradient(90deg, rgba(0, 210, 255, 0.2), rgba(56, 239, 125, 0.15));
+  color: #ffffff;
+  border-left: 3px solid #00d2ff; /* סימון צדדי מודרני */
+  font-weight: 700;
+}
+
+/* אנימציית פתיחה קלילה לדרופדאון */
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -1,0 +1,234 @@
+[
+    {
+        "id": 1,
+        "name": "user1",
+        "email": "user1@example.com",
+        "password": "$2b$10$j7w/PpfgcW8bfZFQkhw5hOlnvosqrNhWrzAalco6FUUfITvF/oG/m",
+        "role": "Moderator",
+        "isVerified": true,
+        "verificationToken": null,
+        "resetPasswordToken": null,
+        "resetPasswordExpires": null
+    },
+    {
+        "id": 2,
+        "name": "user2",
+        "email": "user2@example.com",
+        "password": "$2b$10$j7w/PpfgcW8bfZFQkhw5hOlnvosqrNhWrzAalco6FUUfITvF/oG/m",
+        "role": "Contributor",
+        "isVerified": true,
+        "verificationToken": null,
+        "resetPasswordToken": null,
+        "resetPasswordExpires": null
+    },
+    {
+        "id": 3,
+        "name": "Gamemaster_Pro",
+        "email": "pro@gamer.com",
+        "password": "$2b$10$j7w/PpfgcW8bfZFQkhw5hOlnvosqrNhWrzAalco6FUUfITvF/oG/m",
+        "role": "Editor",
+        "isVerified": true,
+        "verificationToken": null,
+        "resetPasswordToken": null,
+        "resetPasswordExpires": null
+    },
+    {
+        "id": 4,
+        "name": "Casual_Player",
+        "email": "casual@fun.com",
+        "password": "$2b$10$j7w/PpfgcW8bfZFQkhw5hOlnvosqrNhWrzAalco6FUUfITvF/oG/m",
+        "role": "Editor",
+        "isVerified": true,
+        "verificationToken": null,
+        "resetPasswordToken": null,
+        "resetPasswordExpires": null
+    },
+    {
+        "id": 5,
+        "name": "Speedrunner",
+        "email": "fast@run.com",
+        "password": "$2b$10$j7w/PpfgcW8bfZFQkhw5hOlnvosqrNhWrzAalco6FUUfITvF/oG/m",
+        "role": "Contributor",
+        "isVerified": true,
+        "verificationToken": null,
+        "resetPasswordToken": null,
+        "resetPasswordExpires": null
+    },
+    {
+        "id": 6,
+        "name": "Meir_Gamer",
+        "email": "meir@gmail.com",
+        "password": "$2b$10$j7w/PpfgcW8bfZFQkhw5hOlnvosqrNhWrzAalco6FUUfITvF/oG/m",
+        "role": "Contributor",
+        "isVerified": true,
+        "verificationToken": null,
+        "resetPasswordToken": null,
+        "resetPasswordExpires": null
+    },
+    {
+        "id": 7,
+        "name": "Noa_The_Queen",
+        "email": "noa@example.com",
+        "password": "$2b$10$j7w/PpfgcW8bfZFQkhw5hOlnvosqrNhWrzAalco6FUUfITvF/oG/m",
+        "role": "Moderator",
+        "isVerified": true,
+        "verificationToken": null,
+        "resetPasswordToken": null,
+        "resetPasswordExpires": null
+    },
+    {
+        "id": 8,
+        "name": "RetroLover",
+        "email": "retro@old.com",
+        "password": "$2b$10$j7w/PpfgcW8bfZFQkhw5hOlnvosqrNhWrzAalco6FUUfITvF/oG/m",
+        "role": "USER",
+        "isVerified": true,
+        "verificationToken": null,
+        "resetPasswordToken": null,
+        "resetPasswordExpires": null
+    },
+    {
+        "id": 9,
+        "name": "Hebrew_Knight",
+        "email": "knight@il.com",
+        "password": "$2b$10$j7w/PpfgcW8bfZFQkhw5hOlnvosqrNhWrzAalco6FUUfITvF/oG/m",
+        "role": "USER",
+        "isVerified": true,
+        "verificationToken": null,
+        "resetPasswordToken": null,
+        "resetPasswordExpires": null
+    },
+    {
+        "id": 10,
+        "name": "Spoiler_Alert",
+        "email": "spoiler@movies.com",
+        "password": "$2b$10$j7w/PpfgcW8bfZFQkhw5hOlnvosqrNhWrzAalco6FUUfITvF/oG/m",
+        "role": "USER",
+        "isVerified": true,
+        "verificationToken": null,
+        "resetPasswordToken": null,
+        "resetPasswordExpires": null
+    },
+    {
+        "id": 11,
+        "name": "KeyFinder",
+        "email": "key@hidden.com",
+        "password": "$2b$10$j7w/PpfgcW8bfZFQkhw5hOlnvosqrNhWrzAalco6FUUfITvF/oG/m",
+        "role": "USER",
+        "isVerified": true,
+        "verificationToken": null,
+        "resetPasswordToken": null,
+        "resetPasswordExpires": null
+    },
+    {
+        "id": 12,
+        "name": "GuideMaster",
+        "email": "guide@help.com",
+        "password": "$2b$10$j7w/PpfgcW8bfZFQkhw5hOlnvosqrNhWrzAalco6FUUfITvF/oG/m",
+        "role": "USER",
+        "isVerified": true,
+        "verificationToken": null,
+        "resetPasswordToken": null,
+        "resetPasswordExpires": null
+    },
+    {
+        "id": 13,
+        "name": "Hardware_Geek",
+        "email": "geek@nvidia.com",
+        "password": "$2b$10$j7w/PpfgcW8bfZFQkhw5hOlnvosqrNhWrzAalco6FUUfITvF/oG/m",
+        "role": "USER",
+        "isVerified": true,
+        "verificationToken": null,
+        "resetPasswordToken": null,
+        "resetPasswordExpires": null
+    },
+    {
+        "id": 14,
+        "name": "PC_Master_Race",
+        "email": "pc@desktop.com",
+        "password": "$2b$10$j7w/PpfgcW8bfZFQkhw5hOlnvosqrNhWrzAalco6FUUfITvF/oG/m",
+        "role": "USER",
+        "isVerified": true,
+        "verificationToken": null,
+        "resetPasswordToken": null,
+        "resetPasswordExpires": null
+    },
+    {
+        "id": 15,
+        "name": "Achievement_Hunter",
+        "email": "trophy@win.com",
+        "password": "$2b$10$j7w/PpfgcW8bfZFQkhw5hOlnvosqrNhWrzAalco6FUUfITvF/oG/m",
+        "role": "USER",
+        "isVerified": true,
+        "verificationToken": null,
+        "resetPasswordToken": null,
+        "resetPasswordExpires": null
+    },
+    {
+        "id": 16,
+        "name": "Coop_Player",
+        "email": "coop@friends.com",
+        "password": "$2b$10$j7w/PpfgcW8bfZFQkhw5hOlnvosqrNhWrzAalco6FUUfITvF/oG/m",
+        "role": "USER",
+        "isVerified": true,
+        "verificationToken": null,
+        "resetPasswordToken": null,
+        "resetPasswordExpires": null
+    },
+    {
+        "id": 17,
+        "name": "DLC_Collector",
+        "email": "dlc@collect.com",
+        "password": "$2b$10$j7w/PpfgcW8bfZFQkhw5hOlnvosqrNhWrzAalco6FUUfITvF/oG/m",
+        "role": "USER",
+        "isVerified": true,
+        "verificationToken": null,
+        "resetPasswordToken": null,
+        "resetPasswordExpires": null
+    },
+    {
+        "id": 18,
+        "name": "Indie_Enthusiast",
+        "email": "indie@enthusiast.com",
+        "password": "$2b$10$j7w/PpfgcW8bfZFQkhw5hOlnvosqrNhWrzAalco6FUUfITvF/oG/m",
+        "role": "USER",
+        "isVerified": true,
+        "verificationToken": null,
+        "resetPasswordToken": null,
+        "resetPasswordExpires": null
+    },
+    {
+        "id": 19,
+        "name": "Multiplayer_Maven",
+        "email": "maven@multiplayer.com",
+        "password": "$2b$10$j7w/PpfgcW8bfZFQkhw5hOlnvosqrNhWrzAalco6FUUfITvF/oG/m",
+        "role": "USER",
+        "isVerified": true,
+        "verificationToken": null,
+        "resetPasswordToken": null,
+        "resetPasswordExpires": null
+    },
+    {
+        "id": 20,
+        "name": "Singleplayer_Sage",
+        "email": "sage@singleplayer.com",
+        "password": "$2b$10$j7w/PpfgcW8bfZFQkhw5hOlnvosqrNhWrzAalco6FUUfITvF/oG/m",
+        "role": "USER",
+        "isVerified": true,
+        "verificationToken": null,
+        "resetPasswordToken": null,
+        "resetPasswordExpires": null
+    },
+    {
+        "id": 21,
+        "name": "אופיר",
+        "email": "z0527134644@gmail.com",
+        "password": "$2b$10$j7w/PpfgcW8bfZFQkhw5hOlnvosqrNhWrzAalco6FUUfITvF/oG/m",
+        "role": "ADMIN",
+        "isVerified": true,
+        "verificationToken": null,
+        "resetPasswordToken": null,
+        "resetPasswordExpires": null
+    }
+    
+]

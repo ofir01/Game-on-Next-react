@@ -1,0 +1,81 @@
+body {
+    background: url("CandyCrush.webp") no-repeat center center fixed;
+    background-size: cover;
+    font-family: Arial, Helvetica, sans-serif;
+    color: rgb(228, 39, 39);
+    text-align: center;
+}
+
+/*מאפייני הלוח מאחורי התמונות*/
+#board {
+    width: 450px;
+    height: 450px;
+    background-color: rgba(173, 216, 230, 0.2); /*  שקיפות לרקע אחורי בלבד*/    
+    border: 5px solid rgba(112, 128, 144, 0.5); /*שקיפות לגבול בלבד*/
+    border-radius: 10px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+/*גודל התמונות בתוך הלוח*/
+#board img {
+    width: 50px;
+    height: 50px;
+}
+
+
+
+
+
+.tile {
+    transition: left 0.5s ease-in-out, top 0.5s ease-in-out;
+}
+.swapped .tile1 { left: 100px; }
+.swapped .tile2 { left: 0; }
+
+
+
+
+#goal-box {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 120px;
+    height: 200px;
+    background-color: rgba(173, 216, 230, 0.2); /*  שקיפות לרקע אחורי בלבד*/    
+    border: 5px solid rgba(112, 128, 144, 0.5); /*שקיפות לגבול בלבד*/
+    border: 3px solid #888;
+    border-radius: 10px;
+    text-align: center;
+    padding: 10px;
+}
+
+#goal-box img {
+    width: 50px;
+    height: 50px;
+}
+
+
+
+/* אפקט קפיצה */
+@keyframes bounce {
+    0% {
+        transform: scale(1);
+    }
+    30% {
+        transform: scale(1.2);
+    }
+    50% {
+        transform: scale(0.9);
+    }
+    70% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+.bounce {
+    animation: bounce 0.5s infinite;
+}

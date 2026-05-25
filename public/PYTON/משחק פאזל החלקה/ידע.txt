@@ -1,0 +1,6 @@
+
+גודל התמונה בפיקסלים:
+    width, height = image.size
+שקול לזה:
+size = img.width(), img.height()
+print("Width:", size[0], "Height:", size[1])

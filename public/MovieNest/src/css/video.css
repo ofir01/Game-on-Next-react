@@ -1,0 +1,51 @@
+/* --- תיקון לתצוגת הוידאו כפתיח --- */
+
+/* 1. המעטפת השחורה של הוידאו */
+#intro-overlay {
+    position: fixed !important; /* ה-!important חובה כדי לשבור את ה-flex של ה-body */
+    top: 0;
+    left: 0;
+    width: 100vw;  /* רוחב מלא של המסך */
+    height: 100vh; /* גובה מלא של המסך */
+    background-color: black;
+    z-index: 999999; /* מספר עצום כדי להיות מעל הכל */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    /* איפוסים חשובים כדי שההגדרות הכלליות לא ישפיעו */
+    margin: 0;
+    padding: 0;
+    flex: none; /* שלא ינסה להתכווץ בגלל ה-body flex */
+}
+
+/* 2. הוידאו עצמו */
+#intro-video {
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover; /* גורם לוידאו להימתח יפה על כל המסך */
+    display: block;
+}
+
+/* 3. הגדרות למעטפת האתר הראשית (אם הוספת אותה לפי ההמלצה הקודמת) */
+#site-wrapper {
+    width: 100%;
+    flex: 1; /* כדי שישתלב יפה עם ה-Flex של ה-Body שלך */
+    display: flex;
+    flex-direction: column;
+}
+
+/* 4. מחלקות להסתרה והצגה */
+.content-hidden {
+    opacity: 0;
+    visibility: hidden;
+    height: 0; /* מונע מהאתר לתפוס גובה כשהוא מוסתר */
+    overflow: hidden;
+}
+
+.content-visible {
+    opacity: 1;
+    visibility: visible;
+    height: auto; /* מחזיר את הגובה */
+    transition: opacity 1.5s ease;
+}

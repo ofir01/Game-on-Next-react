@@ -1,0 +1,146 @@
+#brand-slider {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+}
+
+#brand-title {
+    background-color: #FFE3C1;
+    color: #D35400;
+    padding: 1rem;
+    text-align: center;
+    border-radius: 10px;
+    margin: 0px;
+}
+
+
+#brand-track {
+    display: flex;
+    width: max-content;
+}
+
+@keyframes scroll {
+    0% {
+        transform: translateX(30%);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+
+.brand-group {
+    margin: 20px;
+    display: flex;
+    gap: 30px;
+    animation: scroll 5s linear infinite;
+}
+
+
+/*עוצר את האנימציה*/
+#brand-track:hover .brand-group {
+    animation-play-state: paused;
+}
+
+
+
+/*משחיר את כל התמונות */
+.brand-group img {
+    transition: transform 0.3s ease, filter 0.3s ease;
+    filter: grayscale(100%) brightness(0.7);
+}
+
+/*מחזיר צבע לתמונה שנבחרה*/
+.brand-group img:hover {
+    filter: grayscale(0%) brightness(1);
+}
+
+
+
+
+
+
+/*הכרטיס*/
+.buttonSliderRecipes {
+    width: 200px;
+    flex-shrink: 0;
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    background: white;
+    transition: transform 0.3s ease;
+    /* מעבר חלק */
+}
+
+/* מגדיל את כל הכרטיס שנבחר*/
+.buttonSliderRecipes:hover {
+    transform: scale(1.1);
+}
+
+/*התמונה */
+.slider-recipe-img {
+    width: 100%;
+    border-radius: 10px 10px 0px 0px;
+}
+
+/*הכיתוב מתחת לתמונה*/
+.slider-recipe-title {
+    font-family: 'Chewy', cursive;
+    font-size: 14px;
+    text-align: center;
+    padding: 0px 5px;
+}
+
+
+
+
+
+
+
+.no-results {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    }
+
+.chase-animation {
+    position: relative;
+    width: 300px;
+    height: 100px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.chef, .food {
+    font-size: 48px;
+    position: absolute;
+    bottom: 0;
+}
+
+.chef {
+    animation: runChef 3s linear infinite;
+}
+
+.food {
+    animation: runFood 3s linear infinite;
+}
+
+@keyframes runChef {
+    0% { left: 0; }
+    100% { left: 80%; }
+}
+
+@keyframes runFood {
+    0% { left: 20%; }
+    100% { left: 100%; }
+}
+
+.message {
+    font-size: 18px;
+    color: #555;
+    direction: rtl;
+    text-align: center;
+}

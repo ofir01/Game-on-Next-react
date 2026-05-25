@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <!-- שכבת צהוב -->
+  <polygon points="100,10 120,80 190,80 135,120 155,190 100,150 45,190 65,120 10,80 80,80" 
+           fill="#FFD700"/>
+  <!-- שכבת כתום -->
+  <polygon points="100,30 115,85 170,85 130,115 145,170 100,140 55,170 70,115 30,85 85,85" 
+           fill="#FF8C00"/>
+  <!-- שכבת אדום -->
+  <polygon points="100,50 110,90 150,90 125,110 135,150 100,130 65,150 75,110 50,90 90,90" 
+           fill="#FF4500"/>
+  <!-- כיתוב BOOM -->
+  <text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" 
+        font-size="24" font-weight="bold" fill="white" stroke="black" stroke-width="1.5">
+    BOOM
+  </text>
+</svg>

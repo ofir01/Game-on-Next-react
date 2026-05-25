@@ -1,0 +1,75 @@
+import tkinter as tk
+import time
+
+
+class PuzzleGame:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("Puzzle Game with Tutorial")
+
+        # הגדרת תכונות המשחק
+        self.board = [[1, 2, 3], [4, 5, 6], [7, 8, None]]  # מבנה ראשוני של הפאזל עם מקום ריק אחד
+        self.buttons = [[None for _ in range(3)] for _ in range(3)]
+
+        # יצירת לוח פאזל
+        self.create_board()
+
+        # כפתור הדרכה
+        tutorial_button = tk.Button(root, text="Start Tutorial", command=self.run_tutorial)
+        tutorial_button.grid(row=4, column=0, columnspan=3)
+
+    def create_board(self):
+        """יוצרת את לוח הפאזל על המסך"""
+        for i in range(3):
+            for j in range(3):
+                value = self.board[i][j]
+                if value is not None:
+                    self.buttons[i][j] = tk.Button(self.root, text=str(value), width=5, height=2)
+                    self.buttons[i][j].grid(row=i, column=j)
+
+    def update_board(self):
+        """מעדכנת את המיקום של הכפתורים על לוח הפאזל"""
+        for i in range(3):
+            for j in range(3):
+                value = self.board[i][j]
+                button = self.buttons[i][j]
+                if value is not None and button:
+                    button.grid(row=i, column=j)
+                elif button:
+                    button.grid_forget()
+
+    def move_piece(self, from_pos, to_pos):
+        """מזיזה חלק מהפאזל למקום אחר ומעדכנת את לוח הפאזל"""
+        x1, y1 = from_pos
+        x2, y2 = to_pos
+        self.board[x2][y2], self.board[x1][y1] = self.board[x1][y1], self.board[x2][y2]
+        self.update_board()
+        time.sleep(0.5)  # הוספת זמן השהייה כדי להדגים את התזוזות בהדרכה
+
+    def run_tutorial(self):
+        """הדרכה אוטומטית עם תנועות והנחיות"""
+        # הצגת הנחיה
+        hint = tk.Label(self.root, text="Moving piece 8 to the empty spot", fg="blue")
+        hint.grid(row=3, column=0, columnspan=3)
+        self.root.update()
+
+        # תזוזה אוטומטית
+        self.move_piece((2, 2), (2, 1))  # זז למקום הריק
+
+        # עדכון ההנחיה
+        hint.config(text="Moving piece 7 to the empty spot")
+        self.root.update()
+
+        # תזוזה נוספת
+        self.move_piece((2, 1), (2, 0))  # זז למקום הריק
+
+        # הסרת ההנחיה לאחר ההדרכה
+        hint.config(text="Tutorial Complete!")
+        self.root.update()
+        time.sleep(1)
+        hint.grid_forget()
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    game = PuzzleGame(root)
+    root.mainloop()

@@ -1,0 +1,55 @@
+import tkinter as tk
+from tkinter import messagebox
+
+# יצירת חלון ראשי
+root = tk.Tk()
+root.title("משחק ניחושים עם תמונות")
+
+# פונקציה שנקראת כאשר תמונה נגררת
+def drag_start(event):
+    widget = event.widget
+    widget.startX = event.x
+    widget.startY = event.y
+
+# פונקציה שנקראת כאשר תמונה נגררת
+def drag_motion(event):
+    widget = event.widget
+    x = widget.winfo_x() - widget.startX + event.x
+    y = widget.winfo_y() - widget.startY + event.y
+    widget.place(x=x, y=y)
+
+# פונקציה שנקראת כאשר תמונה מונחת
+def check_correct(event, target_area, correct_positions):
+    widget = event.widget
+    x, y = widget.winfo_x(), widget.winfo_y()
+
+    # בדיקה אם התמונה מונחת באזור הנכון
+    if target_area[0] <= x <= target_area[0] + target_area[2] and \
+       target_area[1] <= y <= target_area[1] + target_area[3]:
+        correct_positions.append(widget)
+        widget.place(x=target_area[0], y=target_area[1])
+
+    if len(correct_positions) == 1:  # להחליף למספר התמונות הכולל
+        messagebox.showinfo("נצחת!", "הצלחת למקם את כל התמונות נכון!")
+
+# יצירת תמונות
+images = ["image1.png", "image2.png", "image3.png"]  # להחליף בשמות קבצי התמונות שלך
+for image_path in images:
+    image = tk.PhotoImage(file=image_path)
+    label = tk.Label(root, image=image)
+    label.image = image  # שמירת ההתייחסות לתמונה כדי למנוע מחיקה על ידי Garbage Collector
+    label.place(x=50, y=50)  # מיקום התמונה ההתחלתי
+    label.bind("<Button-1>", drag_start)
+    label.bind("<B1-Motion>", drag_motion)
+
+# אזור היעד
+target_area = (300, 300, 100, 100)  # x, y, רוחב, גובה
+correct_positions = []
+
+# יצירת מלבן המדמה את אזור היעד
+canvas = tk.Canvas(root, width=400, height=400)
+canvas.create_rectangle(target_area[0], target_area[1], target_area[0] + target_area[2], target_area[1] + target_area[3], fill="lightblue")
+canvas.pack()
+
+# התחלת לולאת האירועים של Tkinter
+root.mainloop()

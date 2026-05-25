@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="he">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>טופס חיפוש מתכונים</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            direction: rtl;
+            background: #f5f5f5;
+            padding: 20px;
+            margin: 0;
+        }
+
+        #advancedSearchBtn {
+            background: #007BFF;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            display: block;
+            margin: 40px auto;
+        }
+
+        #advancedSearchBtn:hover {
+            background: #0056b3;
+        }
+
+        #overlay {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            animation: fadeIn 0.4s ease forwards;
+        }
+
+        #formContainer {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: scale(0.8);
+            opacity: 0;
+            transition: all 0.4s ease;
+        }
+
+        #overlay.show #formContainer {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        label {
+            font-weight: bold;
+            margin-top: 10px;
+            display: block;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        .checkboxes label {
+            display: inline-block;
+            margin-left: 10px;
+        }
+
+        .checkboxes {
+            background: #f0f0f0;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+
+        button[type="submit"] {
+            background: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        button[type="submit"]:hover {
+            background: #45a049;
+        }
+    </style>
+</head>
+
+<body>
+
+    <button id="advancedSearchBtn">🔍 חיפוש מתקדם</button>
+
+    <div id="overlay">
+        <div id="formContainer">
+            <form id="recipeForm">
+                <label for="query">מילת מפתח (query)</label>
+                <input type="text" name="query" id="query">
+
+                <label for="cuisine">מטבח (cuisine)</label>
+                <input type="text" name="cuisine" id="cuisine">
+
+                <label for="excludeCuisine">החרגת מטבחים (excludeCuisine)</label>
+                <input type="text" name="excludeCuisine" id="excludeCuisine">
+
+                <label for="type">סוג מנה (type)</label>
+                <select id="type" name="type">
+                    <option value="">-- ללא --</option>
+                    <option value="main course">Main Course</option>
+                    <option value="side dish">Side Dish</option>
+                    <option value="dessert">Dessert</option>
+                    <option value="appetizer">Appetizer</option>
+                    <option value="salad">Salad</option>
+                    <option value="bread">Bread</option>
+                    <option value="breakfast">Breakfast</option>
+                    <option value="soup">Soup</option>
+                    <option value="beverage">Beverage</option>
+                    <option value="sauce">Sauce</option>
+                    <option value="marinade">Marinade</option>
+                    <option value="fingerfood">Fingerfood</option>
+                    <option value="snack">Snack</option>
+                    <option value="drink">Drink</option>
+                </select>
+
+                <label for="diet">דיאטה (diet)</label>
+                <select id="diet" name="diet">
+                    <option value="">-- ללא --</option>
+                    <option value="Gluten Free">Gluten Free</option>
+                    <option value="Ketogenic">Ketogenic</option>
+                    <option value="Vegetarian">Vegetarian</option>
+                    <option value="Lacto-Vegetarian">Lacto-Vegetarian</option>
+                    <option value="Ovo-Vegetarian">Ovo-Vegetarian</option>
+                    <option value="Vegan">Vegan</option>
+                    <option value="Pescetarian">Pescetarian</option>
+                    <option value="Paleo">Paleo</option>
+                    <option value="Primal">Primal</option>
+                    <option value="Low FODMAP">Low FODMAP</option>
+                    <option value="Whole30">Whole30</option>
+                </select>
+
+                <label for="intolerances">אלרגיה (intolerances)</label>
+                <select id="intolerances" name="intolerances">
+                    <option value="">-- ללא --</option>
+                    <option value="Dairy">Dairy</option>
+                    <option value="Egg">Egg</option>
+                    <option value="Gluten">Gluten</option>
+                    <option value="Grain">Grain</option>
+                    <option value="Peanut">Peanut</option>
+                    <option value="Seafood">Seafood</option>
+                    <option value="Sesame">Sesame</option>
+                    <option value="Shellfish">Shellfish</option>
+                    <option value="Soy">Soy</option>
+                    <option value="Sulfite">Sulfite</option>
+                    <option value="Tree Nut">Tree Nut</option>
+                    <option value="Wheat">Wheat</option>
+                </select>
+
+                <label for="includeIngredients">מרכיבים לכלול</label>
+                <input type="text" name="includeIngredients" id="includeIngredients">
+
+                <label for="excludeIngredients">מרכיבים להחריג</label>
+                <input type="text" name="excludeIngredients" id="excludeIngredients">
+
+                <div class="checkboxes">
+                    <label><input type="checkbox" name="instructionsRequired"> חייב להכיל הוראות</label>
+                    <label><input type="checkbox" name="addRecipeInformation"> מידע נוסף על מתכון</label>
+                    <label><input type="checkbox" name="addRecipeNutrition"> לכלול תזונה</label>
+                </div>
+
+                <button type="submit">חפש מתכונים</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const overlay = document.getElementById("overlay");
+        const btn = document.getElementById("advancedSearchBtn");
+
+        btn.addEventListener("click", () => {
+            overlay.style.display = "flex";
+            setTimeout(() => overlay.classList.add("show"), 10);
+        });
+
+        overlay.addEventListener("click", (e) => {
+            if (e.target === overlay) {
+                overlay.classList.remove("show");
+                setTimeout(() => overlay.style.display = "none", 300);
+            }
+        });
+
+        document.getElementById("recipeForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const params = new URLSearchParams();
+
+            for (const [key, value] of formData.entries()) {
+                if (value) {
+                    params.append(key, value);
+                }
+            }
+
+            const intolerances = Array.from(document.getElementById("intolerances").selectedOptions)
+                .map(opt => opt.value).join(",");
+            if (intolerances) {
+                params.set("intolerances", intolerances);
+            }
+
+            ["instructionsRequired", "addRecipeInformation", "addRecipeNutrition"].forEach(id => {
+                const el = document.querySelector(`[name='${id}']`);
+                if (el.checked) {
+                    params.set(id, true);
+                }
+            });
+
+            const apiUrl = `https://api.spoonacular.com/recipes/complexSearch?${params.toString()}&apiKey=YOUR_API_KEY`;
+            console.log("URL:", apiUrl);
+        });
+    </script>
+
+</body>
+
+</html>

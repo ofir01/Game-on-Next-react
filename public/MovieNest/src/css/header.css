@@ -1,0 +1,47 @@
+    /* סרגל עליון עם חיפוש וכפתור תפריט */
+    .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: #1a1c25;
+        padding: 10px 20px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    }
+
+
+
+    .search-box {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .search-box input {
+        padding: 8px 12px;
+        border-radius: 6px;
+        border: none;
+        outline: none;
+        width: 220px;
+    }
+
+    #controlsMenu {
+        display: flex;
+        gap: 10px;
+    }
+
+    #controlsMenu button {
+        border: none;
+        background: linear-gradient(135deg, #1e3c72, #38b2ac);
+        color: white;
+        border: none;
+        padding: 6px 6px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+    #controlsMenu button:hover {
+        background: linear-gradient(135deg, #38b2ac, #2a5298);
+    }
+
+    

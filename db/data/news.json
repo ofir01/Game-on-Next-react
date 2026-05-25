@@ -1,0 +1,107 @@
+[
+  {
+    "title": "System Update v1.2",
+    "content": "We have improved the overall site performance and fixed minor bugs in the game search algorithm.",
+    "createdAt": "2024-03-20T10:00:00.000Z"
+  },
+  {
+    "title": "New Games Added",
+    "content": "5 new titles have been added to the library today. Check out the latest RPG collection!",
+    "createdAt": "2024-03-19T14:30:00.000Z"
+  },
+  {
+    "title": "Server Maintenance",
+    "content": "The database will be undergoing a quick optimization tonight at midnight. Some lag may occur.",
+    "createdAt": "2024-03-18T09:00:00.000Z"
+  },
+  {
+    "title": "UI Improvements",
+    "content": "The navigation menu is now more responsive on mobile devices and supports smooth scrolling.",
+    "createdAt": "2024-03-17T16:20:00.000Z"
+  },
+  {
+    "title": "Community Feature",
+    "content": "You can now mark games as 'Favorites' and see them highlighted in your personal dashboard.",
+    "createdAt": "2024-03-16T11:15:00.000Z"
+  },
+  {
+    "title": "New Category: Horror",
+    "content": "Get ready for the spooky season with our new curated list of horror games. Don't play alone!",
+    "createdAt": "2024-03-15T20:00:00.000Z"
+  },
+  {
+    "title": "Mobile App Beta",
+    "content": "Our official Android app is now available for beta testing. Join the community and give us feedback.",
+    "createdAt": "2024-03-14T12:00:00.000Z"
+  },
+  {
+    "title": "Leaderboard Reset",
+    "content": "The monthly leaderboards have been reset. Congratulations to last month's winners!",
+    "createdAt": "2024-03-13T08:00:00.000Z"
+  },
+  {
+    "title": "Developer Interview",
+    "content": "Read our exclusive interview with the creators of 'Cyber Quest' on our new blog section.",
+    "createdAt": "2024-03-12T15:45:00.000Z"
+  },
+  {
+    "title": "Security Update",
+    "content": "We've updated our encryption protocols to ensure your data stays safe and secure at all times.",
+    "createdAt": "2024-03-11T10:30:00.000Z"
+  },
+  {
+    "title": "Summer Sale is Live",
+    "content": "Get up to 50% off on selected premium titles for the next 48 hours only!",
+    "createdAt": "2024-03-10T09:00:00.000Z"
+  },
+  {
+    "title": "Bug Fix: Inventory",
+    "content": "The issue where items wouldn't appear in the inventory after purchase has been fully resolved.",
+    "createdAt": "2024-03-09T18:10:00.000Z"
+  },
+  {
+    "title": "New Partnership",
+    "content": "We are excited to partner with IndieDev Studio to bring more unique games to our platform.",
+    "createdAt": "2024-03-08T13:00:00.000Z"
+  },
+  {
+    "title": "User Feedback Survey",
+    "content": "Take our 2-minute survey and tell us how we can improve your gaming experience. Rewards included!",
+    "createdAt": "2024-03-07T11:00:00.000Z"
+  },
+  {
+    "title": "Game Spotlight: 'Mystic Realms'",
+    "content": "Discover the enchanting world of 'Mystic Realms' in this week's spotlight feature. A must-play for RPG fans!",
+    "createdAt": "2024-03-06T17:30:00.000Z"
+  },
+  {
+    "title": "Performance Optimization",
+    "content": "We've optimized our servers to reduce load times and improve overall performance across the site.",
+    "createdAt": "2024-03-05T14:00:00.000Z"
+  },
+  {
+    "title": "New Feature: Game Recommendations",
+    "content": "Based on your play history, we now offer personalized game recommendations to help you discover new favorites.",
+    "createdAt": "2024-03-04T10:00:00.000Z"
+  },
+  {
+    "title": "Holiday Event Announced",
+    "content": "Join us for our upcoming holiday event with exclusive in-game rewards and festive challenges!",
+    "createdAt": "2024-03-03T12:30:00.000Z"
+  },
+  {
+    "title": "Community Spotlight",
+    "content": "This month, we're highlighting some of our most active community members and their favorite games.",
+    "createdAt": "2024-03-02T16:45:00.000Z"
+  },
+  {
+    "title": "New Game Release: 'Skyward Adventures'",
+    "content": "'Skyward Adventures' is now available! Explore breathtaking landscapes and embark on epic quests.",
+    "createdAt": "2024-03-01T09:00:00.000Z"
+  },
+  {
+    "title": "Maintenance Completed",
+    "content": "Our scheduled maintenance is now complete. Thank you for your patience and happy gaming!",
+    "createdAt": "2024-02-29T22:00:00.000Z"
+  }
+]

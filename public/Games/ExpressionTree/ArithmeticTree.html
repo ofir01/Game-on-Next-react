@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expression Tree</title>
+    <link rel="stylesheet" href="ArithmeticTree.css">
+</head>
+<body>
+    <div id="menu">
+        <h3>exercise</h3>
+        <div id="exercise"></div>
+    
+        <h3>Menu</h3>
+        <div id="sidebar">
+            <button id="add-left">
+                <div class="svg-wrapper">
+                    <div class="counter counterL"></div>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 400 400" preserveAspectRatio="xMidYMid meet">
+                        <!-- ענף -->
+                        <line x1="300" y1="100" x2="190" y2="195" stroke="#8B4513" stroke-width="10" />
+                        <!-- עיגול בקצה -->
+                        <circle cx="160" cy="230" r="60" fill="#FFFFFF" stroke="#8B4513" stroke-width="10" />
+                    </svg>
+                </div>
+            </button>
+    
+            <button id="add-right">
+                <div class="svg-wrapper">
+                    <div class="counter counterR"></div>
+                    <svg  xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 400 400" preserveAspectRatio="xMidYMid meet">
+                        <!-- ענף -->
+                        <line x1="60" y1="100" x2="190" y2="195" stroke="#8B4513" stroke-width="10" />
+                        <!-- עיגול בקצה -->
+                        <circle cx="240" cy="230" r="60" fill="#FFFFFF" stroke="#8B4513" stroke-width="10" />
+                    </svg>
+                </div>
+            </button>
+        </div>
+        <button class="but" id="Check">Check</button>
+        <button class="but" id="delete">Delete Node</button>
+        <button class="but" id="update-value">Update Node Value</button>
+
+
+        
+        <!-- מחשבון -->
+        <h3>Calculator</h3>
+        <div id="calculator-display-container">
+            <input id="calculator-display" type="text" readonly placeholder="0" />
+            <button id="clear-btn" class="calc-btn">C</button>
+        </div>
+        <div id="calculator">
+            <button class="calc-btn">0</button>
+            <button class="calc-btn">1</button>
+            <button class="calc-btn">2</button>
+            <button class="calc-btn">3</button>
+            <button class="calc-btn">4</button>
+            <button class="calc-btn">5</button>
+            <button class="calc-btn">6</button>
+            <button class="calc-btn">7</button>
+            <button class="calc-btn">8</button>
+            <button class="calc-btn">9</button>
+            <button class="calc-btn">+</button>
+            <button class="calc-btn">-</button>
+            <button class="calc-btn">*</button>
+            <button class="calc-btn">/</button>
+
+        </div>
+    </div>
+
+    <div id="tree-container">
+        <svg id="tree-svg"></svg>
+    </div>
+
+    <script src="treeClass.js"></script>
+    <script src="ArithmeticTree.js"></script>
+
+</body>
+</html>

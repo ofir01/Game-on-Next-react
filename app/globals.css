@@ -1,0 +1,143 @@
+@import "tailwindcss";
+
+@theme {
+  /* הגדרת האנימציה */
+  --animate-marquee: marquee 30s linear infinite;
+
+  /* הגדרת התנועה  */
+  @keyframes marquee {
+    from { transform: translateX(100%); }
+    to { transform: translateX(-100%); }
+  }
+}
+
+/* עצירה במעבר עכבר */
+.hover-pause:hover {
+  animation-play-state: paused;
+}
+
+
+
+
+/*אנימציה לטעינה*/
+@keyframes loadingBar {
+  0% { transform: scaleX(0); }
+  50% { transform: scaleX(0.7); }
+  100% { transform: scaleX(1); }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* הצא'ט AI*/
+.prose h3 {
+    color: #60a5fa; /* כחול בהיר לכותרות הסוכנים */
+    margin-top: 8px;
+    margin-bottom: 4px;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.prose hr {
+    border-color: rgba(255, 255, 255, 0.1);
+    margin: 12px 0;
+}
+
+.prose blockquote {
+    border-right: 3px solid #3b82f6; /* קו כחול בצד הטקסט של הסוכן */
+    padding-right: 10px;
+    margin: 8px 0;
+    font-style: italic;
+    color: #cbd5e1;
+}
+
+.prose strong {
+    color: #fbbf24; /* צהוב לדירוגים והדגשות */
+}
+
+.prose ul {
+    list-style-type: disc;
+    padding-right: 20px;
+    margin: 8px 0;
+}
+
+.footer-wave-link {
+    position: relative;
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    overflow: hidden;
+    border-radius: 999px;
+    border: 1px solid rgba(125, 211, 252, 0.18);
+    background: rgba(15, 23, 42, 0.62);
+    padding: 0 18px;
+    color: #cbd5e1;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    transition: border-color 220ms ease, box-shadow 220ms ease, color 220ms ease, transform 220ms ease;
+}
+
+.footer-wave-link:hover {
+    border-color: rgba(103, 232, 249, 0.62);
+    color: #ffffff;
+    box-shadow: 0 0 26px rgba(34, 211, 238, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    transform: translateY(-2px);
+}
+
+.footer-wave-word {
+    display: inline-flex;
+    font-size: 0.9rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+}
+
+.footer-wave-word span {
+    display: inline-block;
+    transition: color 220ms ease, text-shadow 220ms ease;
+}
+
+.footer-wave-link:hover .footer-wave-word span {
+    animation: footer-letter-wave 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: calc(var(--i) * 42ms);
+    color: #a5f3fc;
+    text-shadow: 0 0 16px rgba(103, 232, 249, 0.95);
+}
+
+@keyframes footer-letter-wave {
+    0% { transform: translateY(0); }
+    42% { transform: translateY(-7px); }
+    100% { transform: translateY(0); }
+}
+
+.cookjoy-orbit {
+    animation: cookjoy-spin 18s linear infinite;
+}
+
+.cookjoy-orbit::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: -8px;
+    height: 16px;
+    width: 16px;
+    border-radius: 999px;
+    background: #1f8a5b;
+    box-shadow: 0 0 24px rgba(31, 138, 91, 0.55);
+}
+
+.cookjoy-orbit-slow {
+    animation-duration: 26s;
+    animation-direction: reverse;
+}
+
+@keyframes cookjoy-spin {
+    to { transform: rotate(360deg); }
+}

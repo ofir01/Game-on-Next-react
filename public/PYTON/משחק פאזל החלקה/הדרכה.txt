@@ -1,0 +1,20 @@
+import tkinter as tk
+
+# הגדרת חלון
+root = tk.Tk()
+root.title("3x3 Grid")
+
+# גודל הריבועים
+square_size = 80
+
+# יצירת ריבועים עם מספרים מ-1 עד 8
+numbers = [1, 2, 3, 4, 5, 6, 7, 8, ""]
+
+for i in range(3):
+    for j in range(3):
+        number = numbers[i * 3 + j]
+        square = tk.Label(root, text=number, font=("Arial", 24), width=4, height=2, bg="lightblue", borderwidth=2, relief="solid")
+        square.grid(row=i, column=j, padx=5, pady=5)
+square.destroy()
+# הפעלת הלולאה הראשית
+root.mainloop()

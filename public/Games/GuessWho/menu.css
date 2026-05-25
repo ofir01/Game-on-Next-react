@@ -1,0 +1,91 @@
+/* סגנון לתפריט הצד */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -250px; /* מתחיל מחוץ למסך */
+    width: 150px;
+    height: 100%;
+    background-color: rgba(248, 249, 250, 0.3); /* רקע שקוף (0.8 = 80% אטום) */
+    transition: left 0.3s ease;
+    z-index: 1000;
+    padding: 80px 10px 10px; /* מוסיף רווח מלמעלה */
+    overflow-y: auto;
+}
+
+
+.sidebar.open {
+    left: 0; /* כאשר פתוח, התפריט מופיע */
+}
+
+/* כפתור סגירה */
+/*
+.close-btn {
+    background: none;
+    color: white;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    float: right;
+}*/
+
+/* סגנון לכפתורי התפריט */
+.menu-button {
+    display: block;
+    width: 100%;
+    margin: 10px 0;
+    padding: 10px;
+    background-color: rgba(248, 249, 250, 0.5); /* רקע שקוף (0.8 = 80% אטום) */
+    color: rgb(6, 6, 6);
+    font-size: 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: left;
+    transition: background-color 0.3s ease;
+}
+
+.menu-button:hover {
+    background-color: rgba(248, 249, 250, 0.7); /* רקע שקוף (0.8 = 80% אטום) */
+}
+
+/* כפתור לפתיחת התפריט */
+#openSidebarBtn {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    font-size: 24px;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 1001;
+}
+
+
+/* כפתורים תת-אפשרות */
+.sub-buttons {
+    margin-left: 20px; /* ריווח לצד */
+    display: none; /* מוסתר כברירת מחדל */
+    flex-direction: column;
+}
+
+
+.sub-buttons.open {
+    display: flex; /* מוצג כאשר יש מחלקת 'open' */
+}
+
+.sub-buttons button {
+    margin: 5px 0; /* רווח בין כפתורים */
+}
+
+/*!important גורם לצבע להישאר גם כשהעכבר מרחף עליו*/
+.button-green {
+    background-color: rgba(0, 253, 46, 0.6) !important; /* רקע שקוף (0.8 = 80% אטום) */
+    color: white;
+}
+
+.button-red {
+    background-color: rgba(255, 0, 0, 0.6) !important; /* רקע שקוף (0.8 = 80% אטום) */
+    color: white;
+}

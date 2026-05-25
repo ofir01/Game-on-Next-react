@@ -1,0 +1,74 @@
+{
+  "animals": [
+    "Dog", "Cat", "Elephant", "Lion", "Tiger",
+    "Zebra", "Monkey", "Giraffe", "Bear", "Kangaroo",
+    "Panda", "Horse", "Sheep", "Goat", "Dolphin",
+    "Whale", "Fox", "Wolf", "Camel", "Rabbit",
+    "Deer", "Hippopotamus", "Crocodile", "Leopard", "Rhinoceros",
+    "Squirrel", "Otter", "Badger", "Bison", "Moose",
+    "Koala", "Lemur", "Chameleon", "Peacock", "Flamingo",
+    "Parrot", "Penguin", "Owl", "Eagle", "Hawk",
+    "Turtle", "Frog", "Toad", "Lizard", "Bat",
+    "Antelope", "Gazelle", "Meerkat", "Sloth", "Walrus"
+  ],
+  "fruits": [
+    "Apple", "Banana", "Orange", "Mango", "Pineapple",
+    "Grapes", "Strawberry", "Blueberry", "Watermelon", "Peach",
+    "Plum", "Cherry", "Kiwi", "Pear", "Lemon",
+    "Lime", "Papaya", "Guava", "Apricot", "Coconut",
+    "Fig", "Pomegranate", "Raspberry", "Blackberry", "Tangerine",
+    "Cantaloupe", "Honeydew", "Dragonfruit", "Lychee", "Passionfruit",
+    "Nectarine", "Date", "Cranberry", "Mulberry", "Jackfruit",
+    "Persimmon", "Starfruit", "Currant", "Durian", "Avocado",
+    "Gooseberry", "Quince", "Ugli fruit", "Tamarind", "Soursop",
+    "Breadfruit", "Salak", "Longan", "Jujube", "Rambutan"
+  ],
+  "colors": [
+    "Red", "Blue", "Green", "Yellow", "Orange",
+    "Purple", "Pink", "Brown", "Black", "White",
+    "Gray", "Cyan", "Magenta", "Violet", "Turquoise",
+    "Maroon", "Beige", "Teal", "Navy", "Gold",
+    "Silver", "Lavender", "Olive", "Coral", "Indigo",
+    "Mint", "Peach", "Amber", "Charcoal", "Salmon",
+    "Ivory", "Bronze", "Rose", "Crimson", "Emerald",
+    "Ruby", "Sapphire", "Lilac", "Mustard", "Azure",
+    "Cerulean", "Mauve", "Tan", "Sand", "Sky Blue",
+    "Sea Green", "Forest Green", "Plum", "Denim", "Copper"
+  ],
+  "countries": [
+    "USA", "Canada", "Brazil", "Mexico", "Argentina",
+    "France", "Germany", "Italy", "Spain", "Portugal",
+    "Russia", "China", "Japan", "India", "Australia",
+    "Egypt", "South Africa", "Turkey", "Greece", "Thailand",
+    "Norway", "Sweden", "Finland", "Denmark", "Netherlands",
+    "Belgium", "Switzerland", "Austria", "Poland", "Ukraine",
+    "Israel", "Saudi Arabia", "UAE", "Iran", "Iraq",
+    "Pakistan", "Bangladesh", "South Korea", "Vietnam", "Indonesia",
+    "Philippines", "Malaysia", "New Zealand", "Chile", "Peru",
+    "Colombia", "Venezuela", "Nigeria", "Kenya", "Morocco"
+  ],
+  "sports": [
+    "Soccer", "Basketball", "Tennis", "Baseball", "Cricket",
+    "Hockey", "Volleyball", "Rugby", "Golf", "Swimming",
+    "Boxing", "Skiing", "Skating", "Surfing", "Wrestling",
+    "Karate", "Cycling", "Running", "Archery", "Fencing",
+    "Judo", "Taekwondo", "Snowboarding", "Rowing", "Canoeing",
+    "Diving", "Handball", "Table Tennis", "Badminton", "Lacrosse",
+    "Snooker", "Squash", "Motor Racing", "Equestrian", "Triathlon",
+    "Weightlifting", "Climbing", "Shooting", "Bobsleigh", "Curling",
+    "Sailing", "Kiteboarding", "Water Polo", "Bowling", "Speed Skating",
+    "Gymnastics", "Inline Skating", "BMX", "Parkour", "Polo"
+  ],
+  "vehicles": [
+    "Car", "Bus", "Truck", "Bicycle", "Motorcycle",
+    "Train", "Airplane", "Helicopter", "Boat", "Submarine",
+    "Scooter", "Tractor", "Van", "Jeep", "Taxi",
+    "Ambulance", "Firetruck", "Police car", "Skateboard", "Yacht",
+    "Cruise Ship", "Rickshaw", "Hovercraft", "Segway", "Hot Air Balloon",
+    "Canoe", "Kayak", "Moped", "Monorail", "Trolley",
+    "Cable Car", "Jet Ski", "Glider", "Spaceship", "Rocket",
+    "ATV", "Snowmobile", "Bulldozer", "Forklift", "Cement Mixer",
+    "Limousine", "Golf Cart", "Dune Buggy", "Handcart", "Gondola",
+    "Horse Carriage", "Armored Truck", "Military Tank", "Space Shuttle", "Drone"
+  ]
+}

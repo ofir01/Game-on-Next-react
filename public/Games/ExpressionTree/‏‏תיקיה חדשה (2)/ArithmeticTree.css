@@ -1,0 +1,120 @@
+
+/* סגנון לתפריט הצד */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -270px; /* מתחיל מחוץ למסך */
+    width: 300px; /* מספיק רחב לתצוגת אובייקטים */
+    height: 100%;
+    background-color: rgba(248, 249, 250, 0.3); /* רקע שקוף */
+    transition: left 0.3s ease;
+    z-index: 1000;
+    padding: 80px 10px 10px; /* מוסיף רווח מלמעלה */
+    overflow-y: auto;
+    display: flex; /* שימוש ב-Flexbox */
+    flex-direction: row; /* יישור אופקי */
+    gap: 10px; /* רווחים בין האובייקטים */
+}
+
+.sidebar.open {
+    left: 0; /* כאשר פתוח, התפריט מופיע */
+}
+
+/* כפתור לפתיחת התפריט */
+#openSidebarBtn {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    font-size: 24px;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 1001;
+}
+
+.toggle-btn:hover {
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+
+
+
+/* מסגרת כפתור */
+.svg-wrapper {
+    display: inline-block;
+    position: relative;
+    width: 120px;
+    height: 120px;
+    border: 2px solid red;
+    border-radius: 8px;
+}
+
+.svg-wrapper:hover {
+    background-color: rgba(255, 0, 0, 0.1); /* אפקט ריחוף */
+    cursor: pointer;
+
+    
+}
+
+.svg-wrapper:active {
+    background-color: rgba(255, 0, 0, 0.884); /* אפקט ריחוף */
+}
+
+/* מונה בפינה */
+/* מונה משותף */
+.svg-wrapper .counter {
+    position: absolute;
+    top: 5px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: black;
+    font-weight: bold;
+}
+
+/* מונה בצד ימין */
+.svg-wrapper .counterR {
+    right: 5px;
+}
+
+/* מונה בצד שמאל */
+.svg-wrapper .counterL {
+    left: 5px;
+}
+
+
+.svg-wrapper object:hover {
+    cursor: pointer; /* או 'url("path/to/cursor.png"), auto;' לשימוש בסמל מותאם אישית */
+}
+
+
+.object-container{
+    height: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.svg-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 700px; /* רוחב התיבה */
+    height: 500px; /* גובה התיבה */
+    border: 1px solid #ccc; /* מסגרת לתיבה */
+    margin: auto; /* מרכזת את התיבה עצמה */
+    margin-left: 300px; /* מזיז ימינה */
+
+    cursor: pointer;
+}
+
+
+

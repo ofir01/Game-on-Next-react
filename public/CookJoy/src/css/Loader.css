@@ -1,0 +1,103 @@
+#pageLoader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  z-index: 9999;
+}
+
+#pageLoader.show {
+  display: flex;
+}
+
+.cooking-loader {
+  position: relative;
+  width: 150px;
+  height: 150px;
+}
+
+.pot {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90px;
+  height: 50px;
+  background: linear-gradient(to bottom, #ff914d 0%, #ff6b35 100%);
+  box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
+    border-radius: 0 0 45px 45px;
+}
+
+.lid {
+  position: absolute;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 20px;
+  background: linear-gradient(to bottom, #ffb26b 0%, #ff914d 100%);
+  border-radius: 50px 50px 0 0;
+  animation: liftLid 2s ease-in-out infinite;
+}
+
+@keyframes liftLid {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(-10px); }
+}
+
+.steam {
+  position: absolute;
+  bottom: 90px;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  background: rgba(255, 200, 120, 0.9); /* כתום בהיר-מעושן */
+  border-radius: 50%;
+  animation: steamRise 1.8s ease-in-out infinite;
+}
+
+.steam::before, .steam::after {
+  content: '';
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: rgba(255, 180, 100, 0.8); /* צבע מעט כהה יותר להבדל */
+  border-radius: 50%;
+}
+
+
+.steam::before {
+  left: -10px;
+  animation: steamRise 2s ease-in-out infinite 0.3s;
+}
+
+.steam::after {
+  left: 10px;
+  animation: steamRise 1.7s ease-in-out infinite 0.6s;
+}
+
+@keyframes steamRise {
+  0% { opacity: 0; transform: translate(-50%, 0) scale(1); }
+  30% { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%, -40px) scale(1.5); }
+}
+
+.fire {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 30px;
+  background: radial-gradient(circle at center, #ff9900 40%, transparent 70%);
+  animation: flicker 0.25s infinite alternate;
+}
+
+@keyframes flicker {
+  0% { transform: translateX(-50%) scaleY(1); opacity: 0.8; }
+  100% { transform: translateX(-50%) scaleY(1.2); opacity: 1; }
+}

@@ -1,0 +1,101 @@
+/* עיצוב עתידני ומודרני לחלונית החיפוש */
+
+.searchmenu-root {
+  width: 100%;
+  max-width: 1000px;
+  margin: 12px auto 24px;
+  /* פונט נקי ומקצועי */
+  font-family: 'Heebo', Inter, system-ui, sans-serif;
+  /* צבע טקסט בהיר שמתאים לרקעים כהים/עתידניים */
+  color: #f8fafc;
+  direction: rtl;
+}
+
+.search-controls {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+/* מיכל הקלט - מראה זכוכית עתידני (Glassmorphism) עם הילת ניאון עדינה */
+.search-input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  /* רקע כהה חצי שקוף */
+  background: rgba(30, 41, 59, 0.4);
+  /* טשטוש הרקע שמאחוריו */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 14px;
+  padding: 6px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+  flex: 1 1 260px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* אפקט פוקוס עתידני - המיכל נצבע בכחול ניאון זוהר */
+.search-input-wrap:focus-within {
+  border-color: #00d2ff;
+  background: rgba(15, 23, 42, 0.6);
+  box-shadow: 0 0 20px rgba(0, 210, 255, 0.25), 
+              inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transform: translateY(-1px);
+}
+
+/* שדה הקלט עצמו */
+.search-input {
+  border: none;
+  outline: none;
+  /* פדינג מאוזן שמונע חיתוך אותיות מלמטה ומלמעלה */
+  padding: 10px 4px 12px; 
+  font-size: 16px;
+  font-weight: 500;
+  flex: 1;
+  background: transparent;
+  color: #ffffff;
+  line-height: 1.2;
+}
+
+/* צבע ה-Placeholder (הטקסט הרמוז) */
+.search-input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+  font-weight: 400;
+}
+
+/* כפתור איפוס / פעולה - מראה מינימליסטי שמשתלב ברקע */
+.reset-btn {
+  border: none;
+  outline: none;
+  /* פדינג מוגן כדי שהטקסט בפנים לא ייחתך */
+  padding: 10px 20px 12px;
+  border-radius: 14px;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #00d2ff; /* טקסט בצבע ניאון */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.2;
+  transition: all 0.2s ease;
+}
+
+/* אפקט ריחוף לכפתור */
+.reset-btn:hover {
+  background: rgba(0, 210, 255, 0.15);
+  border-color: #00d2ff;
+  color: #ffffff;
+  box-shadow: 0 0 15px rgba(0, 210, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+/* אפקט לחיצה */
+.reset-btn:active {
+  transform: translateY(0);
+}

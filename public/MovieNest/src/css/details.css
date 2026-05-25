@@ -1,0 +1,288 @@
+/*התיבה הראשית של הפרטים על הסרט*/
+#details {
+  position: relative;
+  background: linear-gradient(135deg, #141e30 0%, #243b55 100%);
+  color: #fff;
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+
+
+
+/*החלק העליון*/
+.movie-container {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  margin: 20px auto;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #fff;
+}
+
+.movie-background {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: blur(2px) brightness(1);
+  z-index: 0;
+}
+
+.movie-content {
+  position: relative;
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+  z-index: 1;
+}
+
+.poster-wrapper {
+  flex: 0 0 250px;
+}
+
+.poster {
+  width: 100%;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+
+}
+
+.poster:hover {
+  transform: scale(1.05);
+}
+
+
+.details-wrapper {
+  flex: 1;
+}
+
+.details-wrapper h2 {
+  margin: 0 0 10px;
+  font-size: 26px;
+  font-weight: bold;
+
+}
+
+.details-wrapper h3 {
+  margin: 15px 0 5px;
+  font-size: 20px;
+  color: #ffcc70;
+}
+
+.overview {
+  line-height: 1.6;
+  margin-bottom: 15px;
+  color: aliceblue;
+}
+
+.details-wrapper h2,
+.details-wrapper h3,
+.overview,
+.movie-info {
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
+}
+
+.movie-info {
+  font-size: 14px;
+  color: #ffffff;
+  margin-bottom: 15px;
+}
+
+/*הוספה למועדפים*/
+.favorite-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background: linear-gradient(90deg, #ff9966, #ff5e62);
+  color: white;
+  font-size: 16px;
+  transition: 0.3s;
+}
+
+.favorite-btn:hover {
+  background: linear-gradient(90deg, #ff5e62, #ff9966);
+  transform: scale(1.05);
+}
+
+
+
+/*החלק התחתון*/
+.p_credits,
+.p_similar {
+  margin-right: 20px;
+  color: #ffffff;
+  font-size: 20px;
+  text-align: center;
+
+
+}
+
+
+
+/*פרטים של השחקנים, וסרטים דומים*/
+.cast-container,
+.movies-container {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  /* מרכז באמצע */
+  align-items: flex-start;
+  /* מיושר מלמעלה */
+  margin: 20px 0;
+}
+
+
+.cast-container div,
+.movies-container div {
+  text-align: center;
+  width: 150px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, .35);
+  transition: transform .25s ease, box-shadow .25s ease;
+  position: relative;
+  /* חובה בשביל שהדירוג ימוקם על הפוסטר */
+
+}
+
+.cast-container div:hover,
+.movies-container div:hover {
+  transform: translateY(-4px) scale(1.03);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, .45);
+}
+
+
+.cast-container img,
+.movies-container img {
+  width: 100%;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+
+}
+
+.cast-container img:hover,
+.movies-container img:hover {
+  transform: scale(1.05);
+}
+
+
+/*הדירוג לסרט דומה*/
+.rating {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: rgba(255, 215, 0, 0.9);
+  color: #000;
+  font-weight: bold;
+  padding: 4px 8px;
+  border-radius: 8px;
+  font-size: 14px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+
+.movieTitle {
+  margin-top: 8px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7);
+
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  /* עד 2 שורות */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  /*מה שיוצא בחוץ להסתיר*/
+  text-overflow: ellipsis;
+
+  min-height: 40px;
+  /* מבטיח גובה אחיד לכותרת */
+}
+
+
+
+/*הקטנה למכשירים אחרים*/
+/* טאבלט (עד 992px) */
+@media (max-width: 992px) {
+  .movie-content {
+    flex-direction: column;
+    /* הפוסטר מעל, הטקסט מתחת */
+    align-items: center;
+    text-align: center;
+  }
+
+  .poster-wrapper {
+    flex: 0 0 200px;
+    /* הפוסטר קטן יותר */
+  }
+
+  .details-wrapper h2 {
+    font-size: 22px;
+  }
+
+  .details-wrapper h3 {
+    font-size: 18px;
+  }
+
+  .overview {
+    font-size: 14px;
+  }
+
+  .movies-container div,
+  .cast-container div {
+    width: 120px;
+    /* פוסטרים קטנים יותר */
+  }
+
+  .rating {
+    font-size: 12px;
+    padding: 3px 6px;
+  }
+}
+
+/* מובייל (עד 600px) */
+@media (max-width: 700px) {
+  .movie-content {
+    padding: 10px;
+  }
+
+  .poster-wrapper {
+    flex: 0 0 150px;
+    /* פוסטר עוד יותר קטן */
+    width: 250px;
+  }
+
+  .details-wrapper h2 {
+    font-size: 18px;
+  }
+
+  .details-wrapper h3 {
+    font-size: 16px;
+  }
+
+  .overview {
+    font-size: 12px;
+  }
+
+  .movies-container,
+  .cast-container {
+    flex-wrap: wrap;
+    /* יעבור שורה במסכים קטנים */
+    gap: 10px;
+  }
+
+  .movies-container div,
+  .cast-container div {
+    width: 100px;
+    /* פוסטרים קטנים יותר */
+  }
+
+  .rating {
+    font-size: 11px;
+    padding: 2px 5px;
+  }
+}

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<!-- <html lang="en"> -->
+<html lang="he" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CookJoy</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/favourites.css">
+    <link rel="stylesheet" href="./css/game.css">
+    <link rel="stylesheet" href="./css/header.css">
+    <link rel="stylesheet" href="./css/information.css">
+    <link rel="stylesheet" href="./css/Loader.css">
+    <link rel="stylesheet" href="./css/searchInput.css">
+    <link rel="stylesheet" href="./css/slider.css">
+    <link rel="stylesheet" href="./css/video.css">
+</head>
+
+<body>
+    <header>
+        <img id="imgLogo" src="image/CookJoy.png" alt="">
+        <button id="darkModeIcon"></button>
+        <button id="but_cookbook"><img src="image/cookbook.png" alt=""></button>
+        <button id="but_Ingredients"><img src="image/Ingredients.png" alt=""></button>
+        <button class="game-button" id="tasteWidget">game-tasteWidget</button>
+        <button class="game-button" id="guessNutrition">guess-Nutrition</button>
+    </header>
+
+    <div id="intro-container">
+        <video id="intro-video" autoplay muted playsinline>
+            <source src="./Cookbook Design - Dream.mp4" type="video/mp4">
+            הדפדפן לא תומך בוידאו.
+        </video>
+    </div>
+
+    <div id="background-container">
+        <p id="welcome-text">ברוכים הבאים ל-<span class="highlight">CookJoy</span><br>מתכונים טעימים לכל אירוע!</p>
+        <img id="img_background" src="image/background.png" alt="">
+        <div class="search-container">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Search for delicious recipes...">
+                <ul id="autocomplete-list"></ul>
+            </div>
+            <button id="searchButton">Search</button>
+        </div>
+        <div id="jokes"></div>
+    </div>
+
+
+    <!-- סרגל החלקה של קטגוריות -->
+    <div id="brand-slider">
+        <h1 id="brand-title"></h1>
+        <div id="brand-track">
+        </div>
+    </div>
+
+
+    <!-- הצגת תוצאות של החיפוש -->
+    <div id="results"></div>
+    <div id="information"></div><!-- מידע על המתכון -->
+
+
+
+    <!-- מועדפים -->
+    <div id="result_cookbook">
+        <button id="close-btn">✖</button>
+        <div id="div_cookbook"></div>
+    </div>
+
+
+
+
+</body>
+<script src="./ui/video.js"></script>
+<script src="./ui/darkMode.js"></script>
+<script src="../api/api.js"></script>
+<script src="./ui/favourites.js"></script>
+<script src="./ui/slider.js"></script>
+<script src="./ui/game.js"></script>
+<script src="./ui/searchInput.js"></script>
+<script src="./ui/main.js"></script>
+
+</html>

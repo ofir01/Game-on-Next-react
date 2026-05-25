@@ -1,0 +1,64 @@
+from tkinter import *
+
+# פונקציה להתחלת הגרירה
+def on_drag_start(event):
+    widget = event.widget
+    widget.startX = event.x
+    widget.startY = event.y
+
+# פונקציה לביצוע גרירה של הריבוע
+def on_drag_motion(event):
+    widget = event.widget
+    x = widget.winfo_x() - widget.startX + event.x
+    y = widget.winfo_y() - widget.startY + event.y
+
+    # שמירה על המיקום הקודם לפני הזזה
+    old_x = widget.winfo_x()
+    old_y = widget.winfo_y()
+
+    # בדוק אם יש חפיפה לאחר תזוזה
+    if not is_overlapping(widget, x, y, squares):
+        widget.place(x=x, y=y)
+    else:
+        # אם יש חפיפה, נסה להזיז רק בציר X או רק בציר Y
+        if not is_overlapping(widget, x, old_y, squares):  # בדוק אם בציר X פנוי
+            widget.place(x=x, y=old_y)
+        elif not is_overlapping(widget, old_x, y, squares):  # בדוק אם בציר Y פנוי
+            widget.place(x=old_x, y=y)
+
+# פונקציה לבדיקה אם יש חפיפה בין הווידג'ט הנוכחי לבין ריבועים אחרים
+def is_overlapping(widget, new_x, new_y, other_widgets):
+    widget_coords = get_widget_coords(widget, new_x, new_y)
+    for other_widget in other_widgets:
+        if other_widget == widget:
+            continue
+        other_coords = get_widget_coords(other_widget, other_widget.winfo_x(), other_widget.winfo_y())
+        if not (widget_coords[2] < other_coords[0] or
+                widget_coords[0] > other_coords[2] or
+                widget_coords[3] < other_coords[1] or
+                widget_coords[1] > other_coords[3]):
+            return True
+    return False
+
+# פונקציה לקבלת הקואורדינטות של ווידג'ט לאחר עדכון
+def get_widget_coords(widget, x, y):
+    width = widget.winfo_width()
+    height = widget.winfo_height()
+    return (x, y, x + width, y + height)
+
+# יצירת חלון ראשי
+root = Tk()
+root.geometry("400x400")
+root.title("Draggable Squares")
+
+# יצירת ריבועים (כ-Label)
+squares = []
+
+for i in range(3):
+    square = Label(root, bg='blue', width=10, height=5)
+    square.place(x=50 + i*120, y=50)  # מיקום התחלתי של כל ריבוע
+    square.bind("<Button-1>", on_drag_start)  # התחלת גרירה
+    square.bind("<B1-Motion>", on_drag_motion)  # גרירה עצמה
+    squares.append(square)
+
+root.mainloop()

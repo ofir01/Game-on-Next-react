@@ -1,0 +1,33 @@
+    def Check():
+        global correct_positionsNum
+        correct_positionsNum = 0  # אתחול הספירה
+
+        for label in labels:
+            image_key = None
+            # חפש את התמונה במילון `dictionaries`
+            for key, value in dictionaries.items():
+                if label.cget("image") == str(value):
+                    image_key = key
+                    break
+
+            if image_key is None:
+                continue
+
+            # קבל את המיקום הנכון מתוך המילון
+            correct_position = image_position_dict[image_key]
+            print(f"Image: {image_key}, Correct Position: {correct_position}")
+
+            # קבל את המיקום הנוכחי של התמונה
+            current_position = label.grid_info()
+            current_position = (current_position['row'], current_position['column'])
+
+            print(f"Current Position: {current_position}")
+
+            # בדוק אם המיקום הנוכחי תואם למיקום הנכון
+            if current_position == correct_position:
+                correct_positionsNum += 1
+
+        total_images = len(image_position_dict)
+        progress_bar['value'] = (correct_positionsNum / total_images) * 100
+        status_var.set(f"{correct_positionsNum} מתוך {total_images} תמונות במיקומים הנכונים")
+        new_window2.update_idletasks()

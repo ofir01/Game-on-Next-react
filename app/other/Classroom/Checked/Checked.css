@@ -1,0 +1,163 @@
+/* ========================================================
+   עיצוב עתידני, מודרני וזוהר לצ'קבוקס המונפש (Cyberpunk Splash)
+   ======================================================== */
+
+.checkbox-wrapper-12 {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.checkbox-wrapper-12 > svg {
+  position: absolute;
+  top: -130%;
+  left: -170%;
+  width: 110px;
+  pointer-events: none;
+}
+
+.checkbox-wrapper-12 * {
+  box-sizing: border-box;
+}
+
+.checkbox-wrapper-12 input[type="checkbox"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
+  margin: 0;
+}
+
+.checkbox-wrapper-12 input[type="checkbox"]:focus {
+  outline: 0;
+}
+
+.checkbox-wrapper-12 .cbx {
+  width: 24px;
+  height: 24px;
+  position: relative; /* עדיף מ-top/left קשיחים כדי שישתלב דינמית בכל מקום */
+}
+
+/* מסגרת העיגול במצב כבוי - מראה זכוכית עמוק */
+.checkbox-wrapper-12 .cbx input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 24px;
+  height: 24px;
+  /* מסגרת אפורה-שקופה עדינה */
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  border-radius: 50%;
+  background: rgba(15, 23, 42, 0.5); /* רקע כהה חצי שקוף */
+  backdrop-filter: blur(4px);
+  transition: all 0.25s ease;
+}
+
+/* אפקט ריחוף על הצ'קבוקס - הדלקת הילה כחולה עדינה */
+.checkbox-wrapper-12:hover .cbx input {
+  border-color: #00d2ff;
+  box-shadow: 0 0 10px rgba(0, 210, 255, 0.4);
+}
+
+.checkbox-wrapper-12 .cbx label {
+  width: 24px;
+  height: 24px;
+  background: none;
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translate3d(0, 0, 0); /* תוקן ה-typo מ-trasnlate3d */
+  pointer-events: none;
+}
+
+.checkbox-wrapper-12 .cbx svg {
+  position: absolute;
+  top: 5px;
+  left: 4px;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* סימן ה-V הפנימי - לבן בוהק */
+.checkbox-wrapper-12 .cbx svg path {
+  stroke: #ffffff;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 19;
+  stroke-dashoffset: 19;
+  transition: stroke-dashoffset 0.3s ease;
+  transition-delay: 0.15s;
+}
+
+/* כשהצ'קבוקס מסומן - הפעלת האנימציה המשודרגת */
+.checkbox-wrapper-12 .cbx input:checked + label {
+  animation: splash-12 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.checkbox-wrapper-12 .cbx input:checked + label + svg path {
+  stroke-dashoffset: 0;
+}
+
+/* שינוי מסגרת ה-input המקורית בזמן סימון כדי שלא תתנגש עם האנימציה */
+.checkbox-wrapper-12 .cbx input:checked {
+  border-color: transparent;
+  background: transparent;
+}
+
+
+/* ========================================================
+   אנימציית ה-Splash המשודרגת - בועות חלקיקי אור ניאון (Cyan & Blue)
+   ======================================================== */
+
+@-moz-keyframes splash-12 {
+  40% {
+    background: #00d2ff; /* שינוי לכחול ניאון */
+    box-shadow: 0 -18px 0 -8px #00d2ff, 16px -8px 0 -8px #0069ff, 16px 8px 0 -8px #00d2ff, 0 18px 0 -8px #0069ff, -16px 8px 0 -8px #00d2ff, -16px -8px 0 -8px #0069ff;
+  }
+  100% {
+    background: #00d2ff;
+    box-shadow: 0 -36px 0 -10px transparent, 32px -16px 0 -10px transparent, 32px 16px 0 -10px transparent, 0 36px 0 -10px transparent, -32px 16px 0 -10px transparent, -32px -16px 0 -10px transparent;
+    /* הוספת הילת זוהר לקופסה עצמה בסיום האנימציה */
+    box-shadow: 0 0 15px rgba(0, 210, 255, 0.6);
+  }
+}
+
+@-webkit-keyframes splash-12 {
+  40% {
+    background: #00d2ff;
+    box-shadow: 0 -18px 0 -8px #00d2ff, 16px -8px 0 -8px #0069ff, 16px 8px 0 -8px #00d2ff, 0 18px 0 -8px #0069ff, -16px 8px 0 -8px #00d2ff, -16px -8px 0 -8px #0069ff;
+  }
+  100% {
+    background: #00d2ff;
+    box-shadow: 0 -36px 0 -10px transparent, 32px -16px 0 -10px transparent, 32px 16px 0 -10px transparent, 0 36px 0 -10px transparent, -32px 16px 0 -10px transparent, -32px -16px 0 -10px transparent;
+    box-shadow: 0 0 15px rgba(0, 210, 255, 0.6);
+  }
+}
+
+@-o-keyframes splash-12 {
+  40% {
+    background: #00d2ff;
+    box-shadow: 0 -18px 0 -8px #00d2ff, 16px -8px 0 -8px #0069ff, 16px 8px 0 -8px #00d2ff, 0 18px 0 -8px #0069ff, -16px 8px 0 -8px #00d2ff, -16px -8px 0 -8px #0069ff;
+  }
+  100% {
+    background: #00d2ff;
+    box-shadow: 0 -36px 0 -10px transparent, 32px -16px 0 -10px transparent, 32px 16px 0 -10px transparent, 0 36px 0 -10px transparent, -32px 16px 0 -10px transparent, -32px -16px 0 -10px transparent;
+    box-shadow: 0 0 15px rgba(0, 210, 255, 0.6);
+  }
+}
+
+@keyframes splash-12 {
+  40% {
+    /* שילוב בין כחול עמוק לסיאן בוהק בחלקיקים המשתחררים */
+    background: #00d2ff;
+    box-shadow: 0 -18px 0 -8px #00d2ff, 16px -8px 0 -8px #0069ff, 16px 8px 0 -8px #00d2ff, 0 18px 0 -8px #0069ff, -16px 8px 0 -8px #00d2ff, -16px -8px 0 -8px #0069ff;
+  }
+  100% {
+    background: #00d2ff;
+    box-shadow: 0 -36px 0 -10px transparent, 32px -16px 0 -10px transparent, 32px 16px 0 -10px transparent, 0 36px 0 -10px transparent, -32px 16px 0 -10px transparent, -32px -16px 0 -10px transparent;
+    box-shadow: 0 0 15px rgba(0, 210, 255, 0.6);
+  }
+}

@@ -1,0 +1,181 @@
+import time
+from tkinter import *
+from tkinter import messagebox  # import messagebox library
+import pygame
+
+# רשימה של שאלות, תשובות ואפשרויות
+quiz = [
+    {
+        "question": "What is the capital of France?",
+        "correct_answer": "Paris",
+        "options": ["Paris", "London", "Berlin", "Rome"]
+    },
+    {
+        "question": "What is 2 + 2?",
+        "correct_answer": "4",
+        "options": ["3", "4", "5"]
+    },
+    {
+        "question": "What is the largest planet in our solar system?",
+        "correct_answer": "Jupiter",
+        "options": ["Earth", "Mars", "Jupiter", "Saturn"]
+    }
+]
+
+# --------------------------------------------------------------משתנה גלובלי
+current_question = 0  # מייצג את השאלה הנוכחית
+ListAnswers = []  # מייצג את התשובות מהמשתמש
+time_left = None  # הזמן שנותר לכל שאלה (בשניות)
+timer_id = None  # משתנה לאחסון מזהה הטיימר הפעיל
+help_window = None  # משתנה לשמירת חלון העזר
+
+# ---------------------------------------------------------------אתחול רכיב השמע
+pygame.mixer.init()
+def success():
+    pygame.mixer.music.load("assets/success.mp3")
+    pygame.mixer.music.play()
+
+def fail():
+    pygame.mixer.music.load("assets/fail.mp3")
+    pygame.mixer.music.play()
+
+# --------------------------------------------------------------פונקציה להדפסת השאלה והאפשרויות
+def display_question():
+    global time_left, timer_id, help_window
+
+    # ביטול טיימר קיים
+    if timer_id:
+        root.after_cancel(timer_id)
+
+    # סגירת חלון העזר (אם פתוח)
+    if help_window:
+        close_help_window()
+
+    time_left = 5  # אתחול הטיימר
+    update_timer()  # התחלת הטיימר
+
+    # מחיקת כפתורים ישנים
+    for btn in option_buttons:
+        btn.destroy()
+    option_buttons.clear()
+
+    question_data = quiz[current_question]  # מוציא מהרשימה מילון במיקום מסוים
+    question_label.config(text=question_data["question"])  # ידפיס רק את השאלה
+
+    # יצירת כפתורים בהתאם למספר האפשרויות בשאלה הנוכחית
+    for option in question_data["options"]:
+        radio_btn = Radiobutton(root, text=option, variable=selected_option, value=option, font=('Arial', 14))
+        radio_btn.pack(anchor=S)
+        option_buttons.append(radio_btn)
+
+    # בשאלה האחרונה שנה את שם הכפתור לסיום
+    if current_question == len(quiz) - 1:
+        next_button.config(text="finish", command=next_question)  # הכפתור
+
+# ------------------------------------------------פונקציה לעדכון הטיימר בכל שנייה
+def update_timer():
+    global time_left, timer_id
+    if time_left >= 0:
+        timer_label.config(text=f"Time left: {time_left} seconds")
+        time_left -= 1
+        timer_id = root.after(1000, update_timer)
+    else:
+        next_question()
+
+# ------------------------------------------------כפתור קדימה, ושמירת התשובה במערך התשובות
+def next_question():
+    global current_question, help_window
+    ListAnswers.append(selected_option.get())  # שמירת הערך ברשימה
+    selected_option.set("")  # אתחול המשתנה ששומר את הבחירה
+
+    # בודק אם נגמר השאלות
+    current_question += 1
+    if current_question == len(quiz):
+        finish()
+    else:
+        display_question()
+
+# ----------------------------------------------------------------------סיום
+def finish():
+    print(ListAnswers)
+
+    # ביטול הטיימר כאשר השעון האחרון עוד לא נגמר
+    if timer_id:
+        root.after_cancel(timer_id)
+
+    # השוואת כל התשובות, הצורך לשמור את התשובות ברשימה , בשביל שיהיה אפשר להדפיס את התשובות אם נרצה
+    correct = 0  # כמה תשובות נכונות
+    for i in range(len(ListAnswers)):
+        if quiz[i]["correct_answer"] == ListAnswers[i]:
+            correct += 1
+
+    # מנגינה לניצחון או הפסד
+    if correct >= len(ListAnswers) - 1:
+        success()
+    else:
+        fail()
+
+    next_button.config(state="disabled")  # normal סגירת הכפתור ההפך מ-
+    # הודעה על הציון וסגירת המבחן
+    messagebox.showinfo(title='score ' + str(int(correct * 100 / len(quiz))) + "%",
+                        message=f"Correct answers: {correct} out of {len(quiz)}", )
+
+    root.destroy()  # סגירת החלון
+
+# ----------------------------------------------------------פונקציה לפתיחת חלון עזר
+def open_help_window():
+    global help_window
+    if not help_window or not help_window.winfo_exists():
+        help_window = Toplevel()
+        help_window.title("חלון עזר")
+        help_window.geometry("200x100")
+        label = Label(help_window, text="זהו חלון עזר")
+        label.pack(pady=20)
+        help_window.protocol("WM_DELETE_WINDOW", close_help_window)  # קישור לאירוע סגירה
+        disable_help_button()
+
+# פונקציה לסגירת חלון העזר והפעלת כפתור ה-Help מחדש
+def close_help_window():
+    global help_window
+    if help_window:
+        help_window.destroy()
+        help_window = None
+        enable_help_button()
+
+# הפעלת כפתור ה-Help מחדש
+def enable_help_button():
+    Help_button.config(state="normal")
+
+# נטרול כפתור ה-Help כאשר חלון עזר פתוח
+def disable_help_button():
+    Help_button.config(state="disabled")
+
+#---------------------------------------------------------------------------התחלה
+# יצירת ממשק משתמש ב-Tkinter
+root = Tk()
+root.title("Quiz Game")
+root.geometry("500x350")
+
+#תווית הזמן
+timer_label = Label(root, text="", font=('Arial', 14))
+timer_label.pack(pady=10)
+
+# תווית השאלות
+question_label = Label(root, text="", font=('Arial', 16))
+question_label.pack(pady=20)
+
+# משתנה שמחזיק את ערך הבחירה הסופית בכל שאלה
+selected_option = StringVar()
+
+option_buttons = []  # רשימה שמחזיקה כפתורים
+
+next_button = Button(root, text="Next", command=next_question)
+next_button.pack(side=RIGHT, padx=10, pady=20)
+Help_button = Button(root, text="Help", command=open_help_window)
+Help_button.pack(side=RIGHT)
+
+# הצגת השאלה הראשונה
+display_question()
+
+# הרצת חלון Tkinter
+root.mainloop()

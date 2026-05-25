@@ -1,0 +1,23 @@
+import tkinter as tk
+
+root = tk.Tk()
+root.title("Grid of Numbered Squares")
+
+# מספר הריבועים בשורה ובעמודה (השורה והעמודה זהות בערכן)
+num_squares = 4  # מספר הריבועים בשורה ובעמודה (4x4 ריבועים)
+
+# יצירת לולאות מקוננות ליצירת ריבועים עם מספרים
+number = 1
+for row in range(num_squares):
+    for col in range(num_squares):
+        # יצירת מסגרת לריבוע
+        frame = tk.Frame(root, width=80, height=80, bg="lightblue", borderwidth=1, relief="solid")
+        frame.grid(row=row, column=col, padx=5, pady=5)  # הוספת ריווח בין הריבועים
+
+        # יצירת תווית עם מספר בתוך הריבוע
+        label = tk.Label(frame, text=str(number), font=("Arial", 20))
+        label.place(relx=0.5, rely=0.5, anchor="center")  # מיקום התווית במרכז
+
+        number += 1
+
+root.mainloop()

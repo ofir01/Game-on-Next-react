@@ -1,0 +1,71 @@
+1. חיפוש עמוק (Depth-First Search - DFS)
+תיאור: DFS בודק כל מסלול אפשרי עד שהוא מוצא פתרון. הוא הולך לעומק ככל האפשר לפני שהוא חוזר אחורה.
+יתרונות: קל ליישום, דורש פחות זיכרון.
+חסרונות: יכול להיכנס ללולאות אינסופיות, בעיקר אם הפאזל דורש מספר רב של צעדים לפתרון.
+2. חיפוש רוחבי (Breadth-First Search - BFS)
+תיאור: BFS בודק את כל האפשרויות באותו עומק לפני שהוא עובר לעומק הבא.
+יתרונות: תמיד מוצא את הפתרון הקצר ביותר.
+חסרונות: צורך בזיכרון רב, מכיוון שהוא שומר את כל המצב הנוכחי.
+3. אלגוריתם A*
+תיאור: A* משלב בין חיפוש רוחבי לחיפוש מחוכם, ומבצע חיפוש לפי מדד. הוא משתמש גם במדד של מרחק (ממשקל) שיבחן את המרחק של החלקים מהמקום הנכון.
+יתרונות: מציע פתרון יעיל ומהיר, לרוב מפיק את הפתרון הקצר ביותר.
+חסרונות: דורש מחשוב נוסף לחישוב המידות, יכול לדרוש הרבה זיכרון.
+4. שיטת IDA*
+תיאור: IDA* (Iterative Deepening A*) היא גרסה של A* שמשתמשת בחיפוש עומק מתמשך. היא משולבת עם אלגוריתם A* ומבצעת חיפוש ברוחב עם חיפוש בעומק.
+יתרונות: משתמשת בפחות זיכרון מאשר A*, תופסת את היתרונות של שניהם.
+חסרונות: עשויה להיות איטית יותר, במיוחד עבור פאזלים קשים.
+5. חיפוש באסטרטגיות
+תיאור: חיפוש משולב עם אלגוריתמים כמו Minimax או אלגוריתם המבוסס על חוקים, יכול להיות שימושי בפתרון פאזלים מורכבים יותר.
+יתרונות: עשוי להניב פתרונות מעניין ומגוונים.
+חסרונות: מורכב יותר ליישום, עשוי להיות לא יעיל.
+6. חיפוש עם מדד מסויים
+חישוב מרחק: ניתן להשתמש במדדים כמו Manhattan distance או Misplaced tiles:
+Manhattan Distance: סך המרחקים האופקיים והאנכיים בין החלקים למקומותיהם הנכונים.
+Misplaced Tiles: מספר החלקים שאינם במקומם הנכון.
+שימוש במדדים אלו משפר את יעילות האלגוריתמים כמו A*.
+7. שיטות חיפוש חמדניות (Greedy Algorithms)
+חיפוש חמדני מתמקד רק במצב הנוכחי ולא לוקח בחשבון את העתיד. זה עשוי להניב פתרונות מהירים אך לא תמיד אופטימליים.
+8. בינה מלאכותית (AI)
+ניתן להשתמש בשיטות מתקדמות של בינה מלאכותית, כמו למידה חיזוקית (Reinforcement Learning), כדי לאמן מודלים לפתרון הפאזלים.
+דוגמת קוד פשוט עם A*
+
+import heapq
+
+class PuzzleState:
+    def __init__(self, board, moves=0):
+        self.board = board  # מצב הלוח
+        self.blank_index = board.index(0)  # מקומו של החלל הריק
+        self.moves = moves  # מספר המהלכים עד כה
+
+    def __lt__(self, other):
+        return self.moves < other.moves
+
+def heuristic(board):
+    # חישוב מדד מטרת הפאזל (כמו Manhattan Distance)
+    total_distance = 0
+    for i in range(len(board)):
+        if board[i] != 0:
+            target_index = board[i] - 1
+            total_distance += abs(target_index // 3 - i // 3) + abs(target_index % 3 - i % 3)
+    return total_distance
+
+def a_star(start):
+    priority_queue = []
+    visited = set()
+    
+    heapq.heappush(priority_queue, (0, start))  # הוספת המצב ההתחלתי לתור
+
+    while priority_queue:
+        _, current_state = heapq.heappop(priority_queue)  # מציאת המצב עם המינימום מדד
+        
+        if current_state.is_goal():  # בדיקה אם הגענו לפתרון
+            return current_state
+        
+        visited.add(tuple(current_state.board))
+
+        for next_state in current_state.get_neighbors():  # קבלת השכנים (מצבים אפשריים)
+            if tuple(next_state.board) not in visited:
+                priority = next_state.moves + heuristic(next_state.board)
+                heapq.heappush(priority_queue, (priority, next_state))
+
+    return None  # אם לא נמצא פתרון

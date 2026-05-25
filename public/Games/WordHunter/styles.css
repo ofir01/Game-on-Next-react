@@ -1,0 +1,62 @@
+body {
+    background: url("background.png");
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;  /* מרכז אנכית */
+    align-items: center;      /* מרכז אופקית */
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 20px auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+li {
+    cursor: pointer;
+    padding: 12px;
+    border: 2px solid #444;
+    border-radius: 6px;
+    user-select: none;
+    background-color: #eee;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+li:hover:not(.disabled):not(.matched) {
+    background-color: #ddd;
+}
+
+li.selected {
+    background-color: #aaa;
+    color: white;
+}
+
+li.matched {
+    color: white;
+    cursor: default;
+}
+
+/* צבעי קטגוריות - גבול ו-רקע למודגש */
+/* יתווסף דינמית דרך JS */
+
+#results {
+    max-width: 1000px;
+    margin: 10px auto 30px;
+    text-align: left;
+    font-size: 1.1em;
+}
+
+.result-set {
+    margin: 10px 0;
+    padding: 8px 12px;
+    border-radius: 6px;
+    color: white;
+}

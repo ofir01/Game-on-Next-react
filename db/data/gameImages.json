@@ -1,0 +1,226 @@
+[
+  {
+    "gameId": 1,
+    "urls": [
+      "https://picsum.photos/seed/candy1/800/600",
+      "https://picsum.photos/seed/candy2/800/600",
+      "https://picsum.photos/seed/candy3/800/600"
+    ]
+  },
+  {
+    "gameId": 2,
+    "urls": [
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/324800/header.jpg",
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/324800/capsule_616x353.jpg",
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/324800/library_600x900.jpg"
+    ]
+  },
+  {
+    "gameId": 3,
+    "urls": [
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/281990/header.jpg",
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/281990/capsule_616x353.jpg",
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/281990/library_600x900.jpg"
+    ]
+  },
+  {
+    "gameId": 4,
+    "urls": [
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/242760/header.jpg",
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/242760/capsule_616x353.jpg",
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/242760/library_600x900.jpg"
+    ]
+  },
+  {
+    "gameId": 5,
+    "urls": [
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1222680/header.jpg",
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1222680/capsule_616x353.jpg",
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1222680/library_600x900.jpg"
+    ]
+  },
+  {
+    "gameId": 6,
+    "urls": [
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4000/header.jpg",
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4000/capsule_616x353.jpg",
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4000/library_600x900.jpg"
+    ]
+  },
+  {
+    "gameId": 7,
+    "urls": [
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1091500/header.jpg",
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1091500/capsule_616x353.jpg",
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1091500/library_600x900.jpg"
+    ]
+  },
+  {
+    "gameId": 8,
+    "urls": [
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/812140/header.jpg",
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/812140/capsule_616x353.jpg",
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/812140/library_600x900.jpg"
+    ]
+  },
+  {
+    "gameId": 9,
+    "urls": [
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/311690/header.jpg",
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/311690/capsule_616x353.jpg",
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/311690/library_600x900.jpg"
+    ]
+  },
+  {
+    "gameId": 10,
+    "urls": [
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/8870/header.jpg",
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/8870/capsule_616x353.jpg",
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/8870/library_600x900.jpg"
+    ]
+  },
+  {
+    "gameId": 11,
+    "urls": [
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/57300/header.jpg",
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/57300/capsule_616x353.jpg",
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/57300/library_600x900.jpg"
+    ]
+  },
+  {
+    "gameId": 12,
+    "urls": [
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/447040/header.jpg",
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/447040/capsule_616x353.jpg",
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/447040/library_600x900.jpg"
+    ]
+  },
+  {
+    "gameId": 13,
+    "urls": [
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/550/header.jpg",
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/550/capsule_616x353.jpg",
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/550/library_600x900.jpg"
+    ]
+  },
+  {
+    "gameId": 14,
+    "urls": [
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/264710/header.jpg",
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/264710/capsule_616x353.jpg",
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/264710/library_600x900.jpg"
+    ]
+  },
+  {
+    "gameId": 15,
+    "urls": [
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/814380/header.jpg",
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/814380/capsule_616x353.jpg",
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/814380/library_600x900.jpg"
+    ]
+  },
+  {
+    "gameId": 16,
+    "urls": [
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1969990/header.jpg",
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1969990/capsule_616x353.jpg",
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1969990/library_600x900.jpg"
+    ]
+  },
+  {
+    "gameId": 17,
+    "urls": [
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/990080/header.jpg",
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/990080/capsule_616x353.jpg",
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/990080/library_600x900.jpg"
+    ]
+  },
+  {
+    "gameId": 18,
+    "urls": [
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/582010/header.jpg",
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/582010/capsule_616x353.jpg",
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/582010/library_600x900.jpg"
+    ]
+  },
+  {
+    "gameId": 19,
+    "urls": [
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/464920/header.jpg",
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/464920/capsule_616x353.jpg",
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/464920/library_600x900.jpg"
+    ]
+  },
+  {
+    "gameId": 20,
+    "urls": [
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/205100/header.jpg",
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/205100/capsule_616x353.jpg",
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/205100/library_600x900.jpg"
+    ]
+  },
+  {
+    "gameId": 21,
+    "urls": [
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/252950/header.jpg",
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/252950/capsule_616x353.jpg",
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/252950/library_600x900.jpg"
+    ]
+  },
+  {
+    "gameId": 22,
+    "urls": [
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1174180/header.jpg",
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1174180/capsule_616x353.jpg",
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1174180/library_600x900.jpg"
+    ]
+  },
+  {
+    "gameId": 23,
+    "urls": [
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1091500/header.jpg",
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1091500/capsule_616x353.jpg",
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1091500/library_600x900.jpg"
+    ]
+  },
+  {
+    "gameId": 24,
+    "urls": [
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/264710/header.jpg",
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/264710/capsule_616x353.jpg",
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/264710/library_600x900.jpg"
+    ]
+  },
+  {
+    "gameId": 25,
+    "urls": [
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/814380/header.jpg",
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/814380/capsule_616x353.jpg",
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/814380/library_600x900.jpg"
+    ]
+  },
+  {
+    "gameId": 26,
+    "urls": [
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1969990/header.jpg",
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1969990/capsule_616x353.jpg",
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1969990/library_600x900.jpg"
+    ]
+  },
+  {
+    "gameId": 27,
+    "urls": [
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/990080/header.jpg",
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/990080/capsule_616x353.jpg",
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/990080/library_600x900.jpg"
+    ]
+  },
+  {
+    "gameId": 28,
+    "urls": [
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/582010/header.jpg",
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/582010/capsule_616x353.jpg",
+      "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/582010/library_600x900.jpg"
+    ]
+  }
+]

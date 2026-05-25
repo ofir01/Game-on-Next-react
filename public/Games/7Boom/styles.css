@@ -1,0 +1,112 @@
+/* עיצוב הכללי של הדף */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+/*המונה בראש העמוד*/
+#counter-player1 {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(248, 249, 250, 0.3); /* רקע שקוף (0.8 = 80% אטום) */
+    color: #333;
+    text-align: center;
+    border-bottom: 1px solid #ccc;
+    z-index: 1000;
+}
+
+
+/*המונה בתחתית העמוד*/
+#counter-player2 {
+    position: fixed;
+    bottom: 0; /* ממקם את האלמנט בתחתית */
+    left: 0;
+    width: 100%;
+    background-color: rgba(248, 249, 250, 0.3); /* רקע שקוף */
+    color: #333;
+    text-align: center;
+    border-top: 1px solid #ccc; /* שים קו עליון במקום קו תחתון */
+    z-index: 1000;
+}
+#Boom-player1 {
+    color: #ff0044;
+    font-weight: bold;
+}
+
+#Boom-player2 {
+    color: #007bff;
+    font-weight: bold;
+}
+
+#Won-player1 {
+    color: #ff0044;
+    font-weight: bold;
+    font-size: 1.4ch;
+}
+
+#Won-player2 {
+    color: #007bff;
+    font-weight: bold;
+    font-size: 1.4ch;
+
+}
+
+/* קונטיינר המכיל את הריבועים */
+#container {
+    display: grid;
+    grid-template-columns: repeat(3, 150px); /* 3 עמודות של ריבועים */
+    gap: 20px;
+}
+
+/* הגדרת המעבר של הריבוע */
+.square {
+    width: 100px;
+    height: 100px;
+    background-color: #333333df;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    border-radius: 10px;
+    display: flex; /*שלא יתפוס את כל השורה אלא שכל ילד אלמנט ירחף אחד ליד השני*/
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #fff;
+    transform: rotateY(0deg); /* מצב התחלתי */
+    transition: transform 0.6s ease; /* מעבר חלק לסיבוב */
+}
+
+/* מחלקה שמוסיפה את תמונת הרקע */
+.img {
+    background-size: cover; /* התמונה תמלא את הריבוע */
+    background-position: center; /* התמונה תמוקם במרכז */
+    transition: transform 0.3s ease-in-out; /* אפקט סיבוב */
+    transform: rotateY(360deg); /* סיבוב הריבוע */
+}
+
+
+
+/* עיצוב ה-span שמכיל את המספר */
+.square span {
+    opacity: 0; /* התמונה מוסתרת בהתחלה */
+}
+
+/* כאשר הריבוע פעיל, סיבוב והמספר נחשף */
+.square.active {
+    transform: rotateY(720deg); /* סיבוב 360 מעלות, בלי זה התוכנה לא תראה שינוי ולא תבצע */
+    transition: transform 2s ease; /* הוספת אנימציה חלקה */
+}
+
+.square.active span {
+    transition: opacity 4.0s ease; /* מעבר חלק לחשיפת המספר */
+    color: #f4f4f4;
+    font-size: 300%;
+    opacity: 1; /* הופעת המספר */
+}
+

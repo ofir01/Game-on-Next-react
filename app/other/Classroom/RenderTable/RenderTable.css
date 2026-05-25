@@ -1,0 +1,274 @@
+/* ========================================================
+   עיצוב עתידני ומודרני - סרגלי גלילה, טבלאות, סטטוסים וצ'קבוקסים
+   ======================================================== */
+
+/* --- עיצוב כללי לכל סרגלי הגלילה (Scrollbars) --- */
+.GoogleLogin-page-wrapper ::-webkit-scrollbar {
+    width: 8px; /* מעט צר ואלגנטי יותר */
+    height: 8px;
+}
+
+/* רקע מסלול הגלילה - אפקט זכוכית שקופה */
+.GoogleLogin-page-wrapper ::-webkit-scrollbar-track {
+    background: rgba(15, 23, 42, 0.4);
+    border-radius: 20px;
+    backdrop-filter: blur(4px);
+}
+
+/* הידית שזזה - גרדיאנט ניאון זוהר */
+.GoogleLogin-page-wrapper ::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #00d2ff, #0069ff);
+    border-radius: 20px;
+    border: 2px solid rgba(15, 23, 42, 0.5); /* מסגרת שמפרידה ונותנת תלת מימד */
+    box-shadow: 0 0 8px rgba(0, 210, 255, 0.4);
+}
+
+/* בזמן ריחוף מעל ידית הגלילה */
+.GoogleLogin-page-wrapper ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #00e5ff, #2575fc);
+    box-shadow: 0 0 12px rgba(0, 210, 255, 0.6);
+}
+
+/* פינה (כשיש גלילה X + Y משולבת) */
+.GoogleLogin-page-wrapper ::-webkit-scrollbar-corner {
+    background: transparent;
+}
+
+/* כותרת מידע לתוצאות */
+.results-info {
+    margin-bottom: 12px;
+    color: #00d2ff; /* טקסט בצבע ניאון */
+    text-shadow: 0 0 10px rgba(0, 210, 255, 0.3);
+    font-weight: 800;
+    font-size: 20px;
+    line-height: 1.4; /* מונע חיתוך האותיות מלמטה */
+    padding-bottom: 2px;
+}
+
+/* === קופסאות טבלה (Cards) - מיכל זכוכית עתידני === */
+.table-container {
+    margin-top: 30px;
+    padding: 16px;
+    /* החלפת הכחול האפור הישן ברקע זכוכית כהה ועמוקה */
+    background: rgba(30, 41, 59, 0.4);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+    
+    max-height: 600px;
+    overflow: auto;
+    scrollbar-width: thin; /* תמיכה לפיירפוקס */
+    scrollbar-color: #00d2ff rgba(15, 23, 42, 0.4);
+    
+    animation: grow 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.table-container:hover {
+    transform: translateY(-4px);
+    border-color: rgba(0, 210, 255, 0.3);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 210, 255, 0.1);
+}
+
+/* === טבלה עתידנית === */
+.GoogleLogin-page-wrapper table {
+    width: 100%;
+    border-collapse: separate; /* מאפשר שוליים מעוגלים כמו שצריך */
+    border-spacing: 0;
+    margin-top: 10px;
+    display: table; /* עדיף להשאיר table כדי לשמור על מבנה עמודות תקין */
+}
+
+/* כותרות הטבלה (Header) */
+.GoogleLogin-page-wrapper th {
+    /* גרדיאנט כהה יוקרתי במקום הכחול הבהיר הישן */
+    background: linear-gradient(180deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.95));
+    border-bottom: 2px solid rgba(0, 210, 255, 0.4); /* קו תחתון ניאון */
+    /* פדינג מאוזן שמונע לחלוטין חיתוך של טקסט */
+    padding: 14px 12px 16px;
+    font-size: 15px;
+    font-weight: 800;
+    color: #ffffff;
+    text-shadow: 0 0 8px rgba(0, 210, 255, 0.3);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    line-height: 1.2;
+}
+
+/* פינות מעוגלות לכותרת הטבלה */
+.GoogleLogin-page-wrapper th:first-child { border-radius: 0 14px 0 0; }
+.GoogleLogin-page-wrapper th:last-child { border-radius: 14px 0 0 0; }
+
+/* תאי המידע בטבלה (Data Cells) */
+.GoogleLogin-page-wrapper td {
+    background: rgba(255, 255, 255, 0.02);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    /* רווח תחתון מוגן למניעת חיתוך אותיות (14px) */
+    padding: 12px 12px 14px;
+    text-align: center;
+    color: #e2e8f0;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.4;
+    transition: all 0.2s ease;
+}
+
+/* אפקט ריחוף על שורת טבלה */
+.GoogleLogin-page-wrapper tr:hover td {
+    background: rgba(0, 210, 255, 0.08); /* הילה כחולה עדינה בריחוף */
+    color: #ffffff;
+}
+
+/* שבירת פינות תחתונות של הטבלה */
+.GoogleLogin-page-wrapper tr:last-child td:first-child { border-radius: 0 0 14px 0; }
+.GoogleLogin-page-wrapper tr:last-child td:last-child { border-radius: 0 0 0 14px; }
+
+/* === צבעי סטטוסים ניאון (בוהקים ומוגנים מחיתוך) === */
+.status {
+    font-weight: 800;
+    font-size: 14px;
+    display: inline-block;
+    line-height: 1.4; /* הגנה מחיתוך אותיות */
+}
+
+.status-turned_in {
+    color: #38bdf8; /* כחול סיאן בהיר */
+    text-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
+}
+
+.status-returned {
+    color: #4ade80; /* ירוק ניאון בהיר */
+    text-shadow: 0 0 10px rgba(74, 222, 128, 0.4);
+}
+
+.status-created {
+    color: #fbbf24; /* זהב/צהוב בוהק */
+    text-shadow: 0 0 10px rgba(251, 191, 36, 0.4);
+}
+
+.status-late,
+.status-not-submitted {
+    color: #f87171; /* אדום פסטל עז */
+    text-shadow: 0 0 10px rgba(248, 113, 113, 0.4);
+}
+
+/* === כפתור הלינק הגוגלי-עתידני === */
+.link-button {
+    /* הגנה מלאה מחיתוך תווי טקסט */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 18px 12px;
+    
+    border-radius: 12px;
+    color: white;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.2;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    
+    /* גרדיאנט כהה יוקרתי, כאשר הצבעים מגיעים מאפקט ה-Glow */
+    background: #0f172a;
+    border: 1px solid rgba(0, 210, 255, 0.4);
+    box-shadow: 0 4px 15px rgba(0, 210, 255, 0.2);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.link-button:hover {
+    transform: translateY(-2px);
+    color: #ffffff;
+    border-color: #00d2ff;
+    /* אפקט זוהר עתידני חזק בריחוף */
+    box-shadow: 0 0 25px rgba(0, 210, 255, 0.45);
+    background: rgba(0, 210, 255, 0.15);
+}
+
+.link-button:active {
+    transform: translateY(0);
+}
+
+/* === אנימציית גדילה וכניסה חלקה === */
+@keyframes grow {
+    from {
+        transform: scale(0.96);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* === צ'קבוקס מעוצב ועתידני (Pretty Checkbox) === */
+.pretty-checkbox {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    /* מונע חיתוך של הלייבל שליד הצ'קבוקס */
+    line-height: 1.5;
+    padding-bottom: 2px;
+}
+
+/* הסתרת הברזל המקורי */
+.pretty-checkbox input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    position: absolute;
+}
+
+/* טבעת העיגול החיצונית */
+.pretty-checkbox .checkmark {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%; /* עיגול מושלם */
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    background: rgba(15, 23, 42, 0.6); /* רקע כהה שקוף */
+    display: inline-block;
+    position: relative;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* אפקט ריחוף על הצ'קבוקס */
+.pretty-checkbox:hover .checkmark {
+    border-color: #00d2ff;
+    box-shadow: 0 0 10px rgba(0, 210, 255, 0.4);
+}
+
+/* במצב מסומן (Checked) */
+.pretty-checkbox input:checked + .checkmark {
+    background: linear-gradient(135deg, #00d2ff, #0069ff);
+    border-color: transparent;
+    box-shadow: 0 0 15px rgba(0, 210, 255, 0.5);
+    transform: scale(1.05);
+}
+
+/* סימן ה-V הפנימי */
+.pretty-checkbox .checkmark::after {
+    content: "";
+    position: absolute;
+    /* מרכזי ומדויק יותר */
+    left: 7px;
+    top: 3px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2.5px 2.5px 0;
+    opacity: 0;
+    transform: rotate(45deg) scale(0.5);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* הופעת ה-V בסימון */
+.pretty-checkbox input:checked + .checkmark::after {
+    opacity: 1;
+    transform: rotate(45deg) scale(1);
+}

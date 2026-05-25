@@ -1,0 +1,50 @@
+import tkinter as tk
+
+
+def on_drag_start(event):
+    widget = event.widget
+    widget.startX = event.x
+    widget.startY = event.y
+
+
+def on_drag_motion(event):
+    widget = event.widget
+
+    # חישוב שינוי במיקום העכבר
+    delta_x = event.x - widget.startX
+    delta_y = event.y - widget.startY
+
+    # בדיקת הכיוון לפי השוואת השינוי במיקום האופקי והאנכי
+    if abs(delta_x) > abs(delta_y):
+        if delta_x > 0:
+            direction = "Right"
+        else:
+            direction = "Left"
+    else:
+        if delta_y > 0:
+            direction = "Down"
+        else:
+            direction = "Up"
+
+    print(f"Dragging {direction}")
+
+
+# פונקציה להצבת אובייקטים ב-grid ולהוסיף גרירה
+def create_draggable_item(row, column):
+    label = tk.Label(root, text=f"({row},{column})", bg="lightblue", width=10, height=5)
+    label.grid(row=row, column=column, padx=5, pady=5)
+
+    label.bind("<Button-1>", on_drag_start)
+    label.bind("<B1-Motion>", on_drag_motion)
+
+
+# יצירת חלון Tkinter
+root = tk.Tk()
+root.geometry("300x300")
+
+# הוספת אובייקטים עם גרירה
+for i in range(3):
+    for j in range(3):
+        create_draggable_item(i, j)
+
+root.mainloop()

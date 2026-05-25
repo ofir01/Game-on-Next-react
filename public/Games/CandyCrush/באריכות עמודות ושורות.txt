@@ -1,0 +1,81 @@
+// נבדוק אם יש סוכריות ברציפות - כמה שיש עד הסוף
+//O(N × M) סיבוכיות זמן
+function crushCandy() {
+    let candiesToCrush = new Set(); //  יצירת קבוצה (Set) לשמירת מיקומי הסוכריות שצריך למחוק (למניעת כפילויות)
+    let HorizontalOrVertical; // משתנה ששומר בשביל ליצור לאורך ולרוחב את הסוכריה המיוחדת בהרס של 4
+    let flagStriped =false;//משתנה בשביל סוכריה מיוחדת לאחר שנהרסו 4 מאותו הסוג
+    let flagChoco = false; //לאחר שנהרסו 5 מאותו סוג Choco משתנה בשביל סוכריה
+
+    
+    
+    //  לולאה שעוברת על כל השורות
+    for (let r = 0; r < rows; r++) {
+        let start = 0; // משתנה שמתחיל את החיפוש בעמודה הראשונה
+        while (start < columns) { //  מעבר על כל עמודה בשורה הנוכחית
+            
+            let candySrc  = getCandyType(board[r][start]);// שמירת סוג הסוכריה הנוכחית
+            if (candySrc.includes("blank")) { // אם זה תא ריק (blank), ממשיכים הלאה
+                start++;
+                continue;
+            }
+
+            //includes משווים בדרך זאת כדי שגם סוכריה סופר תחשב לפי השם
+            //src יחשיב רק תמונה עם אותו ערך, ולכן סוכריה סופר לא תחשב
+            let end = start; // משתנה שימצא את סוף הרצף של הסוכריות הזהות
+            while (end < columns && board[r][end].src.includes(candySrc)) { //  בדיקה האם הסוכריות זהות ברצף
+                end++;
+            }
+
+            if (end - start >= 3) { //  אם מצאנו רצף של 3 סוכריות או יותר
+                for (let c = start; c < end; c++) { // הוספת כל הסוכריות שסומנו למחיקה
+                    candiesToCrush.add(`${r}-${c}`);            
+                    }
+                HorizontalOrVertical = 'Horizontal';
+                if(end - start >= 4)
+                    flagStriped =true;
+                if(end - start >= 5){
+                    flagChoco = true;
+                }
+            }
+            start = end; //  ממשיכים לבדיקה הבאה אחרי הרצף שמצאנו
+        }
+    }
+
+    //  לולאה שעוברת על כל העמודות
+    for (let c = 0; c < columns; c++) {
+        let start = 0; // משתנה שמתחיל את החיפוש בשורה הראשונה
+        while (start < rows) { //  מעבר על כל שורה בעמודה הנוכחית
+            let candySrc  = getCandyType(board[start][c]);// שמירת סוג הסוכריה הנוכחית
+            if (candySrc.includes("blank")) { // אם זה תא ריק (blank), ממשיכים הלאה
+                start++;
+                continue;
+            }
+
+
+            let end = start; // משתנה שימצא את סוף הרצף של הסוכריות הזהות
+            while (end < rows && (board[end][c].src.includes(candySrc))) { //  בדיקה האם הסוכריות זהות ברצף
+                end++;
+            }
+
+            if (end - start >= 3) { //  אם מצאנו רצף של 3 סוכריות או יותר
+                for (let r = start; r < end; r++) { // הוספת כל הסוכריות שסומנו למחיקה
+                    candiesToCrush.add(`${r}-${c}`);
+                }
+                HorizontalOrVertical = 'Vertical';
+                if(end - start >= 4)
+                    flagStriped =true;
+                if(end - start >= 5){
+                    flagChoco = true;
+                }
+            }
+            start = end; //  ממשיכים לבדיקה הבאה אחרי הרצף שמצאנו
+        }
+    }
+
+
+    //  מחיקת כל הסוכריות שסומנו
+    CandiesToCrush(candiesToCrush,HorizontalOrVertical,flagChoco,flagStriped);
+
+    score += candiesToCrush.size * 10; // עדכון הניקוד (10 נקודות לכל סוכריה)
+    goal.innerText = goalCount;
+}

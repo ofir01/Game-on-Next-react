@@ -1,0 +1,287 @@
+/* --- הגדרות גלובליות ואיפוס --- */
+:root {
+  --bg-color: #2b3e50;         /* כחול כהה - רקע ראשי */
+  --panel-bg: #4e5d6c;         /* אפור כחלחל - רקע לקונטיינרים */
+  --primary-orange: #df691a;   /* כתום - כפתורים ראשיים */
+  --primary-blue: #5bc0de;     /* תכלת - מידע */
+  --success-green: #5cb85c;    /* ירוק - הצלחה */
+  --danger-red: #d9534f;       /* אדום - יציאה/שגיאה */
+  --text-color: #ffffff;       /* לבן - טקסט */
+  --text-muted: #ebebeb;       /* אפור בהיר - טקסט משני */
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  -webkit-font-smoothing: antialiased;
+}
+
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* --- כותרות וטקסט --- */
+h1, h2, h3 {
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+/* --- מסך התחברות (Login) --- */
+.login-card {
+  background-color: var(--panel-bg);
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+  width: 100%;
+  max-width: 400px;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.form-group {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.input-field {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #3e4d59;
+  border-radius: 4px;
+  background-color: #fff;
+  color: #333;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.input-field:focus {
+  border-color: var(--primary-orange);
+  box-shadow: 0 0 5px rgba(223, 105, 26, 0.5);
+}
+
+.password-wrapper {
+  display: flex;
+  gap: 10px;
+}
+
+/* --- כפתורים כלליים --- */
+button {
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border: none;
+  border-radius: 4px;
+  padding: 12px 24px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0,0,0,0.3);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-primary { background-color: var(--primary-orange); color: white; }
+.btn-primary:hover { background-color: #c85e17; }
+
+.btn-secondary { background-color: #8e8e8e; color: white; }
+.btn-secondary:hover { background-color: #757575; }
+
+.btn-success { background-color: var(--success-green); color: white; }
+.btn-success:hover { background-color: #449d44; }
+
+.btn-danger { background-color: var(--danger-red); color: white; }
+.btn-danger:hover { background-color: #c9302c; }
+
+/* --- מסך בחירת שלבים (Level Selection) --- */
+.level-container {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+.level-btn {
+  width: 150px;
+  height: 150px;
+  font-size: 24px;
+  background-color: var(--panel-bg);
+  border: 3px solid var(--primary-orange);
+  color: var(--primary-orange);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.level-btn:hover {
+  background-color: var(--primary-orange);
+  color: white;
+}
+
+/* --- לוח המשחק (Game Board) --- */
+.game-layout {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  max-width: 1200px;
+  height: 90vh;
+  gap: 20px;
+  padding: 20px;
+}
+
+/* צד שמאל - הלוח */
+.game-board-section {
+  flex: 3;
+  background-color: rgba(255,255,255,0.05);
+  border-radius: 8px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.game-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+/* המשבצות (Slots) */
+.slot {
+  width: 110px;
+  height: 110px;
+  border: 3px dashed #6c757d;
+  background-color: rgba(0,0,0,0.2);
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  transition: background-color 0.2s;
+}
+
+.slot.drag-over {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: var(--primary-orange);
+}
+
+.slot img {
+  width: 90%;
+  height: 90%;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 4px rgba(0,0,0,0.5));
+}
+
+.slot-label {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  font-size: 10px;
+  color: #aaa;
+  pointer-events: none;
+}
+
+/* צד ימין - המלאי (Inventory) */
+.game-sidebar {
+  flex: 1;
+  background-color: var(--panel-bg);
+  border-radius: 8px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+/* פסי התקדמות */
+.progress-container {
+  margin-bottom: 15px;
+}
+
+.progress-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.progress-track {
+  width: 100%;
+  height: 12px;
+  background-color: #333;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background-color: var(--success-green);
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  background-image: linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent);
+  background-size: 1rem 1rem;
+}
+
+/* בנק התמונות (Inventory Items) */
+.inventory-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  padding: 10px;
+  background: rgba(0,0,0,0.2);
+  border-radius: 8px;
+  margin-top: auto; /* דוחף למטה */
+}
+
+.draggable-item {
+  width: 80px;
+  height: 80px;
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 5px;
+  cursor: grab;
+  transition: transform 0.2s;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.draggable-item:hover {
+  transform: scale(1.05);
+}
+
+.draggable-item:active {
+  cursor: grabbing;
+}
+
+.draggable-item.placed {
+  opacity: 0.3;
+  cursor: default;
+  filter: grayscale(100%);
+}

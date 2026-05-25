@@ -1,0 +1,9 @@
+.sortButton {
+    padding: "8px 14px";
+    border-Radius: "8px";
+    background: "#4a88ff";
+    color: "white";
+    border: "none";
+    cursor: "pointer";
+    margin-Bottom: "10px";
+}

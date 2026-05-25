@@ -1,0 +1,95 @@
+     /* הגדרות RTL וגופן גלובליות */
+     .loadingContiner {
+         font-family: 'Heebo', sans-serif;
+         direction: rtl;
+         text-align: right;
+         display: flex;
+         justify-content: center;
+         align-items: center;
+         min-height: 60vh;
+         margin: 0;
+     }
+
+
+
+
+     /* 1. אנימציה לציון המרחף (תנועה מהירה, פתיחה וסגירה מהירה) */
+     @keyframes grade-data-burst {
+         0% {
+             transform: translateY(20px) scale(0.6) perspective(100px) rotateX(20deg);
+             opacity: 0;
+             text-shadow: 0 0 5px #38bdf8;
+         }
+
+         10% {
+             opacity: 1;
+             transform: translateY(0px) scale(1) perspective(100px) rotateX(0deg);
+             text-shadow: 0 0 10px #38bdf8;
+             /* אפקט ניאון חזק */
+             animation-timing-function: ease-out;
+         }
+
+         40% {
+             opacity: 1;
+             transform: translateY(-40px) scale(0.9) perspective(100px) rotateX(-5deg);
+         }
+
+         100% {
+             transform: translateY(-100px) scale(0.4) perspective(100px) rotateX(-10deg);
+             opacity: 0;
+             filter: blur(4px);
+         }
+     }
+
+     /* 2. אנימציה של קו סריקה נע על המסמך */
+     @keyframes scan-line {
+         0% {
+             transform: translateY(0);
+             opacity: 0.5;
+         }
+
+         50% {
+             opacity: 1;
+         }
+
+         100% {
+             transform: translateY(calc(100% - 2px));
+             opacity: 0.5;
+         }
+     }
+
+     /* 3. אנימציה של פעימת המסמך */
+     @keyframes document-glow {
+
+         0%,
+         100% {
+             box-shadow: 0 0 10px rgba(99, 102, 241, 0.5), 0 0 0 2px rgba(99, 102, 241, 0.8);
+         }
+
+         50% {
+             box-shadow: 0 0 20px rgba(59, 130, 246, 0.8), 0 0 0 4px rgba(59, 130, 246, 1);
+         }
+     }
+
+     .document-card {
+         /* רקע כרטיס שקוף/כהה */
+         background-color: #1e293b;
+         box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+         animation: document-glow 4s ease-in-out infinite alternate;
+     }
+
+     .scan-line {
+         animation: scan-line 2s linear infinite;
+     }
+
+     .grade-item-1 {
+         animation: grade-data-burst 3s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite 0s;
+     }
+
+     .grade-item-2 {
+         animation: grade-data-burst 3s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite 1s;
+     }
+
+     .grade-item-3 {
+         animation: grade-data-burst 3s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite 2s;
+     }

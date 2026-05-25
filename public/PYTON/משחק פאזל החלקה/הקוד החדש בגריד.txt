@@ -1,0 +1,243 @@
+from tkinter import *
+from tkinter import ttk
+from PIL import Image, ImageTk
+import random
+import math
+import time
+import pygame
+
+#----------------------------------------------------------------------------------------------------------
+#אחראי על המנגינה
+pygame.mixer.init() # מאתחל את רכיב השמע
+def play_song():
+    pygame.mixer.music.load("assets/Sakura Girl - Jazzy Night.mp3")
+    pygame.mixer.music.play(loops=-1) # לולאה אינסופית
+# פונקציה להשמעת אפקט קול של הפסד
+#פונקציה להצלחה
+def success():
+    pygame.mixer.music.load("assets/success.mp3")
+    pygame.mixer.music.play() # לולאה אינסופית
+# פונקציה לעצירת השיר
+def stop_song():
+    pygame.mixer.music.stop()
+#----------------------------------------------------------------------------------------------------------
+
+#--------------------------------------------------------------------------------------------משתנים גלובלים
+empty_position = None
+Part = None
+direction = None
+delta_x =None
+delta_y =None
+progress_bar1 =None
+NUM_ROWS = None  # מספר השורות
+NUM_COLS = None  # מספר העמודות
+#----------------------------------------------------------------------------------------------------------
+#מחלקה עם תמונה/מיקום/ומספר מזהה
+class ImageItem:
+    def __init__(self, image_path, position,label,id):
+        self.image_path = image_path  # הנתיב לתמונה
+        self.position = position  # מיקום
+        self.label = label # widgets - label לצורך שינוי מיקום
+        self.id = id # לצורך התאמת המיקומים
+    def update_position(self, new_position): # מעדכן שינוי של מיקום חדש
+        self.position = new_position
+
+
+#----------------------------------------------------------------------------------------------------------
+#עכבר
+
+
+    # שינוי גבול למסגרת צהובה
+# פונקציה להתחלת הגרירה
+def on_drag_start(event):
+    global delta_x,delta_y
+    widget = event.widget  # מעביר את האובייקט שנלחץ לתוך משתנה
+    widget.startX = event.x  # מאחסן את הקואורדינטה האופקית של נקודת הלחיצה בתוך הווידג'ט
+    widget.startY = event.y  # מאחסן את הקואורדינטה האנכית של נקודת הלחיצה בתוך הווידג'ט
+    widget.config(borderwidth=3, relief="solid", highlightbackground="yellow", highlightthickness=3)
+
+    # הסיבה שצריך משתנים גלובליים כאן, כדי שאם המשתמש רק לחץ על חלק מבלי להוזיזו, החלק לא יזוז, בלי זה יהיה שגיאה בשחרור החלק כי אין ערכים
+    delta_x=widget.startX
+    delta_y = widget.startY
+
+# פונקציה לביצוע תזוזה על פי מיקומי grid
+# יותר טוב מאשר פיקסלים, בגלל שאז לא צריך לבדוק שחלק לא נוגע בחלק אחר או שיש גלישה מחוץ לשורות ועמודות, כאן בודקים רק את החלק הריק לחלק שלחצו עליו
+def on_drag_motion(event):
+    global  empty_position,Part,direction,delta_x,delta_y # המיקום הריק
+    widget = event.widget
+
+    # חישוב שינוי במיקום העכבר
+    delta_x = event.x - widget.startX
+    delta_y = event.y - widget.startY
+
+
+
+# פונקציה להורדת המסגרת הצהובה כשהשחקן מפסיק ללחוץ על החלק
+def on_drag_release(event):
+    global empty_position,Part,direction,delta_x,delta_y
+    widget = event.widget
+    # מציאת האובייקט ברשימה
+    for Part in partsPuzzle:
+        if Part.label == widget:
+            break
+
+    # חובה לאפס גם כאן כדי שלא ישאר ערך מהתזוזה הקודמת כאשר המשתמש לא הוזיז נכון או רק לחץ על החלק מבלי להוזיזו
+    direction = None
+
+    #  חישוב הפרשי המיקומים
+    # בגלל שזה לא פיקסלים אז לאא צריך תנאי של חריגה מהשרורות והעמודות כי אפשר להוזיז רק למקום הריק, וגם לא צריך תנאי למנוע התנגשות
+    dx = empty_position[1] - Part.position[1] # עמודה
+    dy = empty_position[0] - Part.position[0] # שורה
+
+    # בדיקת הכיוון לפי השוואת השינוי במיקום האופקי והאנכי
+    # הוספתי תנאי בצדדים שבודק שהחלק נמצא עמודה ליד ולכן התוצאה 1, ובאותה השורה ולכן התוצאה 0, וההיפך בבדיקת למעלה ולמטה
+    # המספר 160 משמש כדי שהמשתמש יצטרך לגרור גרירה משמעותית לכיוון הריק בשביל להוזיז
+
+    # הבעיה שנשארה: שאם גוררים הרבה אחורה, החלק מתקדם קדימה למקום הריק
+    #abs- משמש להפוך את החישוב לחיובי בכל מצב
+    #abs(dy) ==0 ,abs(dx) == 0 מונע מחלקים קרובים לזוז באלכסון
+    if abs(dx) == 1 and abs(delta_x) > abs(delta_y) + 160:
+        if delta_x > 0 and dx == 1 and abs(dy) ==0:  # גרירה ימינה לכיוון המקום הריק delta_x > 0
+            direction = "Right"
+        elif delta_x < 0 and dx == -1 and abs(dy) ==0:  # גרירה שמאלה לכיוון המקום הריק delta_x < 0
+            direction = "Left"
+    elif abs(dy) == 1 and abs(delta_y) > abs(delta_x) + 160:
+        if delta_y > 0 and dy == 1  and abs(dx) == 0:  # גרירה למטה לכיוון המקום הריק  delta_y < 0
+            direction = "Down"
+        elif delta_y < 0 and dy == -1 and abs(dx) == 0:  # גרירה למעלה לכיוון המקום הריק  delta_y < 0
+            direction = "Up"
+
+    #print(f"Dragging {direction}")
+    if direction != None:  # רק חלק שקרוב למקום הריק יזוז
+        widget.grid(row=empty_position[0], column=empty_position[1])
+        # עדכון המיקומים החדשים
+        temp_position = empty_position
+        empty_position = Part.position
+        Part.update_position(temp_position)
+
+    # הסרת המסגרת הצהובה
+    widget.config(borderwidth=0, highlightthickness=0)
+
+    #בדיקה שהכל במקום הנכון
+    Check()
+
+def Check():
+    global progress_bar1,NUM_ROWS,NUM_COLS
+    correct_positionsID = 0
+
+    for row in range(NUM_ROWS):
+        for col in range(NUM_COLS):
+            # קבלת הווידג'ט במיקום (row, col) בגריד
+            #השתמשנו ב-grid_slaves() כדי לקבל את כל הווידג'טים שנמצאים בכל שורה ועמודה בגריד.
+            widgets = root.grid_slaves(row=row, column=col)
+            if widgets:
+                widget = widgets[0]  # אמור להיות רק ווידג'ט אחד בכל תא בגריד
+
+                # מציאת ה-part המתאים ברשימה `partsPuzzle` לפי ה-Label
+                for part in partsPuzzle:
+                    if part.label == widget:
+                        # חישוב המיקום הצפוי של החלק לפי ה-ID
+                        correct_row = part.id // NUM_ROWS
+                        correct_col = part.id % NUM_COLS
+
+                        # השוואה בין המיקום הנוכחי של החלק למיקום הצפוי לפי ה-ID
+                        if (row, col) == (correct_row, correct_col):
+                            correct_positionsID += 1
+    progress_bar['value'] = (correct_positionsID / len(partsPuzzle)) * 100
+        # בדיקה אם כל החלקים במקומות הנכונים
+    if correct_positionsID == len(partsPuzzle):
+        # נעל את כל החלקים מלהיגרר שוב
+        for part in partsPuzzle:
+            part.label.unbind("<Button-1>")
+            part.label.unbind("<B1-Motion>")
+            part.label.unbind("<ButtonRelease-1>")
+            success() # פונקציה להצלחה
+        print("All parts are in the correct position! Puzzle completed!")
+        removed_item.label.grid(row=empty_position[0], column=empty_position[1])
+    else:
+        print(f"{correct_positionsID} parts are in the correct position.")
+
+
+
+#----------------------------------------------------------------------------------------------------------
+
+root =Tk()
+root.geometry("820x830")  # גודל החלון
+root.title("Welcome to the puzzle game !")  # כותרת החלון
+
+play_song()
+#---------------------------------------------------------------------------------------מניפולציות על התמונה-חיתוכה/הקטנתה/ושמירתה ברשימה
+#טעינת התמונה
+image = Image.open('assets/image.png')
+# קבל את גודל התמונה
+width, height = image.size
+
+# קובע לכמה שורות ועמודות לחתוך
+NUM_ROWS = 3  # מספר השורות
+NUM_COLS = 3  # מספר העמודות
+
+# חשב את גודל כל חלק
+part_width = width // NUM_COLS  # חישוב רוחב כל חלק
+part_height = height // NUM_ROWS  # חישוב גובה כל חלק
+
+# רשימת עצמים לאחסון החלקים החתוכים
+index =0 #מונה מזהה
+partsPuzzle =[] # רשימה לעצמים
+
+# חתוך את התמונה ל-9 חלקים
+for row in range(NUM_ROWS):
+    for col in range(NUM_COLS):
+        left = col * part_width
+        upper = row * part_height
+        right = (col + 1) * part_width
+        lower = (row + 1) * part_height
+        # חתוך את החלק
+        part = image.crop((left, upper, right, lower))
+        # מקטין את התמונה
+        resized_image = part.resize((250, 250))
+        # המר את התמונה ל-Tkinter
+        tk_image = ImageTk.PhotoImage(resized_image)
+        # שמור את התמונה
+        label = Label(root, image=tk_image)
+        image_item = ImageItem(tk_image, None, label, index)  # הכנסת ההגרלה
+        partsPuzzle.append(image_item)  # הוספת האובייקט לרשימה
+        index+=1
+
+#---------------------------------------------------------------------------------------הגרלה, והצגת התמונה לחלון
+
+NumRandom = random.randint(0, 8)  # מגריל מספר בין 1 ל-8 כולל
+random.shuffle(partsPuzzle) # עירבול מיקום התמונות
+
+#הסיבה שלא מוציאים את החלק שהוגרל כאן, כדי ליצור חור בחלון כל פעם במקום אחר
+# שומר את מיקום התמונות ברשימה,והצבת התמונות בחלון
+for i in range(NUM_ROWS):  # 3 שורות
+    for j in range(NUM_COLS):  # 3 עמודות
+        index = i * NUM_COLS + j
+        partsPuzzle[index].update_position((i,j))
+        if index == NumRandom:  # להשאיר מקום אחרון ריק להוזזת התמונות
+            continue
+        # הצג את התמונה ב-Label
+        label =partsPuzzle[index].label
+        label.grid(row=i, column=j)
+        label.image = tk_image  # חובה לשמור הפניה לתמונה כדי למנוע מחוסר נראות
+        label.bind("<Button-1>", on_drag_start)  # קליק על התמונה
+        label.bind("<B1-Motion>", on_drag_motion)  # החזקה בגרירה
+        label.bind("<ButtonRelease-1>", on_drag_release) # שחרור
+
+#שמירת החלק שיתווסף בסוף
+removed_item = partsPuzzle.pop(NumRandom)
+empty_position = removed_item.position
+
+
+#----------------------------------------------------------------------------------------------------------
+progress_bar = ttk.Progressbar(root, length=200, orient=HORIZONTAL)  # אופקי
+progress_bar.grid(row=NUM_ROWS , column=1, padx=30)
+#----------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+root.mainloop()

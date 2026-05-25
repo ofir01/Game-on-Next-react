@@ -1,0 +1,148 @@
+ from tkinter import *
+from PIL import Image, ImageTk
+import random
+
+
+#----------------------------------------------------------------------------------------------------------
+#מחלקה עם תמונה/מיקום/ומספר מזהה
+class ImageItem:
+    def __init__(self, image_path, position,label,id):
+        self.image_path = image_path  # הנתיב לתמונה
+        self.position = position  # מיקום
+        self.label = label # widgets - label לצורך שינוי מיקום
+        self.id = id # לצורך התאמת הניחושים
+    def update_position(self, new_position): # מעדכן שינוי של מיקום חדש
+        self.position = new_position
+
+
+#----------------------------------------------------------------------------------------------------------
+#עכבר
+# פונקציה להתחלת הגרירה
+def on_drag_start(event):
+    widget = event.widget  # שומר את הווידג'ט שעליו נלחץ העכבר
+    widget.startX = event.x  # מאחסן את הקואורדינטה האופקית של נקודת הלחיצה בתוך הווידג'ט
+    widget.startY = event.y  # מאחסן את הקואורדינטה האנכית של נקודת הלחיצה בתוך הווידג'ט
+
+# פונקציה לביצוע גרירה של הריבוע
+def on_drag_motion(event):
+    widget = event.widget  # שומר את הווידג'ט שנגרר (הווידג'ט שעליו נלחץ העכבר)
+    x = widget.winfo_x() - widget.startX + event.x  # מחשב את מיקום הווידג'ט החדש בציר ה-X לפי תזוזת העכבר
+    y = widget.winfo_y() - widget.startY + event.y  # מחשב את מיקום הווידג'ט החדש בציר ה-Y לפי תזוזת העכבר
+
+#--------------------------------------------------------------------------------עד כאן הקוד משמש בשביל גרירה
+
+    # שמירה על המיקום הקודם לפני הזזה
+    old_x = widget.winfo_x()  # שומר את המיקום הישן בציר ה-X לפני הגרירה
+    old_y = widget.winfo_y()  # שומר את המיקום הישן בציר ה-Y לפני הגרירה
+    if(x<410 and x>0)and(y<410 and y>0): # יוצר מסגרת לחלקים
+        # בדוק אם יש חפיפה לאחר תזוזה
+        if not is_overlapping(widget, x, y):  # אם אין חפיפה במיקום החדש, עדכן את מיקום הווידג'ט
+            widget.place(x=x, y=y)
+        else:
+            # אם יש חפיפה, נסה להזיז רק בציר X או רק בציר Y
+            if not is_overlapping(widget, x, old_y):  # בדוק אם בציר X פנוי
+                widget.place(x=x, y=old_y)
+            elif not is_overlapping(widget, old_x, y):  # בדוק אם בציר Y פנוי
+                widget.place(x=old_x, y=y)
+
+# פונקציה לבדיקה אם יש חפיפה בין הווידג'ט הנוכחי לבין ריבועים אחרים
+def is_overlapping(widget, new_x, new_y):
+    widget_coords = get_widget_coords(widget, new_x, new_y)
+    for other_widget in partsPuzzle:
+        if other_widget.label == widget:
+            continue
+        other_coords = get_widget_coords(other_widget.label, other_widget.label.winfo_x(), other_widget.label.winfo_y())
+        if not (widget_coords[2] < other_coords[0] or
+                widget_coords[0] > other_coords[2] or
+                widget_coords[3] < other_coords[1] or
+                widget_coords[1] > other_coords[3]):
+            return True
+    return False
+
+# פונקציה לקבלת הקואורדינטות של ווידג'ט לאחר עדכון
+def get_widget_coords(widget, x, y):
+    width = widget.winfo_width()
+    height = widget.winfo_height()
+    return (x, y, x + width, y + height)
+
+
+#----------------------------------------------------------------------------------------------------------
+#סיום הגרירה
+
+
+
+
+
+#----------------------------------------------------------------------------------------------------------
+
+root =Tk()
+root.geometry("720x630")  # גודל החלון
+root.title("Welcome to the puzzle game !")  # כותרת החלון
+
+
+#---------------------------------------------------------------------------------------מניפולציות על התמונה-חיתוכה/הקטנתה/ושמירתה ברשימה
+#טעינת התמונה
+image = Image.open('assets/image.png')
+# קבל את גודל התמונה
+width, height = image.size
+# חשב את גודל כל חלק
+part_width = width // 3
+part_height = height // 3
+
+# רשימת עצמים לאחסון החלקים החתוכים
+counter =0 #מונה מזהה
+partsPuzzle =[] # רשימה לעצמים
+
+# חתוך את התמונה ל-9 חלקים
+for row in range(3):
+    for col in range(3):
+        left = col * part_width
+        upper = row * part_height
+        right = (col + 1) * part_width
+        lower = (row + 1) * part_height
+        # חתוך את החלק
+        part = image.crop((left, upper, right, lower))
+        # מקטין את התמונה
+        resized_image = part.resize((200, 200))
+        # המר את התמונה ל-Tkinter
+        tk_image = ImageTk.PhotoImage(resized_image)
+        # שמור את התמונה
+        label = Label(root, image=tk_image)
+        image_item = ImageItem(tk_image, label.grid_info(), label, counter)  # הכנסת ההגרלה
+        partsPuzzle.append(image_item)  # הוספת האובייקט לרשימה
+        counter+=1
+
+#---------------------------------------------------------------------------------------הגרלה, והצגת התמונה לחלון
+counter =0;
+
+NumRandom = random.randint(0, 8)  # מגריל מספר בין 1 ל-8 כולל
+random.shuffle(partsPuzzle) # עירבול מיקום התמונות
+
+#הסיבה שלא מוציאים את החלק שהוגרל כאן, כדי ליצור חור בחלון כל פעם במקום אחר
+# שומר את התמונות ברשימה כעצמים,והצבת התמונות בחלון
+for i in range(3):  # 3 שורות
+    for j in range(3):  # 3 עמודות
+        index = i * 3 + j
+        if index == NumRandom:  # להשאיר מקום אחרון ריק להוזזת התמונות
+            continue
+        # הצג את התמונה ב-Label
+        label =partsPuzzle[counter].label
+        #label.place(x=50 + i * 120, y=50)  # מיקום התחלתי של כל ריבוע
+        label.grid(row=i, column=j,padx=3, pady=5)
+        label.image = tk_image  # חובה לשמור הפניה לתמונה כדי למנוע מחוסר נראות
+        label.bind("<Button-1>", on_drag_start)  # קליק על התמונה
+        label.bind("<B1-Motion>", on_drag_motion)  # החזקה בגרירה
+        counter += 1
+
+#שמירת החלק שיתווסף בסוף
+removed_item = partsPuzzle.pop(NumRandom)
+
+#----------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+root.mainloop()

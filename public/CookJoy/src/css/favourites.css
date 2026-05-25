@@ -1,0 +1,178 @@
+/*תפריט של המועדפים*/
+#result_cookbook {
+    margin-top: 120px;
+    position: fixed;
+    top: 0;
+    right: 0;
+    transform: translateX(330px);
+    /* מוסתר מחוץ למסך בהתחלה */
+    width: 260px;
+    height: 100%;
+    background-color: #fff;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    padding: 10px;
+    max-height: 500px;
+    /* הגובה המקסימלי לפני שיופיע גלילה */
+    overflow-y: auto;
+    /* מאפשר גלילה אנכית */
+    transition: transform 0.3s ease;
+    /* אנימציה חלקה */
+}
+
+/* כשהתפריט פתוח */
+#result_cookbook.open {
+    transform: translateX(0);
+}
+
+/* כפתור סגירה */
+#result_cookbook #close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+#div_cookbook {
+    margin-top: 30px;
+}
+
+.img_cookbook {
+    width: 100%;
+}
+
+.favorite_loadData {
+    position: absolute;
+    bottom: 5px;
+    right: 0px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    z-index: 1;
+    font-size: 20px;
+    text-shadow: 0 0 4px rgba(0, 0, 0, 0.6);
+    transition: transform 0.2s ease, color 0.3s ease;
+}
+
+.favorite_loadData.liked {
+    color: #ff5a3c;
+    text-shadow: 0 0 6px #ff5a3c, 0 0 12px #ff9f80;
+}
+
+.favorite_loadData:hover {
+    transform: scale(1.25);
+}
+
+
+
+
+
+/*-------------------------- תפריט מצרכים ----------------------------------*/
+
+/*כותרת ראשית*/
+.ingredients-heading {
+    font-size: 20px;
+    font-weight: 700;
+    color: #222;
+    margin: 15px 0 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 2px solid #007bff;
+    display: inline-block;
+    padding-bottom: 4px;
+}
+
+
+
+/*תיבה לכל מצרך*/
+.loadIngredients {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #D35400, #FFE3C1);
+    transition: 0.3s;
+}
+
+.loadIngredients:hover {
+    background: linear-gradient(135deg, #FB6666, #FFE3C1);
+    box-shadow: 0 0 15px rgba(211, 84, 0, 0.5);
+    transform: scale(1.05);
+}
+
+
+/* כותרת רשימת המצרכים */
+.loadIngredients-title {
+    font-size: 14px;
+    color: #333;
+}
+
+/* שדה קלט */
+.loadIngredients-input {
+    width: 50px;
+    height: 25px;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    outline: none;
+    font-size: 14px;
+    transition: border 0.2s;
+}
+
+.loadIngredients-input:focus {
+    border-color: #007bff;
+}
+
+/* כפתור הסרה */
+.loadIngredients-remove {
+    background: #fb6666;
+    border: none;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 6px;
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+}
+
+.loadIngredients-remove:hover {
+    background: #e60000;
+}
+
+
+
+
+
+/*ניקוי במועדפים*/
+.clear {
+    padding: 8px 0px;
+    font-size: 14px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    background: linear-gradient(135deg, #df1d07, #f38f83, #fdccc6);
+    color: #fff;
+    font-weight: bold;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+
+.clear:hover {
+    background: linear-gradient(135deg, #fdccc6, #f38f83, #df1d07);
+    transform: translateY(-1px) scale(0.96);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+}

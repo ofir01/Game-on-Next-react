@@ -1,0 +1,31 @@
+
+
+גישה אליו מחייב ['column'] ['row'] ב-Grid , ו- [0][1] בפיקסלים
+אפשר גם בדרך עצמית אבל זה יהיה מספרים
+
+
+from tkinter import *
+
+def get_label_position(label):
+    info = label.grid_info()
+    return info['row'], info['column']
+
+root = Tk()
+root.geometry("400x400")
+
+# יצירת כמה Labels
+label1 = Label(root, text="Label 1", bg="red")
+label1.grid(row=0, column=0)
+
+label2 = Label(root, text="Label 2", bg="green")
+label2.grid(row=1, column=1)
+
+# קבלת המיקום של label1
+row, column = get_label_position(label1)
+print(f"Label 1 is at row: {row}, column: {column}")
+
+# קבלת המיקום של label2
+row, column = get_label_position(label2)
+print(f"Label 2 is at row: {row}, column: {column}")
+
+root.mainloop()

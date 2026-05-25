@@ -1,0 +1,80 @@
+from tkinter import *
+
+
+def on_drag_start(event):
+    widget = event.widget
+    widget._drag_data = {'x': event.x, 'y': event.y}
+
+
+def on_drag_motion(event):
+    widget = event.widget
+    x = widget.winfo_x() - widget._drag_data['x'] + event.x
+    y = widget.winfo_y() - widget._drag_data['y'] + event.y
+    widget.place(x=x, y=y)
+
+
+def on_drag_end(event):
+    widget = event.widget
+    widget._drag_data = None
+
+    # קבלת הקואורדינטות הנוכחיות של התמונה
+    x, y = widget.winfo_x(), widget.winfo_y()
+    widget_width, widget_height = widget.winfo_width(), widget.winfo_height()
+
+    # בדיקת חפיפות עם תמונות אחרות
+    for other_widget in widget.master.winfo_children():
+        if other_widget != widget:
+            other_x, other_y = other_widget.winfo_x(), other_widget.winfo_y()
+            other_width, other_height = other_widget.winfo_width(), other_widget.winfo_height()
+            if (x < other_x + other_width and
+                    x + widget_width > other_x and
+                    y < other_y + other_height and
+                    y + widget_height > other_y):
+                # החזרת התמונה למיקום ההתחלתי אם יש חפיפה
+                start_x, start_y = widget._start_position
+                widget.place(x=start_x, y=start_y)
+                return  # יוצא מהפונקציה אם חפיפה התגלתה
+
+    # אם אין חפיפה, שמירה של המיקום הנוכחי של התמונה
+    widget._start_position = (x, y)
+
+
+def create_draggable_images(root, image_paths):
+    """ פונקציה ליצירת תמונות גרירה """
+    for idx, image_path in enumerate(image_paths):
+        image = PhotoImage(file=image_path)
+        start_x = (idx % 3) * 200 + 50  # הגדרה דינמית של מיקום לפי אינדקס
+        start_y = (idx // 3) * 200 + 50  # הגדרה דינמית של מיקום לפי אינדקס
+        label = Label(root, image=image, bg="white")
+        label.place(x=start_x, y=start_y)
+
+        # שמירה של המיקום ההתחלתי של התמונה
+        label._start_position = (start_x, start_y)
+
+        # הגדרת הפונקציות עבור גרירה
+        label.bind("<Button-1>", on_drag_start)
+        label.bind("<B1-Motion>", on_drag_motion)
+        label.bind("<ButtonRelease-1>", on_drag_end)
+
+        # שמירה של התמונה כדי למנוע את התפוגגותה
+        label.image = image
+
+
+# יצירת חלון Tkinter
+root = Tk()
+root.title("Drag Images Example")
+root.geometry("800x600")
+
+# רשימת נתיבי התמונה
+image_paths = [
+    'animal1.png',  # שנה לנתיב לתמונה הראשונה שלך
+    'animal1.png',  # שנה לנתיב לתמונה השנייה שלך
+    'animal1.png',  # שנה לנתיב לתמונה השלישית שלך
+    # הוסף כאן נתיבי תמונות נוספות לפי הצורך
+]
+
+# יצירת תמונות גרירה
+create_draggable_images(root, image_paths)
+
+# הרצת הלולאת העדכונים של Tkinter
+root.mainloop()

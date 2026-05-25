@@ -1,0 +1,25 @@
+pip install pygame
+
+
+
+
+import tkinter as tk
+import pygame
+
+# פונקציה לניגון המוזיקה
+def play_music():
+    pygame.mixer.init()
+    pygame.mixer.music.load("path/to/your/music/file.mp3")
+    pygame.mixer.music.play(-1)  # -1 לניגון בלופ, שנה ל-1 לניגון יחיד
+
+# יצירת חלון ה-Tkinter
+root = tk.Tk()
+root.title("My Game")
+
+# הפעלת המוזיקה כאשר החלון נפתח
+root.after(100, play_music)
+
+# הקוד של המשחק שלך כאן...
+
+# הפעלת הלולאה הראשית של Tkinter
+root.mainloop()

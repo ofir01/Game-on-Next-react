@@ -1,0 +1,44 @@
+/* עיצוב עתידני ומודרני לקופסת הממוצע */
+
+.average-box {
+    /* שימוש ב-inline-flex ממרכז את התוכן ומונע עיוותים וחיתוכי אותיות */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    
+    /* פדינג תחתון מוגן (14px) כדי שהאותיות והמספרים לא ייחתכו מהקצה */
+    padding: 12px 20px 14px;
+    border-radius: 14px;
+    margin-top: 16px;
+    
+    /* מראה זכוכית אפל עם מסגרת ניאון כחולה עדינה */
+    background: rgba(30, 41, 59, 0.5);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(0, 210, 255, 0.25);
+    
+    /* טקסט בהיר וקריא עם הילה */
+    color: #ffffff;
+    font-family: 'Heebo', sans-serif;
+    font-weight: 800;
+    font-size: 15px;
+    line-height: 1.4;
+    
+    /* הילת אור מעוגלת מסביב לקופסה */
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3), 0 0 15px rgba(0, 210, 255, 0.1);
+    
+    /* הפעלת האנימציה המשודרגת */
+    animation: fadeFromBottom 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+/* אנימציית כניסה משודרגת - חלקה, מהירה והייטקיסטית יותר */
+@keyframes fadeFromBottom {
+    from {
+        opacity: 0;
+        transform: translateY(15px); /* מרחק קצר ואלגנטי יותר מ-40px הישן */
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

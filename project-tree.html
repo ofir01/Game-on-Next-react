@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Project Tree Viewer</title>
+
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #0f172a;
+        color: #e2e8f0;
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 20px;
+        margin-bottom: 20px;
+        color: #38bdf8;
+    }
+
+    .tree {
+        font-family: monospace;
+        line-height: 1.6;
+    }
+
+    ul {
+        list-style: none;
+        padding-left: 20px;
+        border-left: 1px solid #334155;
+    }
+
+    li {
+        margin: 4px 0;
+        cursor: pointer;
+        position: relative;
+    }
+
+    li::before {
+        content: "📁 ";
+    }
+
+    li.file::before {
+        content: "📄 ";
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    .toggle {
+        user-select: none;
+    }
+
+    .folder {
+        color: #fbbf24;
+    }
+
+    .file {
+        color: #94a3b8;
+    }
+
+    li:hover {
+        color: #38bdf8;
+    }
+</style>
+</head>
+
+<body>
+
+<h1>📂 Project Structure</h1>
+
+<div class="tree">
+
+<ul>
+    <li class="toggle folder">src
+        <ul>
+            <li class="toggle folder">app
+                <ul>
+                    <li class="toggle folder">api
+                        <ul>
+                            <li class="file">auth</li>
+                            <li class="file">games</li>
+                            <li class="file">user</li>
+                        </ul>
+                    </li>
+                    <li class="file">page.tsx</li>
+                    <li class="file">layout.tsx</li>
+                </ul>
+            </li>
+
+            <li class="folder">components</li>
+            <li class="folder">hooks</li>
+            <li class="folder">services</li>
+            <li class="folder">utils</li>
+        </ul>
+    </li>
+
+    <li class="folder">public</li>
+    <li class="file">package.json</li>
+    <li class="file">next.config.js</li>
+</ul>
+
+</div>
+
+<script>
+document.querySelectorAll(".toggle").forEach(el => {
+    el.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const childUl = el.querySelector("ul");
+        if (childUl) {
+            childUl.classList.toggle("hidden");
+        }
+    });
+});
+</script>
+
+</body>
+</html>
