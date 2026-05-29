@@ -252,17 +252,9 @@ export const GameService = {
 
 
     /***********************************************************
- * אחראי על שליפת משחקים לתצוגה הכללית בחנות (קרוסלה, טרנדים, מדורגים)
+ * אחראי על שליפת משחקים לתצוגה הכללית בחנות ( טרנדים, מדורגים)
         ***********************************************************/
 
-    getCarouselGames: async (limit) => {
-        const games = await db.Games.findAll({
-            ...getHardQuery(),
-            limit: limit,
-            order: [['updatedAt', 'DESC']],
-        });
-        return games.map(formatGameCard);
-    },
 
     getTrendingGames: async (limit) => {
         const games = await db.Games.findAll({
@@ -345,101 +337,6 @@ export const GameService = {
 
         return games.map(formatGameCard);
     },
-
-
-
-    // פונקציה שמחזירה את ה-Include המשותף לכל השאילתות שצריכות את הקטגוריות והסטטיסטיקות
- /*searchGames: async ({ page = 1, query = '', categories = '', sort = 'rating', type = null, limit = 4 }) => {
-        const offset = (page - 1) * limit;
-
-        // 1. בניית תנאי הסינון (Where)
-        const whereCondition = {};
-        if (query.trim()) {
-            whereCondition.title = { [Op.like]: `%${query.trim()}%` };
-        }
-        if (type) {
-            whereCondition.gameType = type;
-        }
-
-        // 2. בניית ה-Includes (הכל מוגדר עם attributes ריק כדי למנוע כפילויות!)
-        const includeOptions = [
-            {
-                model: db.UserGame,
-                as: 'userStatus',
-                attributes: [], // לא שולפים נתונים, רק משתמשים לחישוב ממוצע
-                duplicating: false
-            },
-            {
-                model: db.GamePlayStats,
-                as: 'stats',
-                attributes: [], // מונע שגיאות SQL, אבל עדיין מאפשר מיון
-                duplicating: false
-            }
-        ];
-
-        const categoryInclude = {
-            model: db.Category,
-            as: 'categories',
-            attributes: [], // קריטי: מונע שכפול של משחקים שיש להם כמה קטגוריות
-            through: { attributes: [] },
-            duplicating: false
-        };
-
-        if (categories) {
-            const categoriesList = categories.split(',').filter(Boolean);
-            if (categoriesList.length > 0) {
-                categoryInclude.where = { name: { [Op.in]: categoriesList } };
-                categoryInclude.required = true;
-            }
-        }
-        includeOptions.push(categoryInclude);
-
-        // 3. בניית המיון (Order)
-        let orderClause = [];
-        switch (sort) {
-            case 'new':
-                orderClause = [['updatedAt', 'DESC']];
-                break;
-            case 'popular':
-                // מכיוון שלא שלפנו את stats גלוי, ממיינים ישירות לפי העמודה ב-Join
-                orderClause = [[db.sequelize.col('stats.playCount'), 'DESC']];
-                break;
-            case 'rating':
-            default:
-                orderClause = [[db.sequelize.literal('avgRating'), 'DESC']];
-                break;
-        }
-
-        // 4. ביצוע השאילתה
-        const { count, rows } = await db.Games.findAndCountAll({
-            attributes: [
-                'id', 'title', 'description', 'imageUrl', 'gameUrl', 'updatedAt', 'price', 'status',
-                // הוספתי COALESCE כדי שאם אין דירוגים זה יחזיר 0 ולא שגיאה/Null
-                [db.sequelize.fn('COALESCE', db.sequelize.fn('AVG', db.sequelize.col('userStatus.rating')), 0), 'avgRating'],
-                [db.sequelize.fn('COUNT', db.sequelize.col('userStatus.rating')), 'totalReviews']
-            ],
-            where: whereCondition,
-            include: includeOptions,
-            limit: limit,
-            offset: offset,
-            order: orderClause,
-            // הפתרון המושלם: מקבצים *רק* לפי המשחק, אין יותר כפילויות
-            group: ['Games.id'],
-            subQuery: false,
-            distinct: true
-        });
-
-        // ספירת סך הכל (בגלל ש-group הופך את count למערך)
-        const totalItems = Array.isArray(count) ? count.length : count;
-
-        return {
-            games: rows,
-            totalItems,
-            totalPages: Math.ceil(totalItems / limit) || 1
-        };
-    }
-
-*/
 
 
 };

@@ -4,6 +4,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { gameService } from '../../services/client/gameService';
 import { toast } from 'sonner';
 
+
 export const useGameActions = () => {
     const queryClient = useQueryClient();
 
@@ -107,13 +108,16 @@ export const useAdvancedGameSearch = (filters) => {
 
 
 
-
-
 //עמוד הבית
-export const useHomeData = (filters = "") => {
+export const useHomeData = () => {
     return useQuery({
-        queryKey: ['homeGames', filters],
-        queryFn: () => gameService.getHomeSections(filters),
+        queryKey: ['homeGames'],
+
+        // כל הנתונים של עמוד הבית מגיעים מכאן במקום fetch ידני בתוך הקומפוננטה
+        queryFn: () => gameService.getHomeSections(),
+
+        // אם השליפה נכשלת, העמוד יקבל undefined ויציג מבנה ריק במקום לקרוס
+        retry: 1,
         staleTime: 1000 * 60 * 5, // נתוני עמוד בית נשמרים ל-5 דקות
     });
 };

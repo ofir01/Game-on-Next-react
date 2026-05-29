@@ -1,6 +1,7 @@
 // services/gameService.js
 import { api } from '../../lib/api-client';
 
+
 export const gameService = {
     // שליפת כל המשחקים עם פילטרים
     advancedSearch: (filters) => {
@@ -21,11 +22,8 @@ export const gameService = {
     // שליפת פרטי משחק לפי סלאג (כולל פירוק הסלאג ל-ID)
     getGameSlug: (Slug) => api.get(`/api/games/${Slug}`),
 
-    // שליפת משחקים לפי סקשנים לעמוד הבית
-    getHomeSections: (sectionsArray = []) => {
-        const param = sectionsArray.join(',');
-        return api.get(`/api/games/home?sections=${param}`);
-    },
+    // שליפת כל הנתונים שהעמוד הראשי צריך, לפי רשימת סקשנים מה-hook
+    getHomeSections: () => api.get(`/api/games/home`),
 
 
 

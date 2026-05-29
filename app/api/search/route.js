@@ -26,10 +26,6 @@ export async function GET(req) {
             GameService.searchCategories(q, limit)
         ]);
 
-        const searchGamesData =  JSON.stringify(searchGames, null, 2);
-
-        console.log("Search API - Games:", searchGamesData);
-        console.log("Search API - Categories:", JSON.stringify(searchCategories, null, 2));
         return NextResponse.json({
             games: searchGames,
             categories: searchCategories

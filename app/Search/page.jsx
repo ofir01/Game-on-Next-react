@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
-import { Filter, X, Check, Gamepad2, ArrowDownUp, DollarSign } from "lucide-react";
+import { Filter, X, Check, Gamepad2, DollarSign } from "lucide-react";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 
 

@@ -1,39 +1,31 @@
 import { NextResponse } from 'next/server';
 import { GameService } from '../../../../services/server/GameService';
 
-
-
+//  הסקשנים שהעמוד צריך מהשרת כדי לבנות את כל הבית ממקור אחד.
 export async function GET(req) {
     try {
-        const { searchParams } = new URL(req.url);
-        const sections = searchParams.get('sections')?.split(',') || ['carousel', 'trending', 'topRated'];
 
-        const CarouselLimit = 5;
-        const TrendingLimit = 8;
-        const TopRatedLimit = 8;
+        const TrendingLimit = 6;
+        const TopRatedLimit = 3;
         const CategoryLimit = 5;
         const UpcomingLimit = 4;
-        // מיפוי בין הבקשה לפונקציה ב-Service
+        // מיפוי פשוט בין שם הסקשן לבין השאילתה שמביאה אותו מה-DB
         const serviceMap = {
-           carousel: () => GameService.getCarouselGames(CarouselLimit),
             trending: () => GameService.getTrendingGames(TrendingLimit),
             topRated: () => GameService.getTopRatedGames(TopRatedLimit),
-            stats: () => GameService.getHomeStats(),
-            categories: () => GameService.getCategoryHighlights(CategoryLimit),
-            upcoming: () => GameService.getUpcomingGames(UpcomingLimit),
+            stats: () => GameService.getHomeStats(), // סטטיסטיקות כלליות של הפלטפורמה
+            categories: () => GameService.getCategoryHighlights(CategoryLimit),// מביא קטגוריות עם משחקים מובילים בכל קטגוריה
+            upcoming: () => GameService.getUpcomingGames(UpcomingLimit),// משחקים שצפויים לצאת בקרוב, עם תאריך השקה קרוב
         };
 
-        const response = {};
-
-        // הרצה מקבילית של כל השאילתות שנתבקשו
-        await Promise.all(
-            sections.map(async (key) => {
-                if (serviceMap[key]) {
-                    // כאן אנחנו מפעילים את הפונקציה ומחכים לה (await)
-                    response[key] = await serviceMap[key]();
-                }
-            })
+        const response = Object.fromEntries(
+            await Promise.all(
+                Object.entries(serviceMap).map(async ([key, fn]) => {
+                    return [key, await fn()];
+                })
+            )
         );
+
 
         return NextResponse.json(response);
 
@@ -46,82 +38,3 @@ export async function GET(req) {
 
 
 
-
-
-
-
-
-
-/*import { NextResponse } from 'next/server';
-import { getAvgRatingLiteral, getCommonInclude } from '../../../../public/utils/game-queries';
-const db = require('../../../../models');
-
-export async function GET(req) {
-    try {
-        const { searchParams } = new URL(req.url);
-        const sections = searchParams.get('sections')?.split(',') || ['carousel', 'trending', 'topRated'];
-
-
-
-       
-
-        const queryMap = {
-            // 1. משחקים לקרוסלה (5 אחרונים)
-            carousel: () => db.Games.findAll({
-                limit: 5,
-                attributes: { include: [getAvgRatingLiteral()] },
-                include: getCommonInclude(),
-                order: [['updatedAt', 'DESC']],
-                distinct: true
-            }),
-
-            // 2. משחקים טרנדיים (לפי כמות משחקים)
-            trending: () => db.Games.findAll({
-                limit: 8,
-                attributes: { include: [getAvgRatingLiteral()] },
-                include: getCommonInclude(),
-                order: [[{ model: db.GamePlayStats, as: 'stats' }, 'playCount', 'DESC']],
-                distinct: true
-            }),
-
-            // 3. הכי מדורגים (לפי ממוצע הדירוגים)
-            topRated: () => db.Games.findAll({
-                limit: 8,
-                attributes: { include: [getAvgRatingLiteral()] },
-                include: getCommonInclude(),
-                // מיון לפי ה-alias שיצרנו ב-literal
-                order: [[db.sequelize.literal('avgRating DESC')]],
-                distinct: true
-            }),
-
-
-
-        };
-
-        // הרצת השאילתות שנבחרו
-        const requestedQueries = sections.map(key => {
-            if (queryMap[key]) {
-                return queryMap[key]().then(data => ({ key, data }));
-            }
-            return Promise.resolve({ key, data: [] });
-        });
-
-        const resultsArray = await Promise.all(requestedQueries);
-
-        // בניית התשובה הסופית
-        const response = resultsArray.reduce((acc, { key, data }) => {
-            acc[key] = data;
-            return acc;
-        }, {});
-
-        return NextResponse.json(response);
-
-    } catch (error) {
-        console.error('Dynamic Home API Error:', error);
-        return NextResponse.json({
-            error: 'Internal Server Error',
-            details: error.message
-        }, { status: 500 });
-    }
-}
-    */
