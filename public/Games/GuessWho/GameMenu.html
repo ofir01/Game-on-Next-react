@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game Start</title>
+    <title>Guess-Who</title>
     <style>
         body {
         display: flex;
@@ -193,7 +193,7 @@
 
     <script>
         function startGame() {
-            window.location.href = "GuessWho.html"; // קישור לדף המשחק
+            window.location.href = `GuessWho.html${window.location.search}`; // קישור לדף המשחק עם פרטי המשחק
         }
     </script>
 </body>

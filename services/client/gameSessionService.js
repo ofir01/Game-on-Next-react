@@ -2,54 +2,24 @@ import { api } from '../../lib/api-client';
 
 const endpoint = '/api/game-session';
 
-export const sendGameSessionEvent = ({ gameId, event, data = {}, result, sessionId }) => api.post(endpoint, {
-    gameId,
-    event,
-    data,
-    result,
-    sessionId,
-});
-
-const updateSession = (sessionId, status, data = {}) => api.put(endpoint, {
-    sessionId,
-    status,
-    ...data,
-});
-
 export const gameSessionService = {
-    sendEvent: sendGameSessionEvent,
+    sendEvent: ({ gameId, event, data = {}, result, sessionId }) =>
+        api.post(endpoint, { gameId, event, data, result, sessionId }),
 
-    getActive: (gameId) => {
-        const query = gameId ? `?gameId=${encodeURIComponent(gameId)}` : '';
-        return api.get(`${endpoint}${query}`);
-    },
+    start: (gameId) =>
+        api.post(endpoint, { gameId }),
 
-    start: (gameId) => api.post(endpoint, { gameId }),
+    finish: (sessionId, { gameId, data = {}, result } = {}) =>
+        api.put(endpoint, { sessionId, gameId, status: 'finished', data, result }),
 
-    heartbeat: (sessionId, data = {}) => updateSession(sessionId, 'playing', data),
+    abandon: (sessionId, { gameId } = {}) =>
+        api.put(endpoint, { sessionId, gameId, status: 'abandoned' }),
 
-    pause: (sessionId, data = {}) => updateSession(sessionId, 'paused', data),
+    getTopWinners: ({ gameId, limit = 3 } = {}) => {
+        const params = new URLSearchParams({ view: 'top-winners' });
+        if (gameId) params.set('gameId', gameId);
+        if (limit) params.set('limit', limit);
 
-    resume: (sessionId, data = {}) => updateSession(sessionId, 'playing', data),
-
-    finish: (sessionId, data = {}) => updateSession(sessionId, 'finished', data),
-
-    abandon: (sessionId, data = {}) => updateSession(sessionId, 'abandoned', data),
-
-    abandonOnUnload: (sessionId, data = {}) => {
-        if (!sessionId || typeof navigator === 'undefined' || !navigator.sendBeacon) {
-            return false;
-        }
-
-        const payload = JSON.stringify({
-            sessionId,
-            status: 'abandoned',
-            ...data,
-        });
-
-        return navigator.sendBeacon(
-            endpoint,
-            new Blob([payload], { type: 'application/json' })
-        );
+        return api.get(`${endpoint}?${params.toString()}`);
     },
 };

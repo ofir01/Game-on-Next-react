@@ -8,8 +8,8 @@ export async function POST(req) {
         const body = await req.json();
 
         // ולידציה - בדיקה שכל שדות החובה קיימים בבקשה
-        if (!body.title || !body.content) {
-            return NextResponse.json({ message: "Missing title or content" }, { status: 400 });
+        if (!body.title) {
+            return NextResponse.json({ message: "Missing title" }, { status: 400 });
         }
 
         // ביצוע היצירה דרך השירות

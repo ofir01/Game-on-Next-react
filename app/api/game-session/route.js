@@ -1,11 +1,8 @@
 import { NextResponse } from 'next/server';
-import { headers } from 'next/headers';
-import { gameSessionService } from '../../../services/server/gameSessionService';
+import { getUserId } from '../../../utils/verification';
+import { gameSessionService } from '../../../services/server/GameSessionService';
+import { GameService } from '../../../services/server/GameService';
 
-const getUserId = async () => {
-    const headerList = await headers();
-    return headerList.get('x-user-id');
-};
 
 const jsonError = (error) => {
     console.error('Game session API error:', error);
@@ -18,19 +15,29 @@ const jsonError = (error) => {
 
 export async function GET(req) {
     try {
-        const userId = await getUserId();
-        if (!userId) return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
-
         const { searchParams } = new URL(req.url);
-        const gameId = searchParams.get('gameId');
-        const session = await gameSessionService.getActive(userId, gameId);
+        const id = searchParams.get('gameId');
+        const gameId = await GameService.getGameId(id);
+        if (!gameId) {
+            return NextResponse.json({ message: 'gameId is required' }, { status: 400 });
+        }
 
-        return NextResponse.json({ data: session });
+        if (searchParams.get('view') === 'top-winners') {
+            const winners = await gameSessionService.getTopWinners({
+                gameId,
+                limit: searchParams.get('limit'),
+            });
+
+            return NextResponse.json({ data: winners });
+        }
+
+        return NextResponse.json({ message: 'Unsupported game session view' }, { status: 400 });
     } catch (error) {
         return jsonError(error);
     }
 }
 
+// טיפול ב-POST ליצירת סשן חדש או שליחת אירוע
 export async function POST(req) {
     try {
         const userId = await getUserId();
@@ -50,15 +57,16 @@ export async function POST(req) {
     }
 }
 
+// טיפול ב-PUT לעדכון סטטוס סשן או שליחת אירוע
 export async function PUT(req) {
     try {
         const userId = await getUserId();
         if (!userId) return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
 
         const body = await req.json();
-        const session = body.event
-            ? await gameSessionService.handleEvent(userId, body)
-            : await gameSessionService.update(userId, body);
+        const session = body.status === 'abandoned'
+            ? await gameSessionService.abandon(userId, body)
+            : await gameSessionService.finish(userId, body);
 
         return NextResponse.json({
             message: 'Game session updated',

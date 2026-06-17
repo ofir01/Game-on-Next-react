@@ -100,6 +100,7 @@ module.exports = (sequelize, DataTypes) => {
 
         // סשנים של משתמשים במשחק
         Games.hasMany(models.GameSession, { foreignKey: 'gameId', as: 'sessions' });
+        Games.hasMany(models.HighScore, { foreignKey: 'gameId', as: 'highScores' });
 
         // תגובות
         Games.hasMany(models.Comment, { foreignKey: 'gameId', as: 'comments' });

@@ -142,7 +142,7 @@ export default function SearchDropdown({ data, isLoading, isVisible, onItemClick
                                     // ... קוד המשחקים הקיים שלך ...
                                     <Link
                                         key={game.id}
-                                        href={`/${game.title}`}
+                                        href={`/games/${game?.title}`}
                                         onClick={() => onItemClick?.()}
                                         className="flex items-center gap-4 p-2 rounded-xl bg-white/[0.03] hover:bg-white/[0.08] border border-white/5 hover:border-cyan-500/30 transition-all duration-500 group relative overflow-hidden"
                                     >

@@ -15,7 +15,7 @@ export async function proxy(request) {
 
       // הזרקת פרטי המשתמש ל-Headers (כולל סטטוס אימות)
       requestHeaders.set('x-user-id', String(payload.id));
-      requestHeaders.set('x-user-role', payload.role);
+      requestHeaders.set('x-user-role', String(payload.role));
       requestHeaders.set('x-user-verified', String(payload.isVerified)); // חשוב!
 
       // --- הגנה על נתיבי אדמין ---

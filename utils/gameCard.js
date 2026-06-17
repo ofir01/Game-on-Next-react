@@ -13,7 +13,7 @@ export const formatGameCard = (game) => {
         imageUrl: g.imageUrl,
         gameUrl: g.gameUrl || `/games/${g.id}`,
         // טיפול במחירים
-        price: g.price ? g.price <= 0 ? 'Free' : parseFloat(g.price) : null,
+        price: g.price ? parseFloat(g.price) : 0,
         status: g.status || 'Unknown',
         finalPrice: g.finalPrice !== undefined ? parseFloat(g.finalPrice) : parseFloat(g.price || 0),
         isOnSale: g.isOnSale || false,

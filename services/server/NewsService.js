@@ -1,21 +1,19 @@
-
 const db = require('../../db/models');
 
-
-
-
-//חדשות
 export const NewsService = {
-    //הוספת ידיעה חדשה
+    // הוספת ידיעה חדשה
     create: async (newsData) => {
+        // אנחנו שולפים ומכניסים רק את השדות שהגדרנו, כדי למנוע בעיות אבטחה (Mass Assignment)
         return await db.News.create({
             title: newsData.title,
-            content: newsData.content,
-            // כאן יכנסו שדות נוספים במידה וקיימים (image, category וכו')
+            excerpt: newsData.excerpt, // שונה מ-content
+            category: newsData.category || 'Update', // עם גיבוי לערך ברירת מחדל
+            image: newsData.image || null,
+            isHot: newsData.isHot || false
         });
     },
 
-    //שליפת רשימת הידיעות עם תמיכה בדף וגבול פריטים
+    // שליפת רשימת הידיעות עם תמיכה בדף וגבול פריטים (נשאר ללא שינוי)
     get: async ({ page = 1, limit = 5 }) => {
         const offset = (page - 1) * limit;
 
@@ -32,20 +30,42 @@ export const NewsService = {
             totalPages: Math.ceil(count / limit)
         };
     },
-    //עדכון ידיעה קיימת
+
+    // עדכון ידיעה קיימת
     update: async (id, updateData) => {
-        const [updatedRows] = await db.News.update(updateData, {
+        // מומלץ לסנן כאן את הנתונים כדי לוודא שמעדכנים רק שדות קיימים
+        const safeData = {
+            title: updateData.title,
+            excerpt: updateData.excerpt,
+            category: updateData.category,
+            image: updateData.image,
+            isHot: updateData.isHot
+        };
+
+        // מחיקת שדות undefined כדי שה-ORM לא ינסה לדרוס אותם סתם
+        Object.keys(safeData).forEach(key => safeData[key] === undefined && delete safeData[key]);
+
+        const [updatedRows] = await db.News.update(safeData, {
             where: { id }
         });
 
-        // מחזירים את מספר השורות שהושפעו
         return updatedRows;
     },
 
-    // מחיקת ידיעה מהמערכת לפי מזהה
+    // מחיקת ידיעה מהמערכת לפי מזהה (נשאר ללא שינוי)
     delete: async (id) => {
         return await db.News.destroy({
             where: { id }
         });
-    }
+    },
+
+    //שליפה בודדת של כתבה
+    getBySlug: async (id) => {
+        return await db.News.findOne({
+            where: {
+                id: id
+            },
+            raw: true
+        });
+    }, 
 };

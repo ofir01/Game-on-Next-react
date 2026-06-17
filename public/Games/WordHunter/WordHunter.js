@@ -44,6 +44,14 @@ document.addEventListener("DOMContentLoaded", () => {
     //ניקוד ופסילה
     let score = 0;
     let fails = 0;
+    gameSessionActions = window.GameSessionEvents?.createActions({
+        getData: () => ({
+            score,
+            fails,
+            level,
+            wordsPerCategory: count,
+        }),
+    });
 
     let currentSelection = [];
     let currentCategory = null;
@@ -161,14 +169,20 @@ document.addEventListener("DOMContentLoaded", () => {
         currentCategory = null;
     }
 
-    function checkIfGameFinished() {
+    async function checkIfGameFinished() {
         const list = document.getElementById('animal-list');
         const remaining = list.querySelectorAll('li:not(.matched)').length;
         if (remaining === 0) {
+            await gameSessionActions?.finish('win', {
+                score,
+                fails,
+                level,
+                wordsPerCategory: count,
+            });
             alert(`כל הפריטים נמצאו! ניצחת!\nנקודות: ${score}\nפסילות: ${fails}`);
             const playAgain = confirm("האם ברצונך לשחק שוב?");
             if (playAgain) {
-                window.location.href = "GameMenu.html"; 
+                window.location.href = `GameMenu.html${window.location.search}`;
             }
         }
     }

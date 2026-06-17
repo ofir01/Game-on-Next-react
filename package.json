@@ -39,7 +39,7 @@
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "babel-plugin-react-compiler": "1.0.0",
-    "baseline-browser-mapping": "^2.10.29",
+    "baseline-browser-mapping": "^2.10.37",
     "eslint": "^9",
     "eslint-config-next": "16.0.8",
     "sequelize-cli": "^6.6.3",

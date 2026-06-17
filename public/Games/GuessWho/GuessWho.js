@@ -142,6 +142,14 @@ loadCharacterImages();
 const selectedCharacter = characters[Math.floor(Math.random() * characters.length)];
 console.log(selectedCharacter.name)
 
+gameSessionActions = window.GameSessionEvents?.createActions({
+    getData: () => ({
+        clicks: typeof clickCount === 'number' ? clickCount : 0,
+        selectedCharacter: selectedCharacter.name,
+        remainingCharacters: document.querySelectorAll('.tile:not(.dim)').length,
+    }),
+});
+
 
 
 //השחרת הדמות וביטול העכבר
@@ -159,7 +167,12 @@ function filterCharacters(character) {
 
 //ניצחון
 function VictoryGame() {
-    window.location.href = "GuessVictory.html"; //מעבר לדף הניצחון
+    gameSessionActions?.finish('win', {
+        clicks: typeof clickCount === 'number' ? clickCount : 0,
+        selectedCharacter: selectedCharacter.name,
+    }).finally(() => {
+        window.location.href = `GuessVictory.html${window.location.search}`; //מעבר לדף הניצחון
+    });
 }
 
 

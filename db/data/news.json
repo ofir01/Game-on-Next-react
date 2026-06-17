@@ -1,107 +1,202 @@
 [
   {
-    "title": "System Update v1.2",
-    "content": "We have improved the overall site performance and fixed minor bugs in the game search algorithm.",
-    "createdAt": "2024-03-20T10:00:00.000Z"
+    "title": "GTA VI מקבל תאריך שחרור רשמי וטריילר משחקיות חדש!",
+    "excerpt": "רוקסטאר שוברת שתיקה ומאשרת את חלון ההשקה של המשחק המצופה ביותר של העשור, לצד הצצה ראשונה למכניקות הנהיגה והשודים החדשות במחוז לאונידה.",
+    "category": "Games",
+    "image": "https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=600",
+    "isHot": true,
+    "createdAt": "2026-06-13T10:00:00.000Z"
   },
   {
-    "title": "New Games Added",
-    "content": "5 new titles have been added to the library today. Check out the latest RPG collection!",
-    "createdAt": "2024-03-19T14:30:00.000Z"
+    "title": "עדכון גרסה 2.4.1 למערכת הטורנירים עלה לאוויר",
+    "excerpt": "תיקוני באגים קריטיים במערכת שיבוץ השחקנים (Matchmaking) ושיפור זמני התגובה של לוחות המובילים בזמן אמת. המשחקיות כעת חלקה מאי פעם.",
+    "category": "Update",
+    "image": "https://images.unsplash.com/photo-1552820728-8b83bb6b773f?q=80&w=600",
+    "isHot": false,
+    "createdAt": "2026-06-12T15:30:00.000Z"
   },
   {
-    "title": "Server Maintenance",
-    "content": "The database will be undergoing a quick optimization tonight at midnight. Some lag may occur.",
-    "createdAt": "2024-03-18T09:00:00.000Z"
+    "title": "מבצעי קיץ מטורפים בחנות הדיגיטלית: עד 80% הנחה",
+    "excerpt": "חגיגת ההנחות הגדולה של השנה מתחילה סוף סוף. אספנו עבורכם את הדילים הכי שווים על כותרי AAA, משחקי אינדי מובילים והרחבות בלעדיות.",
+    "category": "Sale",
+    "image": "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?q=80&w=600",
+    "isHot": true,
+    "createdAt": "2026-06-11T09:00:00.000Z"
   },
   {
-    "title": "UI Improvements",
-    "content": "The navigation menu is now more responsive on mobile devices and supports smooth scrolling.",
-    "createdAt": "2024-03-17T16:20:00.000Z"
+    "title": "טורניר ה-Community קלאש הגדול יוצא לדרך בסוף השבוע",
+    "excerpt": "הירשמו עכשיו עם הקבוצה שלכם ואולי תזכו בפרסים שווים ובסקינים נדירים. ההרשמה נסגרת ביום חמישי בחצות, אל תפספסו את ההזדמנות.",
+    "category": "Event",
+    "image": "https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=600",
+    "isHot": false,
+    "createdAt": "2026-06-10T18:20:00.000Z"
   },
   {
-    "title": "Community Feature",
-    "content": "You can now mark games as 'Favorites' and see them highlighted in your personal dashboard.",
-    "createdAt": "2024-03-16T11:15:00.000Z"
+    "title": "פיצ'ר חדש באתר: התאמת פרופיל שחקן אישי ולוח הישגים",
+    "excerpt": "מהיום תוכלו לעצב את עמוד הפרופיל שלכם, להציג את המשחקים האהובים עליכם, לצבור נקודות ניסיון (XP) באתר ולפתוח תגים ייחודיים.",
+    "category": "Feature",
+    "image": "https://images.unsplash.com/photo-1614680376593-902f74fa0d41?q=80&w=600",
+    "isHot": false,
+    "createdAt": "2026-06-09T14:00:00.000Z"
   },
   {
-    "title": "New Category: Horror",
-    "content": "Get ready for the spooky season with our new curated list of horror games. Don't play alone!",
-    "createdAt": "2024-03-15T20:00:00.000Z"
+    "title": "הצצה ראשונה ל-Resident Evil החדש: האימה חוזרת לשורשים",
+    "excerpt": "קאפקום שחררה טיזר קצר ומסתורי המציג סביבה אפלה ומנוע גרפי משודרג שמבטיח להחזיר את האווירה המלחיצה של המשחקים המקוריים בסדרה.",
+    "category": "Games",
+    "image": "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?q=80&w=600",
+    "isHot": true,
+    "createdAt": "2026-06-08T08:15:00.000Z"
   },
   {
-    "title": "Mobile App Beta",
-    "content": "Our official Android app is now available for beta testing. Join the community and give us feedback.",
-    "createdAt": "2024-03-14T12:00:00.000Z"
+    "title": "עדכון חירום (Hotfix) למניעת קריסות פלטפורמה במשחקי מובייל",
+    "excerpt": "שחררנו תיקון מהיר לבעיית סנכרון שגרמה למסכים קפואים אצל חלק ממשתמשי האנדרואיד במהלך טעינת המפות. מומלץ לרענן את האפליקציה.",
+    "category": "Patch",
+    "image": "https://images.unsplash.com/photo-1551103782-8ab07afd45c1?q=80&w=600",
+    "isHot": false,
+    "createdAt": "2026-06-07T21:45:00.000Z"
   },
   {
-    "title": "Leaderboard Reset",
-    "content": "The monthly leaderboards have been reset. Congratulations to last month's winners!",
-    "createdAt": "2024-03-13T08:00:00.000Z"
+    "title": "חשיפה: קונסולת הדור הבא של נינטנדו תוכרז רשמית בחודש הבא",
+    "excerpt": "דיווחים אמינים מתעשיית הרכיבים חושפים כי ההכרזה הרשמית על ה-Switch 2 קרובה מתמיד, עם תמיכה ברזולוציית 4K במצב עגינה וגרפיקה מבוססת AI.",
+    "category": "Games",
+    "image": "https://images.unsplash.com/photo-1566241477600-ac026ad43874?q=80&w=600",
+    "isHot": true,
+    "createdAt": "2026-06-06T11:30:00.000Z"
   },
   {
-    "title": "Developer Interview",
-    "content": "Read our exclusive interview with the creators of 'Cyber Quest' on our new blog section.",
-    "createdAt": "2024-03-12T15:45:00.000Z"
+    "title": "אירוע Double XP יוצא לדרך בכל שרתי הקהילה",
+    "excerpt": "במהלך כל סוף השבוע הקרוב, כל הניצחונות, המשימות והאתגרים באתר ובשרתים המשותפים יעניקו לכם כמות כפולה של נקודות לעליית רמות מהירה.",
+    "category": "Event",
+    "image": "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=600",
+    "isHot": false,
+    "createdAt": "2026-06-05T16:00:00.000Z"
   },
   {
-    "title": "Security Update",
-    "content": "We've updated our encryption protocols to ensure your data stays safe and secure at all times.",
-    "createdAt": "2024-03-11T10:30:00.000Z"
+    "title": "סקר הגיימרים הגדול של GAME ON לשנת 2026",
+    "excerpt": "מהו משחק השנה שלכם עד כה? איזה ז'אנר הכי חסר לכם באתר? כנסו והצביעו בסקר השנתי שלנו ועזרו לנו לעצב את עתיד פלטפורמת הגיימינג.",
+    "category": "Feature",
+    "image": "https://images.unsplash.com/photo-1560253023-3ec5d502959f?q=80&w=600",
+    "isHot": false,
+    "createdAt": "2026-06-04T13:10:00.000Z"
   },
   {
-    "title": "Summer Sale is Live",
-    "content": "Get up to 50% off on selected premium titles for the next 48 hours only!",
-    "createdAt": "2024-03-10T09:00:00.000Z"
+    "title": "Cyberpunk 2077 זוכה לעדכון הפתעה גרפי מרהיב",
+    "excerpt": "הסטודיו שחרר פאטץ' אופטימיזציה מיוחד המנצל את כרטיסי המסך החדשים ביותר בשוק, כולל שיפורי Ray Tracing קיצוניים ותיקוני בינה מלאכותית של אויבים.",
+    "category": "Patch",
+    "image": "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?q=80&w=600",
+    "isHot": false,
+    "createdAt": "2026-06-02T10:40:00.000Z"
   },
   {
-    "title": "Bug Fix: Inventory",
-    "content": "The issue where items wouldn't appear in the inventory after purchase has been fully resolved.",
-    "createdAt": "2024-03-09T18:10:00.000Z"
+    "title": "סוף שבוע של משחק חינמי: נסו את השורד החדש ללא עלות",
+    "excerpt": "החל מיום חמישי ועד יום ראשון בערב, תוכלו להוריד ולשחק בגרסה המלאה של משחק ההישרדות החדש שמסעיר את הרשת. כל ההתקדמות תישמר לכם במידה ותקנו.",
+    "category": "Sale",
+    "image": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=600",
+    "isHot": false,
+    "createdAt": "2026-06-01T12:00:00.000Z"
   },
   {
-    "title": "New Partnership",
-    "content": "We are excited to partner with IndieDev Studio to bring more unique games to our platform.",
-    "createdAt": "2024-03-08T13:00:00.000Z"
+    "title": "אינטגרציה מלאה עם Discord: עכשיו ישירות בלוח הבקרה",
+    "excerpt": "חיברנו את שרתי האתר ישירות לבוט הדיסקורד הרשמי. מהיום תקבלו התראות על הודעות פרטיות, עדכונים ואירועים ישירות לערוץ המועדף עליכם.",
+    "category": "Feature",
+    "image": "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?q=80&w=600",
+    "isHot": false,
+    "createdAt": "2026-05-30T09:15:00.000Z"
   },
   {
-    "title": "User Feedback Survey",
-    "content": "Take our 2-minute survey and tell us how we can improve your gaming experience. Rewards included!",
-    "createdAt": "2024-03-07T11:00:00.000Z"
+    "title": "סנסציית האינדי הבאה? משחק הפאזלים הישראלי שכובש את Steam",
+    "excerpt": "ראיון בלעדי עם צמד המפתחים המקומיים שהצליחו ליצור מכניקת זמן ייחודית, והגיעו תוך פחות משבוע לראש רשימת המשחקים הנמכרים ביותר.",
+    "category": "Games",
+    "image": "https://images.unsplash.com/photo-1500995617113-cf789362a3e1?q=80&w=600",
+    "isHot": true,
+    "createdAt": "2026-05-28T14:30:00.000Z"
   },
   {
-    "title": "Game Spotlight: 'Mystic Realms'",
-    "content": "Discover the enchanting world of 'Mystic Realms' in this week's spotlight feature. A must-play for RPG fans!",
-    "createdAt": "2024-03-06T17:30:00.000Z"
+    "title": "אליפות הסייבר הארצית נפתחת להרשמה מוקדמת",
+    "excerpt": "האירוע המרכזי של הקיץ מפגיש את הקבוצות המובילות בארץ לקרב על תואר אלוף ישראל ופרס כספי ענק. בדקו את תנאי הסף והגישו מועמדות.",
+    "category": "Event",
+    "image": "https://images.unsplash.com/photo-1542751172-88511c31a209?q=80&w=600",
+    "isHot": true,
+    "createdAt": "2026-05-26T11:00:00.000Z"
   },
   {
-    "title": "Performance Optimization",
-    "content": "We've optimized our servers to reduce load times and improve overall performance across the site.",
-    "createdAt": "2024-03-05T14:00:00.000Z"
+    "title": "השקת מערכת הפוסטים ועריכת התוכן המשודרגת (גרסה 2.4.0)",
+    "excerpt": "העיצוב החדש והעתידני של מודול ניהול החדשות עלה רשמית לאוויר, כולל סינון מתקדם, ארכיטקטורת Infinite Query לגלילה מהירה וניהול קטגוריות מורחב.",
+    "category": "Update",
+    "image": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600",
+    "isHot": false,
+    "createdAt": "2026-05-25T08:00:00.000Z"
   },
   {
-    "title": "New Feature: Game Recommendations",
-    "content": "Based on your play history, we now offer personalized game recommendations to help you discover new favorites.",
-    "createdAt": "2024-03-04T10:00:00.000Z"
+    "title": "חבילת הרחבה חינמית הושקה למשחק האסטרטגיה הפופולרי",
+    "excerpt": "מפות חדשות, 3 דמויות גיבורים ייחודיות ומצב משחק 'הישרדות נגד גלים' זמינים כעת להורדה לכל מי שמחזיק במשחק הבסיס. היכנסו לפרטים.",
+    "category": "Update",
+    "image": "https://images.unsplash.com/photo-1611996575749-79a3a250f948?q=80&w=600",
+    "isHot": false,
+    "createdAt": "2026-05-22T17:40:00.000Z"
   },
   {
-    "title": "Holiday Event Announced",
-    "content": "Join us for our upcoming holiday event with exclusive in-game rewards and festive challenges!",
-    "createdAt": "2024-03-03T12:30:00.000Z"
+    "title": " Elden Ring: Shadow of the Erdtree שובר שיאי מכירות",
+    "excerpt": "חבילת ההרחבה המסיבית עוקפת את כל הציפיות והופכת ל-DLC הנמכר ביותר בהיסטוריה בפרק זמן של שבוע, למרות תלונות השחקנים על רמת קושי חסרת רחמים.",
+    "category": "Games",
+    "image": "https://images.unsplash.com/photo-1612287230202-1bf1d85d1bdf?q=80&w=600",
+    "isHot": true,
+    "createdAt": "2026-05-20T13:15:00.000Z"
   },
   {
-    "title": "Community Spotlight",
-    "content": "This month, we're highlighting some of our most active community members and their favorite games.",
-    "createdAt": "2024-03-02T16:45:00.000Z"
+    "title": "ספק האינטרנט חווה ניתוקים? מדריך אופטימיזציית ראוטר לגיימרים",
+    "excerpt": "חווים לאגים וקפיצות פינג באמצע משחק ברשת? אספנו עבורכם את הגדרות ה-DNS, ה-MTU וניהול ערוצי התדרים הטובים ביותר להפחתת עומסים ב-VDSL ובסיבים.",
+    "category": "Feature",
+    "image": "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?q=80&w=600",
+    "isHot": false,
+    "createdAt": "2026-05-18T10:00:00.000Z"
   },
   {
-    "title": "New Game Release: 'Skyward Adventures'",
-    "content": "'Skyward Adventures' is now available! Explore breathtaking landscapes and embark on epic quests.",
-    "createdAt": "2024-03-01T09:00:00.000Z"
+    "title": "הנחה בלעדית לחברי הקהילה על חומרת גיימינג מבית WD",
+    "excerpt": "בשיתוף פעולה מיוחד, השגנו לכם קופון הנחה מוגבל בזמן לרכישת כוננים קשיחים חיצוניים ו-SSD מהירים במיוחד לאחסון ספריית המשחקים שלכם.",
+    "category": "Sale",
+    "image": "https://images.unsplash.com/photo-1531403009284-440f080d1e12?q=80&w=600",
+    "isHot": false,
+    "createdAt": "2026-05-15T15:50:00.000Z"
   },
   {
-    "title": "Maintenance Completed",
-    "content": "Our scheduled maintenance is now complete. Thank you for your patience and happy gaming!",
-    "createdAt": "2024-02-29T22:00:00.000Z"
+    "title": "תיקון פאטץ' קטן 2.3.9 למניעת קריסות של כרטיסי מסך ישנים",
+    "excerpt": "גרסה זו מטפלת בבאג זיכרון גרפי (VRAM Leak) ספציפי שהתרחש בעת מעבר למסך מלא ברזולוציות שאינן סטנדרטיות. הבעיה נפתרה לחלוטין.",
+    "category": "Patch",
+    "image": "https://images.unsplash.com/photo-1591488320449-011701bb6704?q=80&w=600",
+    "isHot": false,
+    "createdAt": "2026-05-12T09:20:00.000Z"
+  },
+  {
+    "title": "ליגת ה-Clash Royale הרשמית של האתר נפתחת השבוע!",
+    "excerpt": "הכנתם כבר את הדקים שלכם? טורניר מוקדמות פתוח לכולם מתחיל ברביעי. חוקים נוקשים נגד שימוש בבוטים, פרסים כספיים למקומות 1-3.",
+    "category": "Event",
+    "image": "https://images.unsplash.com/photo-1553481187-be93c21490a9?q=80&w=600",
+    "isHot": true,
+    "createdAt": "2026-05-09T18:00:00.000Z"
+  },
+  {
+    "title": "מנוע הגרפיקה Unreal Engine 5.5 מקבל שדרוג ביצועים מטורף",
+    "excerpt": "אפיק גיימס משחררת עדכון תוכנה ענק המקל על מפתחי משחקים עצמאיים לייצא כותרים בקצב פריימים יציב מבלי לפגוע באיכות התאורה הדינמית.",
+    "category": "Games",
+    "image": "https://images.unsplash.com/photo-1580234810907-b40315b76418?q=80&w=600",
+    "isHot": false,
+    "createdAt": "2026-05-06T11:45:00.000Z"
+  },
+  {
+    "title": "הנחות מוקדמות על כותרי סתיו: הזמנה מראש בחצי מחיר",
+    "excerpt": "רק ל-48 השעות הקרובות, פתחנו אפשרות לרכישת מפתחות דיגיטליים למשחקים שיצאו בהמשך השנה בהנחה משמעותית. המלאי מוגבל.",
+    "category": "Sale",
+    "image": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=600",
+    "isHot": false,
+    "createdAt": "2026-05-03T14:10:00.000Z"
+  },
+  {
+    "title": "מערכת הודעות במייל מותאמת אישית לכל משתמש",
+    "excerpt": "סיימנו להטמיע את תשתית Resend החדשה. מעתה תוכלו לבחור לקבל התראות ישירות למייל רק על קטגוריות משחקים ועדכונים שבאמת מעניינים אתכם.",
+    "category": "Feature",
+    "image": "https://images.unsplash.com/photo-1557200134-90327ee9fafa?q=80&w=600",
+    "isHot": false,
+    "createdAt": "2026-05-01T09:00:00.000Z"
   }
 ]

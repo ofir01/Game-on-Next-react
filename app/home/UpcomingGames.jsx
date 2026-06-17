@@ -11,7 +11,7 @@ export default function UpcomingGames({ upcomingGames = [] }) {
                     {games.map((game) => (
                         <Link
                             key={game?.title}
-                            href={game?.title}
+                            href={`/games/${game?.title}`}
                             className="grid gap-4 border-t border-white/10 p-5 first:border-t-0 md:grid-cols-[120px_1fr_auto]"
                         >
                             <div className="font-mono text-sm font-black uppercase tracking-[0.18em] text-lime-300">

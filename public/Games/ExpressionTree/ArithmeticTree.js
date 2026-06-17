@@ -15,6 +15,15 @@ const rightCount = leftCount; // התחל קבוע עם הערך של הכפתו
 
 let leftCounts = leftCount; // שינוי הערך של הכפתור
 let rightCounts = rightCount; // שינוי הערך של הכפתור
+gameSessionActions = window.GameSessionEvents?.createActions({
+    getData: () => ({
+        level: Level,
+        attemptsLeft: experience,
+        target: result,
+        leftRemaining: leftCounts,
+        rightRemaining: rightCounts,
+    }),
+});
 
 refreshTree();
 
@@ -192,14 +201,14 @@ document.getElementById("Check").addEventListener("click", () => {
         if (result == calc(treeRoot)) {
             alert("✅ Correct! The result matches the calculation.");
             document.getElementById("exercise").innerHTML += " " +result;
-            VictoryGame();//אתחול המשחק
+            VictoryGame('win');//אתחול המשחק
         } else {
             alert(`❌ Incorrect! The result does not match the calculation.\nAttempts left: ${experience}`);
             experience--;
         }
     } else{
         alert("❌ The number of attempts is over, start a new game 🎮!!!");
-        VictoryGame()
+        VictoryGame('loss')
     }
     
 });
@@ -208,6 +217,14 @@ document.getElementById("Check").addEventListener("click", () => {
 
 
 //ניצחון
-function VictoryGame() {
-    window.location.href = "GameMenu.html"; //מעבר לדף הניצחון
+function VictoryGame(result = 'win') {
+    gameSessionActions?.finish(result, {
+        level: Level,
+        attemptsLeft: experience,
+        target: result,
+        leftRemaining: leftCounts,
+        rightRemaining: rightCounts,
+    }).finally(() => {
+        window.location.href = `GameMenu.html${window.location.search}`; //מעבר לדף הניצחון
+    });
 }

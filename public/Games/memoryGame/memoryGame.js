@@ -87,6 +87,14 @@ let cardSet = Mode(difficulty);
 let shuffledCards, attemptsCount, successesCount, flippedCards;
 const attempts = document.getElementById('attempts');
 const successes = document.getElementById('successes');
+gameSessionActions = window.GameSessionEvents?.createActions({
+    getData: () => ({
+        difficulty,
+        attemptsLeft: attemptsCount,
+        matches: successesCount,
+        totalPairs: shuffledCards?.length ? shuffledCards.length / 2 : 0,
+    }),
+});
 
 //ההגרלה
 function shuffleArray(array) {
@@ -149,6 +157,11 @@ function checkMatch() {
         attempts.textContent = `ניסיונות: ${--attemptsCount}`;
 
         if (attemptsCount <= 0) {
+            gameSessionActions?.finish('loss', {
+                difficulty,
+                attemptsLeft: attemptsCount,
+                matches: successesCount,
+            });
             alert('המשחק נגמר! 😢');
             document.querySelector('.game').classList.add('gameOver');
         }
@@ -156,12 +169,18 @@ function checkMatch() {
     flippedCards = [];
 
     if (document.querySelectorAll('.matched').length === shuffledCards.length) {
+        gameSessionActions?.finish('win', {
+            difficulty,
+            attemptsLeft: attemptsCount,
+            matches: successesCount,
+        });
         alert('Win! 🎉');
     }
 }
 
 function resetGame() {
     initGame();
+    gameSessionActions?.start();
 }
 
 initGame();

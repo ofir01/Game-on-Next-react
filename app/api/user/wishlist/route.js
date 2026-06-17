@@ -1,14 +1,13 @@
 import { NextResponse } from 'next/server';
-import { headers } from 'next/headers';
 import { UserWishlistService } from '../../../../services/server/UserWishlistService';
+import { getUserId } from '../../../../utils/verification';
 
 /**
  * GET /api/user/wishlist
  * מחזיר או מפה (Map) או רשימת משחקים מלאה
  */
 export async function GET(req) {
-    const headerList = await headers();
-    const userId = headerList.get('x-user-id');
+    const userId = await getUserId();
     if (!userId) return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
 
     try {
@@ -41,8 +40,7 @@ export async function GET(req) {
  * מבצע Toggle (הוספה/הסרה)
  */
 export async function POST(req) {
-    const headerList = await headers();
-    const userId = headerList.get('x-user-id');
+    const userId = await getUserId();
     if (!userId) return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
 
 

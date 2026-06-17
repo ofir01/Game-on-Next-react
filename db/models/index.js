@@ -37,6 +37,7 @@ db.GamePlayStats = require('./GamePlayStats')(sequelize, Sequelize.DataTypes);
 db.News = require('./News')(sequelize, Sequelize.DataTypes);
 db.UserGame = require('./UserGame')(sequelize, Sequelize.DataTypes);
 db.GameSession = require('./GameSession')(sequelize, Sequelize.DataTypes);
+db.HighScore = require('./HighScore')(sequelize, Sequelize.DataTypes);
 db.GameImages = require('./GameImages')(sequelize, Sequelize.DataTypes);
 db.Wishlist = require('./Wishlist')(sequelize, Sequelize.DataTypes);
 db.ContactMessage = require('./ContactMessage')(sequelize, Sequelize.DataTypes);
@@ -57,7 +58,6 @@ db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
 module.exports = db;
-
 
 
 

@@ -1,33 +1,50 @@
 "use client";
-import { Play, Heart, Eye, Share2, ShoppingCart, Clock, Lock } from 'lucide-react';
-import Link from 'next/link';
-import DataHandler from '../Component/DataHandler/DataHandler.jsx';
-import { useGameSlug } from "../hooks/useGame";
+import { Play, Heart, Eye, ShoppingCart, Clock, Lock } from 'lucide-react';
+import DataHandler from '../../Component/DataHandler/DataHandler.jsx';
+import { useGameSlug } from "../../hooks/useGame";
 import { useParams } from 'next/navigation';
 import Description from './Description';
-import GameScreenshots from '../Component/Screenshots/GameScreenshots';
-import Tabs from '../Component/Tabs/Tabs';
-import Card from '../Component/Card/Card';
-import Breadcrumbs from '../Component/Breadcrumbs/Breadcrumbs';
-import GameComments from '../Component/Comment/GameComments';
-import { useAuth } from '../Context/AuthContext';
-import Wishlist from '../Component/Wishlist/Wishlist';
-import FormatDate from '../Component/FormatDate/FormatDate';
-import ShareButton from '../Component/ShareButton/ShareButton'
+import GameScreenshots from '../../Component/Screenshots/GameScreenshots';
+import Tabs from '../../Component/Tabs/Tabs';
+import Card from '../../Component/Card/Card';
+import Breadcrumbs from '../../Component/Breadcrumbs/Breadcrumbs';
+import GameComments from '../../Component/Comment/GameComments';
+import { useAuth } from '../../Context/AuthContext';
+import Wishlist from '../../Component/Wishlist/Wishlist';
+import FormatDate from '../../Component/FormatDate/FormatDate';
+import ShareButton from '../../Component/ShareButton/ShareButton';
+import FuturisticGameResultsTable from './FuturisticGameResultsTable';
+import { useGameTopWinners } from '../../hooks/useGameSession';
+
+import Link from 'next/link';
+
+const storeGameSessionIdentity = (gameId) => {
+    if (!gameId || typeof window === 'undefined') return;
+
+    window.sessionStorage.setItem(
+        'game-session:identity',
+        JSON.stringify({ gameId: Number(gameId) })
+    );
+};
 
 export default function GameDetailsPage() {
     const params = useParams();
     const { user } = useAuth();
     const { data: gamesData, isLoading: isGamesLoading, isError: isErrorHome } = useGameSlug(params.Slug);
+    const { data: topWinners = [], isLoading: isTopWinnersLoading, isError: isTopWinnersError, } = useGameTopWinners({ gameId: gamesData?.id });
 
     // הגדרת הטאבים
     const myTabs = {
         "Description": <Description description={gamesData?.description} />,
         "Screenshots": <GameScreenshots screenshots={gamesData?.screenshots} />,
-        "About": (
-            <p className="text-gray-400 p-4">
-                מידע נוסף על {gamesData?.title} יפורסם כאן בקרוב.
-            </p>
+        "Top Winners": (
+            <FuturisticGameResultsTable
+                data={topWinners}
+                title="Top Players"
+                subtitle="Top 3 winning scores"
+                isLoading={isTopWinnersLoading}
+                isError={isTopWinnersError}
+            />
         ),
     };
 
@@ -38,13 +55,9 @@ export default function GameDetailsPage() {
     const status = gamesData?.status !== ('OUT OF STOCK' || 'Coming Soon');
 
     // לוגיקת ניווט לכפתור הפעולה
-    const playButtonHref = gamesData?.gameUrl;
-  
+    const playButtonHref = gamesData?.gameUrl || '#';
 
 
-    /*const playButtonHref = isPaid
-        ? `/Checkout/${gamesData?.id}`
-        : (gamesData?.gameUrl ? `${gamesData.gameUrl}?gameId=${gamesData.id}` : '#');*/
 
     return (
         <DataHandler
@@ -115,6 +128,7 @@ export default function GameDetailsPage() {
                                 {isReleased && status ? (
                                     <Link
                                         href={playButtonHref}
+                                        onClick={() => storeGameSessionIdentity(gamesData?.id)}
                                         className={`relative px-10 py-4 ${isPaid
                                             ? 'bg-green-500 hover:bg-green-400'
                                             : 'bg-cyan-500 hover:bg-cyan-400'
@@ -200,6 +214,8 @@ export default function GameDetailsPage() {
                         </div>
                     </div>
                 </div>
+
+
 
                 {/* ----------------- CONTENT GRID ----------------- */}
                 <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-3 gap-12">

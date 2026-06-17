@@ -1,5 +1,6 @@
 import { sendMessage } from '../../utils/messages';
 import { Resend } from 'resend';
+
 const resend = new Resend(process.env.RESEND_API_KEY);
 const db = require('../../db/models');
 const { Op } = require('sequelize');
@@ -100,5 +101,8 @@ export const UserService = {
         return await db.User.destroy({
             where: { email: email }
         });
+    },
+    getUserById: async (userId) => {
+        return await db.User.findByPk(userId) || null;
     }
 };

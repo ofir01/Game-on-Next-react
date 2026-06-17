@@ -62,7 +62,7 @@ export default function GameModel3D({ games }) {
                 {games?.slice(0, 5).map((game, index) => (
                     <Link
                         key={game?.title}
-                        href={game?.title}
+                        href={`/games/${game?.title}`}
                         className={`gameon-card-3d gameon-card-3d-${index}`}
                         style={{
                             "--accent": game?.accent,

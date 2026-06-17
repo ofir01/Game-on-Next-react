@@ -1,22 +1,23 @@
 // hooks/useNews.js
 "use client";
-import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useInfiniteQuery, useMutation, useQueryClient, useQuery } from '@tanstack/react-query';
 import { newsService } from '../../services/client/newsService';
+import { toast } from 'sonner';
 
 export const useNews = (limit = 5, searchTerm = "") => {
   const queryClient = useQueryClient();
 
   const infiniteQuery = useInfiniteQuery({
-    queryKey: ['news', 'infinite'], 
-    
+    queryKey: ['news', 'infinite'],
+
     queryFn: async ({ pageParam = 1 }) => {
       const response = await newsService.get({ page: pageParam, limit });
       // וודא שה-newsService מחזיר את response.data או את האובייקט עצמו
-      return response; 
+      return response;
     },
-    
+
     initialPageParam: 1,
-    
+
     // --- התיקון כאן: חילוץ מתוך אובייקט ה-pagination החדש ---
     getNextPageParam: (lastPage) => {
       // בודק אם יש עוד עמודים לפי הנתונים מהשרת
@@ -27,7 +28,7 @@ export const useNews = (limit = 5, searchTerm = "") => {
     // --- התיקון כאן: שיטוח נכון של המפתח news ---
     select: (data) => {
       const allItems = data.pages.flatMap(page => page.news || []);
-      
+
       return allItems
         .filter(item =>
           item.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -62,9 +63,39 @@ export const useNews = (limit = 5, searchTerm = "") => {
 
   return {
     ...infiniteQuery,
-    allNews: infiniteQuery.data || [], 
+    allNews: infiniteQuery.data || [],
     addNews: addMutation,
     updateNews: updateMutation,
     deleteNews: deleteMutation
   };
 };
+
+
+
+
+//שליפת כתבה בודדת
+export const useSingleNews = (Slug) => {
+  return useQuery({
+    queryKey: ['news', 'single', Slug],
+    queryFn: async () => {
+      const response = await newsService.getBySlug(Slug);
+      return response;
+    },
+    enabled: !!Slug, // ירוץ רק אם יש slug
+  });
+};
+
+
+
+
+//שולף את כל הקטגוריות האפשריות בחדשות
+export const getNewsCategories = () => {
+  return [
+    { value: 'Update' },
+    { value: 'Event' },
+    { value: 'Sale' },
+    { value: 'Patch' },
+    { value: 'Games' },
+    { value: 'Feature' }
+  ];
+}

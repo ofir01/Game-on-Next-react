@@ -68,8 +68,17 @@ const PriceDisplay = ({ price, discount, isFree }) => {
         /* שומר מקום ריק כשאין הנחה כדי שהגובה לא ישתנה */
         <div className="h-4" />
       )}
-      <span className={`font-black text-xl tracking-tighter ${hasDiscount ? 'text-cyan-400' : 'text-white'}`}>
-        ${Number(finalPrice).toFixed(2)}
+      <span
+        className={`font-black text-xl tracking-tighter ${Number(finalPrice) === 0
+            ? "text-green-400"
+            : hasDiscount
+              ? "text-cyan-400"
+              : "text-white"
+          }`}
+      >
+        {Number(finalPrice) === 0
+          ? "FREE"
+          : `$${Number(finalPrice).toFixed(2)}`}
       </span>
     </div>
   );
@@ -130,7 +139,7 @@ export default function GameCard({ game, variant = 'default' }) {
 
       {/* 1: Visual Container (תמונה + שכבות מידע) */}
       <div className={`relative w-full overflow-hidden ${isCompact ? 'h-44' : 'h-52'}`}>
-        <Link href={`/${game.title}`} className="block w-full h-full cursor-pointer">
+        <Link href={`/games/${game?.title}`} className="block w-full h-full cursor-pointer">
           <SmartImage
             url={game.imageUrl}
             alt={game.title}
@@ -204,7 +213,7 @@ export default function GameCard({ game, variant = 'default' }) {
 
         {/* כותרת ומחיר */}
         <div className="flex justify-between items-start gap-3 mb-2">
-          <Link href={`/${game.title}`} className="flex-1 group/title">
+          <Link href={`/games/${game?.title}`} className="flex-1 group/title">
             <h3 className="text-xl font-bold text-white leading-tight line-clamp-2 group-hover/title:text-cyan-400 transition-colors">
               {game.title}
             </h3>

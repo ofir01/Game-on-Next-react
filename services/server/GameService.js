@@ -65,7 +65,13 @@ export const GameService = {
     },
 
     // שליפת ID של משחק לפי Slug (כותרת) - שימושי ליצירת קישורים או בדיקות
-    getGameId: async (slug) => {
+    getGameId: async (id) => {
+        const game = await db.Games.findByPk(id);
+        return game ? game.id : null;
+    },
+
+    // שליפת ID של משחק לפי Slug (כותרת) - שימושי ליצירת קישורים או בדיקות
+    getGameSlug: async (slug) => {
         const game = await db.Games.findOne({ where: { title: slug } });
         return game ? game.id : null;
     },
@@ -73,7 +79,7 @@ export const GameService = {
 
 
     /**************************************************************
-העמוד שמציג פרטי המשחק המלאים,,רייטנג, תמונות, קטגוריות ומשחקים דומים
+העמוד שמציג פרטי המשחק המלאים, תמונות, קטגוריות ומשחקים דומים
     ***********************************************************/
     // שליפת משחק לפי Slug כולל סטטיסטיקות, תמונות וקטגוריות
     getGameBySlug: async (slug) => {
@@ -178,7 +184,7 @@ export const GameService = {
     העמוד שמציג את החיפוש מתקדם
        ***********************************************************/
     // חיפוש מתקדם - מחזיר משחקים לפי כל הקריטריונים שהמשתמש בחר (שם, קטגוריות, מיון, טווח מחיר)
-    getAdvancedSearch: async ({ q, categories, sort, page, limit, minPrice, maxPrice }) => {
+    getAdvancedSearch: async ({ q, categories, sort, page = 1, limit = 10, minPrice, maxPrice }) => {
         const offset = (page - 1) * limit;
         let whereClause = {};
 
@@ -260,7 +266,6 @@ export const GameService = {
         const games = await db.Games.findAll({
             ...getHardQuery(),
             limit: limit,
-            // שימוש במילון כדי למנוע טעויות הקלדה ולשנות בקלות בעתיד
             order: [[{ model: db.GamePlayStats, as: 'stats' }, 'playCount', 'DESC']]
         });
         return games.map(formatGameCard);

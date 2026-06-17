@@ -24,7 +24,7 @@ export default function TopRatedGames({ topRatedGames }) {
                     <div className="mt-8 flex items-center justify-between">
                         <p className="text-3xl font-black text-amber-100">{game?.price}</p>
                         <Link
-                            href={game?.title}
+                            href={`/games/${game?.title}`}
                             className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-white px-4 text-sm font-black text-black transition hover:bg-amber-200 focus:outline-none focus:ring-4 focus:ring-amber-200/30 active:scale-[0.98]"
                         >
                             <Play className="h-4 w-4 fill-black" />

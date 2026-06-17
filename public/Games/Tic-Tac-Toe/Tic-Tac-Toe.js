@@ -15,6 +15,15 @@ const scoreElement = document.getElementById("score"); // כותרת הניקו�
 const playerXPanel = document.getElementById("playerX-panel"); // החלקים בצדדים
 const playerOPanel = document.getElementById("playerO-panel"); // החלקים בצדדים
 let gameActive = true; // עוצר את המשחק
+gameSessionActions = window.GameSessionEvents?.createActions({
+    getData: () => ({
+        currentPlayer,
+        scores,
+        board,
+        availablePieces,
+        gameActive,
+    }),
+});
 
 // מכריז תור של מי
 function updateStatus() {
@@ -101,6 +110,11 @@ function handleMove(event) {
             updateScore(); // עדכון הניקוד
             highlightWinner(winnerCells); // צבע הסט
             scores[selectedPiece.player]++;
+            gameSessionActions?.finish('win', {
+                winner: selectedPiece.player,
+                scores,
+                board,
+            });
             selectedPiece = null;
             statusElement.textContent = `! ${currentPlayer} ניצח השחקן!`;
             lockAllPieces();// נעילת הכלים
@@ -112,6 +126,11 @@ function handleMove(event) {
             statusElement.className = "draw"; // צבע אפור
             scores.draws++;
             updateScore();
+            gameSessionActions?.finish(undefined, {
+                draw: true,
+                scores,
+                board,
+            });
             gameActive = false;
             selectedPiece = null;
             return;
@@ -172,6 +191,7 @@ function resetGame() {
     updateStatus();
     createBoard();
     createPieces();
+    gameSessionActions?.start();
 }
 
 //נעילת כל החלקים

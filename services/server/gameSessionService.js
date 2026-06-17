@@ -3,35 +3,53 @@ import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
 const db = require('../../db/models');
 
-const ACTIVE_STATUSES = ['started', 'playing', 'paused'];
-const STALE_CANDIDATE_STATUSES = ['started', 'playing'];
-const TERMINAL_STATUSES = ['finished', 'abandoned'];
-const SESSION_STATUSES = [...ACTIVE_STATUSES, ...TERMINAL_STATUSES];
 const SESSION_RESULTS = ['won', 'lost'];
-const GAME_EVENTS = ['STARTED', 'FINISHED', 'ABORTED', 'PAUSED', 'RESUMED'];
+const GAME_EVENTS = ['STARTED', 'FINISHED', 'ABORTED'];
 
 const USER_GAME_STATUS_BY_SESSION_STATUS = {
     started: 'Playing',
-    playing: 'Playing',
-    paused: 'Playing',
     finished: 'Completed',
     abandoned: 'Dropped',
 };
 
-const HEARTBEAT_TIMEOUT_MS = 2 * 60 * 1000;
-
 const toPositiveInt = (value, fieldName) => {
     const number = Number(value);
+
     if (!Number.isInteger(number) || number <= 0) {
         const error = new Error(`${fieldName} must be a positive integer`);
         error.status = 400;
         throw error;
     }
+
     return number;
 };
 
+const assertEventData = (data) => {
+    if (data === undefined || data === null) return null;
+
+    if (Array.isArray(data) || typeof data !== 'object') {
+        const error = new Error('data must be an object');
+        error.status = 400;
+        throw error;
+    }
+
+    return data;
+};
+
+const assertGameEvent = (event) => {
+    const safeEvent = String(event || '').toUpperCase();
+
+    if (!GAME_EVENTS.includes(safeEvent)) {
+        const error = new Error(`event must be one of: ${GAME_EVENTS.join(', ')}`);
+        error.status = 400;
+        throw error;
+    }
+
+    return safeEvent;
+};
+
 const assertSessionResult = (result) => {
-    if (result === undefined || result === null) return undefined;
+    if (result === undefined || result === null) return null;
 
     const normalizedResult = String(result).toLowerCase();
     const resultMap = {
@@ -55,28 +73,25 @@ const assertSessionResult = (result) => {
     return safeResult;
 };
 
-const assertGameEvent = (event) => {
-    const safeEvent = String(event || '').toUpperCase();
+const resolveGame = async (gameId, transaction) => {
+    const safeGameId = toPositiveInt(gameId, 'gameId');
+    const game = await db.Games.findByPk(safeGameId, { transaction });
 
-    if (!GAME_EVENTS.includes(safeEvent)) {
-        const error = new Error(`event must be one of: ${GAME_EVENTS.join(', ')}`);
-        error.status = 400;
+    if (!game) {
+        const error = new Error('Game not found');
+        error.status = 404;
         throw error;
     }
 
-    return safeEvent;
+    return game;
 };
 
-const assertEventData = (data) => {
-    if (data === undefined || data === null) return null;
+const getScore = (data) => {
+    if (typeof data === 'number') return data;
+    if (typeof data?.score === 'number') return data.score;
 
-    if (Array.isArray(data) || typeof data !== 'object') {
-        const error = new Error('data must be an object');
-        error.status = 400;
-        throw error;
-    }
-
-    return data;
+    const parsedScore = Number(data?.score);
+    return Number.isFinite(parsedScore) ? parsedScore : null;
 };
 
 const serializeSession = (session) => {
@@ -85,23 +100,28 @@ const serializeSession = (session) => {
 
     return {
         id: plain.id,
-        userId: plain.userId,
         gameId: plain.gameId,
         status: plain.status,
-        data: plain.data,
         result: plain.result,
+        data: plain.data,
+        durationSeconds: plain.durationSeconds,
         createdAt: plain.createdAt,
         updatedAt: plain.updatedAt,
-        durationSeconds: plain.durationSeconds,
     };
 };
 
-const assertSessionStatus = (status) => {
-    if (!SESSION_STATUSES.includes(status)) {
-        const error = new Error(`status must be one of: ${SESSION_STATUSES.join(', ')}`);
-        error.status = 400;
-        throw error;
-    }
+const serializeHighScore = (highScore) => {
+    const plain = highScore?.get ? highScore.get({ plain: true }) : highScore;
+    if (!plain) return null;
+
+    return {
+       // id: plain.id,
+       // gameId: plain.gameId,
+        name: plain.user?.name || 'Player',
+        score: plain.score,
+        data: plain.data,
+        updatedAt: plain.updatedAt,
+    };
 };
 
 const touchUserGame = async (userId, gameId, sessionStatus, transaction) => {
@@ -118,9 +138,7 @@ const touchUserGame = async (userId, gameId, sessionStatus, transaction) => {
         transaction,
     });
 
-    if (sessionStatus === 'abandoned' && userGame.status === 'Completed') {
-        return;
-    }
+    if (sessionStatus === 'abandoned' && userGame.status === 'Completed') return;
 
     if (!created && userGame.status !== userGameStatus) {
         userGame.status = userGameStatus;
@@ -143,150 +161,128 @@ const incrementPlayStats = async (gameId, transaction) => {
     await stats.save({ transaction });
 };
 
-const isStaleSession = (session) => (
-    STALE_CANDIDATE_STATUSES.includes(session.status)
-    && session.updatedAt
-    && new Date(session.updatedAt).getTime() < Date.now() - HEARTBEAT_TIMEOUT_MS
-);
+const updateHighScore = async (userId, gameId, data, transaction) => {
+    const score = getScore(data);
+    if (score === null) return null;
 
-const isDeadlockError = (error) => (
-    error?.original?.errno === 1213
-    || error?.parent?.errno === 1213
-    || error?.original?.code === 'ER_LOCK_DEADLOCK'
-    || error?.parent?.code === 'ER_LOCK_DEADLOCK'
-);
+    const [highScore, created] = await db.HighScore.findOrCreate({
+        where: { userId, gameId },
+        defaults: {
+            score,
+            data,
+        },
+        transaction,
+        lock: true,
+    });
 
-const withDeadlockRetry = async (operation, retries = 2) => {
-    try {
-        return await operation();
-    } catch (error) {
-        if (!isDeadlockError(error) || retries <= 0) throw error;
-
-        await new Promise(resolve => setTimeout(resolve, 80));
-        return withDeadlockRetry(operation, retries - 1);
+    if (!created && score > highScore.score) {
+        highScore.score = score;
+        highScore.data = data;
+        await highScore.save({ transaction });
     }
+
+    return highScore;
 };
 
 export const gameSessionService = {
-    getActive: async (userId, gameId) => {
-        const safeUserId = toPositiveInt(userId, 'userId');
-        const where = {
-            userId: safeUserId,
-            status: ACTIVE_STATUSES,
-        };
+    getTopWinners: async ({ gameId, limit = 3 } = {}) => {
+        const safeGameId = toPositiveInt(gameId, 'gameId');
+        const safeLimit = Math.min(toPositiveInt(limit, 'limit'), 20);
 
-        if (gameId !== undefined && gameId !== null) {
-            where.gameId = toPositiveInt(gameId, 'gameId');
-        }
+        await resolveGame(safeGameId);
 
-        const session = await db.GameSession.findOne({
-            where,
-            order: [['updatedAt', 'DESC']],
+        const highScores = await db.HighScore.findAll({
+            where: { gameId: safeGameId },
+            include: [{
+                model: db.User,
+                as: 'user',
+                attributes: ['name'],
+            }],
+            order: [['score', 'DESC'], ['updatedAt', 'ASC']],
+            limit: safeLimit,
         });
 
-        if (session && isStaleSession(session)) {
-            await gameSessionService.update(safeUserId, {
-                sessionId: session.id,
-                status: 'abandoned',
-            });
-            return null;
-        }
-
-        return serializeSession(session);
+        return highScores.map(serializeHighScore).filter(Boolean);
     },
 
     start: async (userId, { gameId } = {}) => {
         const safeUserId = toPositiveInt(userId, 'userId');
-        const safeGameId = toPositiveInt(gameId, 'gameId');
 
-        return withDeadlockRetry(async () => {
-            const game = await db.Games.findByPk(safeGameId);
-            if (!game) {
-                const error = new Error('Game not found');
-                error.status = 404;
-                throw error;
-            }
-
-            const activeSession = await db.GameSession.findOne({
-                where: {
-                    userId: safeUserId,
-                    gameId: safeGameId,
-                    status: ACTIVE_STATUSES,
-                },
-                order: [['updatedAt', 'DESC']],
-            });
-
-            if (activeSession && !isStaleSession(activeSession)) {
-                if (activeSession.status === 'started') {
-                    activeSession.status = 'playing';
-                }
-
-                await activeSession.save();
-                return serializeSession(activeSession);
-            }
-
-            if (activeSession) {
-                await db.GameSession.update(
-                    {
-                        status: 'abandoned',
-                    },
-                    {
-                        where: { id: activeSession.id },
-                    }
-                );
-            }
-
-            await db.GameSession.update(
-                {
-                    status: 'abandoned',
-                },
-                {
-                    where: {
-                        userId: safeUserId,
-                        gameId: safeGameId,
-                        status: ACTIVE_STATUSES,
-                    },
-                }
-            );
+        return db.sequelize.transaction(async (transaction) => {
+            const game = await resolveGame(gameId, transaction);
 
             const session = await db.GameSession.create({
                 userId: safeUserId,
-                gameId: safeGameId,
+                gameId: game.id,
                 status: 'started',
                 data: null,
                 result: null,
-            });
+            }, { transaction });
 
-            await touchUserGame(safeUserId, safeGameId, 'started');
-            await incrementPlayStats(safeGameId);
+            await touchUserGame(safeUserId, game.id, 'started', transaction);
+            await incrementPlayStats(game.id, transaction);
 
             return serializeSession(session);
         });
     },
 
-    update: async (userId, { sessionId, gameId, status = 'playing', data, result } = {}) => {
+    finish: async (userId, { sessionId, gameId, data, result } = {}) => {
         const safeUserId = toPositiveInt(userId, 'userId');
-        const safeSessionId = sessionId ? toPositiveInt(sessionId, 'sessionId') : null;
-        const safeGameId = gameId ? toPositiveInt(gameId, 'gameId') : null;
         const safeData = assertEventData(data);
-        const safeResult = assertSessionResult(result);
-
-        assertSessionStatus(status);
-
-        if (!safeSessionId && !safeGameId) {
-            const error = new Error('sessionId or gameId is required');
-            error.status = 400;
-            throw error;
-        }
+        const safeResult = assertSessionResult(result) || 'lost';
 
         return db.sequelize.transaction(async (transaction) => {
-            const where = safeSessionId
-                ? { id: safeSessionId, userId: safeUserId }
-                : { userId: safeUserId, gameId: safeGameId, status: ACTIVE_STATUSES };
+            const game = await resolveGame(gameId, transaction);
+            let session = null;
 
+            if (sessionId) {
+                session = await db.GameSession.findOne({
+                    where: {
+                        id: toPositiveInt(sessionId, 'sessionId'),
+                        userId: safeUserId,
+                        gameId: game.id,
+                    },
+                    transaction,
+                    lock: true,
+                });
+            }
+
+            if (!session) {
+                session = await db.GameSession.create({
+                    userId: safeUserId,
+                    gameId: game.id,
+                    status: 'started',
+                    data: null,
+                    result: null,
+                }, { transaction });
+            }
+
+            session.status = 'finished';
+            session.result = safeResult;
+            session.data = safeData;
+            await session.save({ transaction });
+
+            await touchUserGame(safeUserId, game.id, 'finished', transaction);
+
+            if (safeResult === 'won') {
+                await updateHighScore(safeUserId, game.id, safeData, transaction);
+            }
+
+            return serializeSession(session);
+        });
+    },
+
+    abandon: async (userId, { sessionId, gameId } = {}) => {
+        const safeUserId = toPositiveInt(userId, 'userId');
+
+        return db.sequelize.transaction(async (transaction) => {
+            const game = await resolveGame(gameId, transaction);
             const session = await db.GameSession.findOne({
-                where,
-                order: [['updatedAt', 'DESC']],
+                where: {
+                    id: toPositiveInt(sessionId, 'sessionId'),
+                    userId: safeUserId,
+                    gameId: game.id,
+                },
                 transaction,
                 lock: true,
             });
@@ -297,78 +293,27 @@ export const gameSessionService = {
                 throw error;
             }
 
-            if (TERMINAL_STATUSES.includes(session.status)) {
-                return serializeSession(session);
-            }
-
-            session.status = status;
-
-            if (safeData !== null) session.data = safeData;
-            if (status === 'finished') {
-                session.result = safeResult ?? session.result;
-            }
-            if (status === 'abandoned') {
-                session.result = null;
-            }
-
+            session.status = 'abandoned';
+            session.result = null;
             await session.save({ transaction });
-            await touchUserGame(safeUserId, session.gameId, status, transaction);
+
+            await touchUserGame(safeUserId, game.id, 'abandoned', transaction);
 
             return serializeSession(session);
         });
     },
 
-    handleEvent: async (userId, { gameId, event, data, result, sessionId } = {}) => {
-        const safeEvent = assertGameEvent(event);
-        const safeData = assertEventData(data);
+    handleEvent: async (userId, payload = {}) => {
+        const safeEvent = assertGameEvent(payload.event);
 
         if (safeEvent === 'STARTED') {
-            const session = await gameSessionService.start(userId, { gameId });
-
-            if (safeData) {
-                return gameSessionService.update(userId, {
-                    sessionId: session.id,
-                    status: 'playing',
-                    data: safeData,
-                });
-            }
-
-            return session;
+            return gameSessionService.start(userId, payload);
         }
 
-        const statusByEvent = {
-            FINISHED: 'finished',
-            ABORTED: 'abandoned',
-            PAUSED: 'paused',
-            RESUMED: 'playing',
-        };
+        if (safeEvent === 'FINISHED') {
+            return gameSessionService.finish(userId, payload);
+        }
 
-        return gameSessionService.update(userId, {
-            sessionId,
-            gameId,
-            status: statusByEvent[safeEvent],
-            data: safeData,
-            result,
-        });
-    },
-
-    markStaleSessionsAsAbandoned: async (olderThanMs = HEARTBEAT_TIMEOUT_MS) => {
-        const olderThan = new Date(Date.now() - olderThanMs);
-
-        const [count] = await db.GameSession.update(
-            {
-                status: 'abandoned',
-            },
-            {
-                where: {
-                    status: STALE_CANDIDATE_STATUSES,
-                    updatedAt: {
-                        [db.Sequelize.Op.lt]: olderThan,
-                    },
-                },
-            }
-        );
-
-        return { count };
+        return gameSessionService.abandon(userId, payload);
     },
 };

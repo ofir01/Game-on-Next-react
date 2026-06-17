@@ -75,6 +75,7 @@ module.exports = (sequelize, DataTypes) => {
         User.hasMany(models.UserGame, { foreignKey: 'userId', as: 'userRatings' });
 
         User.hasMany(models.GameSession, { foreignKey: 'userId', as: 'gameSessions' });
+        User.hasMany(models.HighScore, { foreignKey: 'userId', as: 'highScores' });
 
         User.hasMany(models.Comment, { foreignKey: 'userId', as: 'comments' })
 

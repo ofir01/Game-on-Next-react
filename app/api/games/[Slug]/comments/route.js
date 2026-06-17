@@ -10,7 +10,7 @@ export async function GET(req, { params }) {
     try {
         const { Slug } = await params;
         const { searchParams } = new URL(req.url);
-        const gameId = await GameService.getGameId(Slug);
+        const gameId = await GameService.getGameSlug(Slug);
         
         if (!gameId) return NextResponse.json({ error: "Game not found" }, { status: 404 });
 
@@ -35,7 +35,7 @@ export async function POST(req, { params }) {
         const { Slug } = await params;
         const body = await req.json();
         const userId = req.headers.get('x-user-id');
-        const gameId = await GameService.getGameId(Slug);
+        const gameId = await GameService.getGameSlug(Slug);
 
         if (!userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         if (!gameId) return NextResponse.json({ error: "Game not found" }, { status: 404 });

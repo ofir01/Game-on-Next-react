@@ -3,6 +3,7 @@
 import { motion, useReducedMotion, } from "framer-motion";
 import { Sparkles, } from "lucide-react";
 import { useHomeData } from "../hooks/useGame";
+import { useNews } from '../hooks/useNews';
 
 import StatsSection from "./StatsSection";
 import Libraries from "../Component/Libraries/Libraries.jsx";
@@ -13,6 +14,7 @@ import TopRatedGames from "./TopRatedGames.jsx";
 import UpcomingGames from "./UpcomingGames.jsx";
 import CommunitySection from "./CommunitySection.jsx";
 import HomeBottomSection from "./HomeBottomSection.jsx";
+import NewsSection from './NewsSection.jsx';
 
 
 
@@ -96,10 +98,10 @@ export function EmptySection({ title, text }) {
 
 
 
-
 export default function Home() {
   // כל נתוני הבית מגיעים דרך hook אחד כדי שהעמוד לא יכיר את כתובת ה-API ישירות.
   const { data, isError, isLoading } = useHomeData();
+  const { data: NewsData, isError: NewsisError, isLoading: NewsisLoading } = useNews();
 
   return (
     <main
@@ -115,6 +117,11 @@ export default function Home() {
 
       {/* סקציה ראשית */}
       <GamePortalScene featuredGames={data?.trending} />
+
+      <NewsSection
+        news={NewsData}
+        isLoading={NewsisLoading}
+      />
 
       {/* סקציה של סטטיסטיקות */}
       <StatsSection stats={data?.stats} />

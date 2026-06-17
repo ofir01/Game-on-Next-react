@@ -1,285 +1,371 @@
-
-
 'use client';
+
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Send, Sparkles, Gamepad2, Zap, Check, Ban } from 'lucide-react';
+import {
+  X,
+  Send,
+  MessageSquare,
+  RefreshCw,
+  AlertCircle,
+  Bot,
+  User,
+  Sparkles,
+  WandSparkles,
+  Gamepad2,
+  Newspaper,
+  Trophy,
+  Flame,
+} from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import { chatService } from '../../../services/client/chatService';
-import { toast } from 'sonner'
 
+const quickActions = [
+  {
+    icon: WandSparkles,
+    label: 'Writing Help',
+    value: 'Help me rewrite this clearly and professionally.',
+  },
+  {
+    icon: Gamepad2,
+    label: 'Game Details',
+    value: 'Give me details about this game.',
+  },
+  {
+    icon: Newspaper,
+    label: 'What’s New',
+    value: 'What is new on the site?',
+  },
+  {
+    icon: Trophy,
+    label: 'Top Games',
+    value: 'What are the top games right now?',
+  },
+  {
+    icon: Flame,
+    label: 'Trending',
+    value: 'Show me what is trending right now.',
+  },
+];
 
+export default function ChatAssistant() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [messages, setMessages] = useState([]);
+  const [input, setInput] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
-export default function ChatAssistant({ variant = "fixed", customWelcomeMessage = null }) {
-    const [isOpen, setIsOpen] = useState(false);
-    const [messages, setMessages] = useState([]);
-    const [input, setInput] = useState("");
-    const [isLoading, setIsLoading] = useState(false);
-    const [confirmingIndex, setConfirmingIndex] = useState(null);
+  const messagesEndRef = useRef(null);
+  const inputRef = useRef(null);
 
-    // 1. הוספת דגל לבדיקה אם אנחנו בדפדפן
-    const [mounted, setMounted] = useState(false);// דגל שמראה אם הקומפוננטה כבר רונדרה בצד הלקוח
-    const messagesEndRef = useRef(null);
+  const isChatMaxedOut = messages.length >= 8;
 
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
-    // 2. עדכון הדגל בטעינה ראשונה
-    useEffect(() => {
-        setMounted(true);
-    }, []);
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages, isLoading]);
 
+  const handleResetChat = () => {
+    setMessages([]);
+    setInput('');
+  };
 
-    const scrollToBottom = () => {
-        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-    };
+  const handleQuickAction = (value) => {
+    setInput(value);
+    setTimeout(() => inputRef.current?.focus(), 0);
+  };
 
-    useEffect(() => {
-        if (isOpen && messages.length === 0) {
-            const initialText = customWelcomeMessage || "היי גיימר! אני כאן כדי לעזור לך לנצח. מה עושים היום?";
-            setMessages([{ text: initialText, user: "bot" }]);
-        }
-    }, [isOpen, customWelcomeMessage, messages.length]);
+  const handleSendMessage = async () => {
+    if (!input.trim() || isChatMaxedOut) return;
 
-    useEffect(() => { scrollToBottom(); }, [messages, isLoading]);
+    const updatedMessages = [...messages, { role: 'user', content: input }];
 
-    const sendMessage = async () => {
-        if (!input.trim()) return;
+    setMessages(updatedMessages);
+    setInput('');
+    setIsLoading(true);
 
-        const currentInput = input;
-        const userMessage = { text: currentInput, user: "me" };
-        setMessages((prev) => [...prev, userMessage]);
-        setInput("");
-        setIsLoading(true);
+    try {
+      const response = await chatService.getAnswer(updatedMessages);
 
-        try {
-            const response = await chatService.getAnswer({ prompt: currentInput });
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: 'bot',
+          content: response?.text || 'לא התקבלה תשובה מהשרת.',
+        },
+      ]);
+    } catch (error) {
+      console.error('Chat Error:', error);
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: 'bot',
+          content: 'אופס, משהו השתבש בחיבור. נסה שוב.',
+        },
+      ]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-            console.log("Server Response:", response);
+  if (!mounted) return null;
 
-            const botText = response?.text || "משהו השתבש בקבלת התשובה";
-            const isActionMessage = response?.isAction || false;
+  return (
+    <div>
+      <motion.div
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        whileHover={{ scale: 1.06 }}
+        whileTap={{ scale: 0.95 }}
+        className="fixed bottom-6 right-6 z-[9999]"
+      >
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className="flex h-16 w-16 items-center justify-center rounded-full border border-white/10 bg-gradient-to-br from-indigo-600 via-violet-600 to-cyan-500 text-white shadow-[0_0_35px_rgba(99,102,241,0.35)] transition-all hover:shadow-[0_0_45px_rgba(99,102,241,0.55)]"
+        >
+          {isOpen ? (
+            <X className="h-6 w-6 text-white/90" />
+          ) : (
+            <MessageSquare className="h-6 w-6 text-white" />
+          )}
+        </button>
+      </motion.div>
 
-            setMessages((prev) => [...prev, {
-                text: botText,
-                user: "bot",
-                isAction: isActionMessage,
-                requiresConfirmation: response?.requiresConfirmation || false,
-                confirmAction: response?.confirmAction || null,
-                items: response?.items || [],
-                status: response?.status || null,
-                confirmationHandled: false,
-            }]);
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: 18, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 18, scale: 0.96 }}
+            className="fixed bottom-24 right-6 z-[10000] flex h-[min(72vh,650px)] min-h-[480px] w-[min(92vw,430px)] flex-col overflow-hidden rounded-[30px] border border-white/10 bg-slate-950/75 shadow-2xl backdrop-blur-2xl"
+            dir="rtl"
+          >
+            <div className="pointer-events-none absolute inset-0 overflow-hidden">
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(99,102,241,0.14),transparent_35%),radial-gradient(circle_at_right,rgba(34,211,238,0.12),transparent_28%),radial-gradient(circle_at_bottom_left,rgba(168,85,247,0.10),transparent_30%)]" />
+              <div className="absolute left-0 top-0 h-full w-full bg-[linear-gradient(to_right,rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:28px_28px] opacity-20" />
+              <div className="absolute -top-24 left-[-40px] h-56 w-56 rounded-full bg-indigo-500/20 blur-3xl" />
+              <div className="absolute right-[-40px] top-24 h-56 w-56 rounded-full bg-cyan-500/15 blur-3xl" />
+              <div className="absolute bottom-[-60px] left-1/4 h-44 w-44 rounded-full bg-violet-500/12 blur-3xl" />
+              <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent,rgba(255,255,255,0.02),transparent)] opacity-25" />
+            </div>
 
-        } catch (error) {
-            console.error("Chat Error:", error);
-            setMessages((prev) => [...prev, { text: "שגיאה בחיבור לשרת...", user: "bot" }]);
-        } finally {
-            setIsLoading(false);
-        }
-    };
+            <div className="relative flex items-center justify-between border-b border-white/10 bg-white/5 px-4 py-4">
+              <div className="flex items-center gap-3">
+                <div className="relative flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-gradient-to-br from-indigo-500/20 via-violet-500/15 to-cyan-500/20 text-indigo-300 shadow-lg">
+                  <Bot size={21} />
+                  <span className="absolute -right-1 -top-1 h-3 w-3 rounded-full bg-emerald-400 ring-2 ring-slate-950" />
+                </div>
 
-    const handleConfirmation = async (messageIndex, approved) => {
-        const message = messages[messageIndex];
-        if (!message?.requiresConfirmation || message.confirmationHandled) return;
+                <div>
+                  <h3 className="text-sm font-bold tracking-wide text-white">
+                    AI Assistant
+                  </h3>
+                  <p className="text-[11px] text-slate-400">
+                    Premium gaming interface
+                  </p>
+                </div>
+              </div>
 
-        if (!approved) {
-            setMessages((prev) => prev.map((msg, idx) => idx === messageIndex ? {
-                ...msg,
-                confirmationHandled: true,
-                text: `${msg.text}\n\nהפעולה בוטלה.`,
-            } : msg));
-            return;
-        }
-
-        setConfirmingIndex(messageIndex);
-
-        try {
-            const response = await chatService.confirmAction(message.confirmAction);
-            setMessages((prev) => prev.map((msg, idx) => idx === messageIndex ? {
-                ...msg,
-                confirmationHandled: true,
-            } : msg));
-            setMessages((prev) => [...prev, {
-                text: response?.text || "הפעולה הסתיימה.",
-                user: "bot",
-                isAction: true,
-                status: response?.status || null,
-            }]);
-            toast.success("הפעולה בוצעה");
-        } catch (error) {
-            console.error("Confirmation Error:", error);
-            setMessages((prev) => [...prev, { text: "לא הצלחתי לבצע את הפעולה.", user: "bot", isAction: true }]);
-        } finally {
-            setConfirmingIndex(null);
-        }
-    };
-
-    // 3. אם אנחנו עדיין בשרת, מחזירים null או שלד ריק כדי למנוע Mismatch
-    if (!mounted) return null;
-
-    // הגדרת מיקום חלון הצ'אט לפי ה-variant
-    const chatWindowStyles = variant === "fixed"
-        ? "fixed bottom-24 right-6"
-        : "absolute top-full mt-4 right-0";
-
-    return (
-        <div className={variant === "fixed" ? "" : "relative"}>
-            {/* כפתור הפתיחה */}
-            <motion.div
-                initial={variant === "fixed" ? { scale: 0, rotate: -45 } : { opacity: 0 }}
-                animate={variant === "fixed" ? { scale: 1, rotate: 0 } : { opacity: 1 }}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className={variant === "fixed" ? "fixed bottom-6 right-6 z-[9999]" : "z-[9999]"}
-            >
-                {/* הילה פועמת (רק במצב Fixed) */}
-                {variant === "fixed" && !isOpen && (
-                    <div className="absolute inset-0 bg-blue-500 rounded-2xl blur-xl opacity-40 animate-pulse"></div>
-                )}
-
+              <div className="flex items-center gap-2">
+                <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[10px] text-slate-300">
+                  {Math.floor(messages.length / 2)}/4
+                </span>
                 <button
-                    onClick={() => setIsOpen(!isOpen)}
-                    className={`relative flex items-center justify-center overflow-hidden group transition-all
-                        ${variant === "fixed"
-                            ? "w-16 h-16 bg-gradient-to-br from-indigo-600 via-purple-600 to-blue-700 rounded-2xl border border-white/30 shadow-2xl"
-                            : "px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl gap-2 text-sm text-white font-medium"
-                        }`}
+                  onClick={handleResetChat}
+                  className="rounded-xl p-2 text-slate-400 transition-all hover:bg-white/5 hover:text-indigo-300"
+                  title="Reset chat"
                 >
-                    {/* אפקט סריקה (Shimmer) */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:animate-shimmer" />
-                    {isOpen ? <X className="w-6 h-6" /> : (
-                        <>
-                            <Gamepad2 className={variant === "fixed" ? "w-8 h-8" : "w-4 h-4 text-blue-400"} />
-                        </>
-                    )}
-                    {!isOpen && <Zap className="absolute top-1 right-1 w-3 h-3 text-yellow-300 fill-yellow-300 animate-bounce" />}
+                  <RefreshCw size={16} />
                 </button>
-            </motion.div>
+              </div>
+            </div>
 
-            {/* חלון הצ'אט */}
-            <AnimatePresence>
-                {isOpen && (
-                    <motion.div
-                        initial={{ opacity: 0, y: 20, scale: 0.95 }}
-                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{ opacity: 0, y: 20, scale: 0.95 }}
-                        className={`${chatWindowStyles} w-[350px] md:w-[380px] h-[550px] bg-slate-950/95 backdrop-blur-2xl border border-blue-500/30 rounded-3xl shadow-[0_0_50px_rgba(0,0,0,0.7)] flex flex-col z-[10000] overflow-hidden`}
+            <div className="relative border-b border-white/10 bg-white/[0.04] px-4 py-3">
+              <div className="mb-3 flex items-center gap-2 text-[11px] uppercase tracking-[0.25em] text-slate-400">
+                <Sparkles size={13} className="text-indigo-300" />
+                <span>Quick prompts</span>
+              </div>
+
+              <div className="no-scrollbar flex gap-2 overflow-x-auto pb-1">
+                {quickActions.map((item, index) => {
+                  const Icon = item.icon;
+
+                  return (
+                    <motion.button
+                      key={item.label}
+                      onClick={() => handleQuickAction(item.value)}
+                      dir="ltr"
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.04 * index, duration: 0.35 }}
+                      whileHover={{ y: -2, scale: 1.03 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="group relative flex shrink-0 items-center gap-2 overflow-hidden rounded-full border border-white/10 bg-slate-900/70 px-3 py-2 text-xs text-slate-200 shadow-lg transition-all hover:border-indigo-400/40 hover:text-white"
                     >
-                        {/* RGB Header Line */}
-                        <div className="h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-cyan-500 w-full" />
+                      <span className="absolute inset-0 bg-gradient-to-r from-indigo-500/0 via-indigo-500/10 to-cyan-500/10 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                      <span className="relative flex h-6 w-6 items-center justify-center rounded-full bg-white/5 text-indigo-300 transition-all group-hover:bg-indigo-400/15">
+                        <Icon size={13} />
+                      </span>
+                      <span className="relative whitespace-nowrap font-medium">
+                        {item.label}
+                      </span>
+                    </motion.button>
+                  );
+                })}
+              </div>
+            </div>
 
-                        <div className="p-4 bg-white/5 flex justify-between items-center border-b border-white/10 text-right" dir="rtl">
-                            <div className="flex items-center gap-3">
-                                <div className="p-2 bg-blue-500/20 rounded-lg border border-blue-500/40 shadow-[0_0_10px_rgba(59,130,246,0.3)] text-blue-400">
-                                    <Sparkles size={18} />
-                                </div>
-                                <div>
-                                    <h3 className="font-bold text-white text-sm tracking-wide">CORTEX AI</h3>
-                                    <div className="flex items-center gap-1">
-                                        <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
-                                        <span className="text-[9px] text-slate-400 uppercase tracking-widest">System Live</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <button onClick={() => setIsOpen(false)} className="hover:bg-white/10 p-1.5 rounded-full transition-all text-slate-500 hover:text-white">
-                                <X size={20} />
-                            </button>
-                        </div>
+            <div className="relative flex-1 space-y-4 overflow-y-auto px-4 py-4 custom-scrollbar">
+              {messages.length === 0 && (
+                <div className="mt-8 rounded-[24px] border border-white/10 bg-white/5 px-5 py-8 text-center shadow-lg">
+                  <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500/25 to-cyan-500/20 text-indigo-300">
+                    <Sparkles size={26} />
+                  </div>
+                  <h4 className="text-base font-semibold text-white">
+                    Start with a shortcut
+                  </h4>
+                  <p className="mt-2 text-sm leading-6 text-slate-400">
+                    Pick one of the quick prompts above or type your own message.
+                  </p>
+                </div>
+              )}
 
-                        {/* Messages Area */}
-                        <div className="flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar bg-white/5" dir="rtl">
-                            {messages.map((msg, idx) => (
-                                <motion.div
-                                    initial={{ opacity: 0, x: msg.user === 'me' ? -10 : 10 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    key={idx}
-                                    className={`flex ${msg.user === 'me' ? 'justify-start' : 'justify-end'}`}
-                                >
-                                    <div className={`max-w-[85%] p-3 rounded-2xl text-sm leading-relaxed ${msg.user === 'me'
-                                        ? 'bg-blue-600 text-white rounded-tr-none shadow-lg'
-                                        : 'bg-slate-800/90 text-slate-100 border border-white/5 rounded-tl-none'
-                                        }`}>
-                                        {/* כאן קורה השינוי: */}
-                                        {msg.user === 'bot' ? (
-                                            <div className="prose prose-invert prose-sm max-w-none">
-                                                <ReactMarkdown>{msg.text}</ReactMarkdown>
-                                                {msg.requiresConfirmation && (
-                                                    <div className="not-prose mt-3 border-t border-white/10 pt-3">
-                                                        {msg.items?.length > 0 && (
-                                                            <div className="mb-3 space-y-1.5">
-                                                                {msg.items.slice(0, 6).map((item) => (
-                                                                    <div key={`${item.id}-${item.title || item.content || item.gameTitle}`} className="rounded-lg bg-white/5 px-2.5 py-2 text-xs text-slate-200">
-                                                                        <span className="font-semibold text-white">{item.title || item.gameTitle || `#${item.id}`}</span>
-                                                                        {item.content && <span className="block text-slate-400 line-clamp-2">{item.content}</span>}
-                                                                    </div>
-                                                                ))}
-                                                            </div>
-                                                        )}
-                                                        <div className="flex gap-2">
-                                                            <button
-                                                                onClick={() => handleConfirmation(idx, true)}
-                                                                disabled={msg.confirmationHandled || confirmingIndex === idx}
-                                                                className="inline-flex items-center gap-1.5 rounded-lg bg-red-600 px-3 py-2 text-xs font-semibold text-white transition hover:bg-red-500 disabled:cursor-not-allowed disabled:opacity-40"
-                                                            >
-                                                                <Check size={14} />
-                                                                כן, בצע
-                                                            </button>
-                                                            <button
-                                                                onClick={() => handleConfirmation(idx, false)}
-                                                                disabled={msg.confirmationHandled || confirmingIndex === idx}
-                                                                className="inline-flex items-center gap-1.5 rounded-lg bg-white/10 px-3 py-2 text-xs font-semibold text-slate-100 transition hover:bg-white/15 disabled:cursor-not-allowed disabled:opacity-40"
-                                                            >
-                                                                <Ban size={14} />
-                                                                בטל
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                )}
-                                            </div>
-                                        ) : (
-                                            msg.text
-                                        )}
-                                    </div>
-                                </motion.div>
-                            ))}
-                            {isLoading && (
-                                <div className="flex gap-1.5 p-2 bg-slate-800/50 w-fit rounded-full px-4 border border-white/5">
-                                    <div className="w-1.5 h-1.5 bg-blue-400 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
-                                    <div className="w-1.5 h-1.5 bg-blue-400 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
-                                    <div className="w-1.5 h-1.5 bg-blue-400 rounded-full animate-bounce"></div>
-                                </div>
-                            )}
-                            <div ref={messagesEndRef} />
-                        </div>
+              {messages.map((msg, idx) => (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className={`flex w-full ${
+                    msg.role === 'user' ? 'justify-end' : 'justify-start'
+                  }`}
+                >
+                  <div
+                    className={`flex max-w-[88%] gap-3 ${
+                      msg.role === 'user' ? 'flex-row-reverse' : 'flex-row'
+                    }`}
+                  >
+                    <div
+                      className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border ${
+                        msg.role === 'user'
+                          ? 'border-indigo-400/20 bg-indigo-500 text-white'
+                          : 'border-white/10 bg-white/5 text-indigo-300'
+                      }`}
+                    >
+                      {msg.role === 'user' ? <User size={14} /> : <Bot size={14} />}
+                    </div>
 
-                        {/* Input Area */}
-                        <div className="p-4 bg-slate-950 border-t border-white/10">
-                            <div className="flex gap-2 items-center bg-slate-900 rounded-2xl p-1.5 border border-white/5 focus-within:border-blue-500/40 transition-all shadow-inner" dir="rtl">
-                                <input
-                                    className="flex-1 bg-transparent p-2 text-white outline-none text-sm placeholder:text-slate-600"
-                                    value={input}
-                                    onChange={(e) => setInput(e.target.value)}
-                                    onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-                                    placeholder="שלח הודעה למערכת..."
-                                />
-                                <button
-                                    onClick={sendMessage}
-                                    disabled={!input.trim()}
-                                    className="p-2.5 bg-blue-600 hover:bg-blue-500 rounded-xl transition-all shadow-lg shadow-blue-900/20 disabled:opacity-30"
-                                >
-                                    <Send size={16} className="text-white transform rotate-180" />
-                                </button>
-                            </div>
-                        </div>
-                    </motion.div>
+                    <div
+                      className={`rounded-[22px] px-4 py-3 text-sm leading-relaxed shadow-lg ${
+                        msg.role === 'user'
+                          ? 'rounded-tl-sm border border-indigo-400/20 bg-gradient-to-br from-indigo-500 via-violet-500 to-cyan-500 text-white'
+                          : 'rounded-tr-sm border border-white/10 bg-slate-900/80 text-slate-200'
+                      }`}
+                    >
+                      <div className="prose prose-invert prose-sm max-w-none prose-p:leading-relaxed">
+                        <ReactMarkdown>{msg.content}</ReactMarkdown>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+
+              {isLoading && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="flex justify-start"
+                >
+                  <div className="flex max-w-[85%] gap-3">
+                    <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/5 text-indigo-300">
+                      <Bot size={14} />
+                    </div>
+                    <div className="flex items-center gap-1.5 rounded-[22px] rounded-tr-sm border border-white/10 bg-slate-900/80 px-4 py-4 shadow-lg">
+                      <div className="h-1.5 w-1.5 animate-bounce rounded-full bg-indigo-400" />
+                      <div className="h-1.5 w-1.5 animate-bounce rounded-full bg-indigo-400 [animation-delay:0.2s]" />
+                      <div className="h-1.5 w-1.5 animate-bounce rounded-full bg-indigo-400 [animation-delay:0.4s]" />
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+
+              <div ref={messagesEndRef} />
+            </div>
+
+            <div className="relative border-t border-white/10 bg-slate-950/90 px-4 py-4">
+              <AnimatePresence>
+                {isChatMaxedOut && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    className="mb-3 overflow-hidden"
+                  >
+                    <div className="flex flex-col items-center justify-center gap-2 rounded-2xl border border-indigo-400/20 bg-indigo-500/10 p-3">
+                      <div className="flex items-center gap-2 text-sm text-indigo-300">
+                        <AlertCircle size={16} />
+                        <span>Chat limit reached. Start a new conversation.</span>
+                      </div>
+                      <button
+                        onClick={handleResetChat}
+                        className="w-full rounded-xl bg-indigo-600 py-2 text-sm font-medium text-white transition-colors hover:bg-indigo-500"
+                      >
+                        New chat
+                      </button>
+                    </div>
+                  </motion.div>
                 )}
-            </AnimatePresence>
+              </AnimatePresence>
 
-            <style jsx global>{`
-                @keyframes shimmer { 100% { transform: translateX(100%); } }
-                .animate-shimmer { animation: shimmer 2s infinite; }
-                .custom-scrollbar::-webkit-scrollbar { width: 3px; }
-                .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(59, 130, 246, 0.2); border-radius: 10px; }
-            `}</style>
-        </div>
-    );
+              {!isChatMaxedOut && (
+                <div className="flex items-center gap-2 rounded-2xl border border-white/10 bg-white/5 p-1.5 shadow-inner transition-colors focus-within:border-indigo-400/40">
+                  <input
+                    ref={inputRef}
+                    className="flex-1 bg-transparent p-2.5 text-sm text-slate-100 outline-none placeholder:text-slate-500"
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
+                    placeholder="Type a message..."
+                    disabled={isLoading}
+                  />
+                  <button
+                    onClick={handleSendMessage}
+                    disabled={!input.trim() || isLoading}
+                    className="rounded-xl bg-gradient-to-br from-indigo-600 to-violet-600 p-2.5 transition-all hover:scale-[1.03] hover:from-indigo-500 hover:to-violet-500 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:scale-100"
+                  >
+                    <Send size={16} className="rotate-180 text-white" />
+                  </button>
+                </div>
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <style jsx global>{`
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: rgba(99, 102, 241, 0.35);
+          border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: rgba(99, 102, 241, 0.65);
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+          display: none;
+        }
+        .no-scrollbar {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+      `}</style>
+    </div>
+  );
 }

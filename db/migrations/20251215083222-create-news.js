@@ -12,9 +12,24 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      content: {
+      // הוחלף מ-content ל-excerpt
+      excerpt: {
         type: Sequelize.TEXT,
         allowNull: false,
+      },
+      category: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        defaultValue: 'Update',
+      },
+      image: {
+        type: Sequelize.STRING(1000),
+        allowNull: true,
+      },
+      isHot: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
       },
       createdAt: {
         type: Sequelize.DATE,

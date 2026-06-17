@@ -1,3 +1,4 @@
+import { headers } from 'next/headers';
 
 // פונקציה לאימות קלט של אימייל וסיסמה
 export function validateInput(data) {
@@ -18,34 +19,8 @@ export function validateInput(data) {
 }
 
 
-/*
-import { NextResponse } from "next/server";
-
-export default function verification(email, password) {
-    if (!email || !password) {
-        return NextResponse.json(
-            { message: "Email and password are required" },
-            { status: 400 }
-        );
-    }
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-        return NextResponse.json(
-            { message: "Invalid email format" },
-            { status: 400 }
-        );
-    }
-
-    if (password.length < 6) {
-        return NextResponse.json(
-            { message: "Password must be at least 6 characters" },
-            { status: 400 }
-        );
-    }
-
-    return null; // אם הכל תקין, מחזירים null
+//פונקציה לאימות המשתמש
+export async function getUserId() {
+    const headerList = await headers();
+    return headerList.get('x-user-id');
 }
-
-
-*/

@@ -10,7 +10,7 @@ export default function FeaturedGames({ featuredGames, isLoading }) {
                 <article
                     className="group relative min-h-[520px] overflow-hidden rounded-lg border border-white/10 bg-zinc-950 shadow-[0_24px_80px_rgba(0,0,0,0.35)]"
                     >
-                    <Link href={game?.title} className="absolute inset-0 z-10">
+                    <Link href={`/games/${game?.title}`} className="absolute inset-0 z-10">
                         <span className="sr-only">View details for {game?.title}</span>
                     </Link>
                     <img
@@ -61,7 +61,7 @@ export default function FeaturedGames({ featuredGames, isLoading }) {
 
                         <div className="mt-5 flex gap-3">
                             <Link
-                                href={game?.title}
+                                href={`/games/${game?.title}`}
                                 className="relative z-30 inline-flex min-h-11 flex-1 items-center justify-center gap-2 rounded-lg bg-white px-4 text-sm font-black text-black transition hover:bg-lime-300 focus:outline-none focus:ring-4 focus:ring-white/30 active:scale-[0.98]"
                             >
                                 <Play className="h-4 w-4 fill-black" />

@@ -3,6 +3,8 @@ import { NextResponse } from 'next/server';
 import { headers } from 'next/headers';
 import { contactService } from '../../../services/server/ContactMessage';
 import { UserService } from '../../../services/server/UserService';
+import { getUserId } from '../../../utils/verification';
+
 
 export async function POST(req) {
     try {
@@ -23,7 +25,7 @@ export async function POST(req) {
         const headerList = await headers();
         const ip = headerList.get('x-forwarded-for')?.split(',')[0] || '0.0.0.0';//כתובת ה-IP של המשתמש
         const userAgent = headerList.get('user-agent') || 'unknown';//פרטי המחשב
-        const customUserId = headerList.get('x-user-id'); // מפתח ייחודי שמגיע מהלקוח 
+        const customUserId = await getUserId(); // מפתח ייחודי שמגיע מהלקוח 
 
         // 4. בדיקה בשרת: האם המשתמש קיים במסד הנתונים?
         const user = await UserService.verifyUserExists(customUserId);
