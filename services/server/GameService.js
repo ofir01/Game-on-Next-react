@@ -262,19 +262,22 @@ export const GameService = {
         ***********************************************************/
 
 
-    getTrendingGames: async (limit) => {
+    //המשחקים ששיחקו בהם הכי הרבה
+    getTrendingGames: async (limit, offset = 0) => {
         const games = await db.Games.findAll({
             ...getHardQuery(),
             limit: limit,
+            offset: offset,
             order: [[{ model: db.GamePlayStats, as: 'stats' }, 'playCount', 'DESC']]
         });
         return games.map(formatGameCard);
     },
 
-    getTopRatedGames: async (limit) => {
+    getTopRatedGames: async (limit, offset = 0) => {
         const games = await db.Games.findAll({
             ...getHardQuery(),
             limit: limit,
+            offset: offset,
             order: [[db.sequelize.literal('avgRating DESC')]]
         });
         return games.map(formatGameCard);
@@ -324,7 +327,7 @@ export const GameService = {
         });
     },
 
-    getUpcomingGames: async (limit = 4) => {
+    getUpcomingGames: async (limit = 4, offset = 0) => {
         const games = await db.Games.findAll({
             ...getHardQuery(),
             where: {
@@ -334,6 +337,8 @@ export const GameService = {
                 ]
             },
             limit,
+            offset: offset,
+
             order: [
                 ['releaseDate', 'ASC'],
                 ['updatedAt', 'DESC']

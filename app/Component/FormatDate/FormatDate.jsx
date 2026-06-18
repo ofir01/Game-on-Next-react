@@ -2,7 +2,7 @@
 import { Calendar } from 'lucide-react';
 
 export default function FormatDate({ releaseDate }) {
-    const formatDate = (dateString) => {
+    const formatDate = (dateString = '') => {
         if (!dateString) return 'Coming Soon';
         return new Date(dateString).toLocaleDateString('he-IL', {
             year: 'numeric',

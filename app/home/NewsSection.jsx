@@ -1,8 +1,9 @@
 'use client';
 
 import { motion, useReducedMotion } from 'framer-motion';
-import { Newspaper, ArrowRight, Clock3, Sparkles } from 'lucide-react';
+import { Newspaper, ArrowRight, Sparkles } from 'lucide-react';
 import Link from "next/link";
+import FormatDate from '../Component/FormatDate/FormatDate';
 
 function getRevealProps(reducedMotion, delay = 0) {
     if (reducedMotion) return {};
@@ -91,14 +92,12 @@ function FeaturedNewsCard({ item }) {
                         </span>
                     )}
                     <div className="flex items-center gap-1.5 text-xs font-medium tracking-widest text-lime-100/70 ml-auto uppercase">
-                        <Clock3 size={14} />
-                        <span>{item.dateText || 'Just now'}</span>
+                        <FormatDate releaseDate={item?.createdAt} />
                     </div>
                 </div>
 
                 {/* הכותרת משלבת את ה-ID והטייטל */}
                 <h3 className="mb-4 text-3xl font-black leading-tight text-white md:text-4xl lg:text-5xl drop-shadow-lg flex items-center gap-3 flex-wrap">
-                    <span className="text-lime-400/80 text-2xl md:text-3xl">#{item.id}</span>
                     <span>{item.title}</span>
                 </h3>
 
@@ -156,14 +155,12 @@ function CompactNewsCard({ item }) {
                         {item.category || 'Update'}
                     </span>
                     <span className="flex items-center gap-1.5 text-[11px] text-zinc-500">
-                        <Clock3 size={12} />
-                        {item.dateText || 'Recent'}
+                        <FormatDate releaseDate={item?.createdAt} />
                     </span>
                 </div>
 
                 {/* הכותרת משלבת את ה-ID והטייטל */}
                 <h3 className="mb-2 line-clamp-2 text-lg font-bold leading-snug text-white transition-colors group-hover:text-lime-300">
-                    <span className="text-lime-400/80 mr-1.5 text-base">#{item.id}</span>
                     {item.title}
                 </h3>
 

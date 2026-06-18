@@ -9,6 +9,7 @@ import Favorite from '../Favorite/Favorite';
 import WishlistCard from '../Wishlist/WishlistCard';
 import DeleteGame from './DeleteGame';
 import EditingGame from './EditingGame';
+import FormatDate from '../../Component/FormatDate/FormatDate';
 
 
 // ============================================================================
@@ -70,10 +71,10 @@ const PriceDisplay = ({ price, discount, isFree }) => {
       )}
       <span
         className={`font-black text-xl tracking-tighter ${Number(finalPrice) === 0
-            ? "text-green-400"
-            : hasDiscount
-              ? "text-cyan-400"
-              : "text-white"
+          ? "text-green-400"
+          : hasDiscount
+            ? "text-cyan-400"
+            : "text-white"
           }`}
       >
         {Number(finalPrice) === 0
@@ -252,18 +253,23 @@ export default function GameCard({ game, variant = 'default' }) {
               </div>
 
               {/* Trending / Update */}
-              <div className="flex flex-col items-center justify-center p-2 rounded-xl bg-slate-900/30 border border-slate-800/50 group-hover/card:border-slate-700 transition-colors">
+
+              <div className="flex flex-col items-center justify-center p-2 rounded-xl bg-slate-900/40 border border-slate-800/80 group-hover/card:border-slate-700/80 group-hover/card:bg-slate-900/60 transition-all duration-300">
+                {/* למעלה: התאריך עצמו - מוקטן חזרה ל-10px ומרווח מצומצם */}
                 <div className="flex items-center gap-1 mb-0.5 text-slate-200">
-                  <TrendingUp size={12} className="text-emerald-400" />
+                  {/* הוספת האייקון בגודל המקורי (12) כדי שיתאים לטקסט הקטן */}
                   <span className="text-[10px] font-bold">
-                    {new Date(game.updatedAt).toLocaleDateString('en-GB', { month: 'short', day: 'numeric' })}
+                    <FormatDate releaseDate={game?.updatedAt} />
                   </span>
                 </div>
-                <span className="text-[8px] uppercase tracking-tighter text-slate-500 font-bold">Updated</span>
+
+                {/* למטה: הכותרת "Updated" - מוקטנת חזרה ל-8px וצפופה (tracking-tighter) */}
+                <span className="text-[8px] uppercase tracking-tighter text-slate-500 font-bold">
+                  Updated
+                </span>
               </div>
+              
             </div>
-
-
           </div>
         )}
       </div>

@@ -2,21 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import {
-  X,
-  Send,
-  MessageSquare,
-  RefreshCw,
-  AlertCircle,
-  Bot,
-  User,
-  Sparkles,
-  WandSparkles,
-  Gamepad2,
-  Newspaper,
-  Trophy,
-  Flame,
-} from 'lucide-react';
+import { X, Send, MessageSquare, RefreshCw, AlertCircle, Bot, User, Sparkles, WandSparkles, Gamepad2, Newspaper, Trophy, Flame, } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import { chatService } from '../../../services/client/chatService';
 
@@ -238,31 +224,27 @@ export default function ChatAssistant() {
                   key={idx}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className={`flex w-full ${
-                    msg.role === 'user' ? 'justify-end' : 'justify-start'
-                  }`}
+                  className={`flex w-full ${msg.role === 'user' ? 'justify-end' : 'justify-start'
+                    }`}
                 >
                   <div
-                    className={`flex max-w-[88%] gap-3 ${
-                      msg.role === 'user' ? 'flex-row-reverse' : 'flex-row'
-                    }`}
+                    className={`flex max-w-[88%] gap-3 ${msg.role === 'user' ? 'flex-row-reverse' : 'flex-row'
+                      }`}
                   >
                     <div
-                      className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border ${
-                        msg.role === 'user'
+                      className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border ${msg.role === 'user'
                           ? 'border-indigo-400/20 bg-indigo-500 text-white'
                           : 'border-white/10 bg-white/5 text-indigo-300'
-                      }`}
+                        }`}
                     >
                       {msg.role === 'user' ? <User size={14} /> : <Bot size={14} />}
                     </div>
 
                     <div
-                      className={`rounded-[22px] px-4 py-3 text-sm leading-relaxed shadow-lg ${
-                        msg.role === 'user'
+                      className={`rounded-[22px] px-4 py-3 text-sm leading-relaxed shadow-lg ${msg.role === 'user'
                           ? 'rounded-tl-sm border border-indigo-400/20 bg-gradient-to-br from-indigo-500 via-violet-500 to-cyan-500 text-white'
                           : 'rounded-tr-sm border border-white/10 bg-slate-900/80 text-slate-200'
-                      }`}
+                        }`}
                     >
                       <div className="prose prose-invert prose-sm max-w-none prose-p:leading-relaxed">
                         <ReactMarkdown>{msg.content}</ReactMarkdown>

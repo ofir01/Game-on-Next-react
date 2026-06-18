@@ -1,8 +1,9 @@
 import { motion } from 'framer-motion';
-import { Calendar, Gamepad2, Flame } from 'lucide-react';
+import { Gamepad2, Flame } from 'lucide-react';
 import { useAuth } from '../../Context/AuthContext';
 import { useNews } from '../../hooks/useNews'; // ייבוא ה-Hook לצורך מחיקה
-import EditNewsModal from './EditNewsModal'; 
+import EditNewsModal from './EditNewsModal';
+import FormatDate from '../../Component/FormatDate/FormatDate';
 
 export default function ArticleCard({ article, onClick }) {
     const { isAdmin } = useAuth();
@@ -14,7 +15,7 @@ export default function ArticleCard({ article, onClick }) {
         }
     };
 
-    
+
 
 
     return (
@@ -54,13 +55,10 @@ export default function ArticleCard({ article, onClick }) {
                 {/* קטגוריה ותאריך */}
                 <div className="mb-3 flex items-center justify-between text-[11px] font-medium text-zinc-500">
                     <span className="rounded-md border border-lime-400/10 bg-lime-400/5 px-2 py-0.5 font-bold text-lime-400">
-                        {article.category || 'חדשות'}
+                        {article.category}
                     </span>
                     <div className="flex items-center gap-1">
-                        <Calendar size={12} />
-                        <span>
-                            {article.createdAt ? new Date(article.createdAt).toLocaleDateString('he-IL', { day: 'numeric', month: 'short' }) : ''}
-                        </span>
+                        <FormatDate releaseDate={article?.createdAt} />
                     </div>
                 </div>
 
@@ -71,7 +69,7 @@ export default function ArticleCard({ article, onClick }) {
 
                 {/* תמצית הטקסט */}
                 <p className="mb-4 line-clamp-2 text-xs leading-relaxed text-zinc-400">
-                    {article.excerpt || article.content}
+                    {article.excerpt}
                 </p>
 
                 {/* תגיות */}
@@ -86,7 +84,7 @@ export default function ArticleCard({ article, onClick }) {
                 {/* כפתורי ניהול לאדמין בלבד בסוף ה-ArticleCard */}
                 {isAdmin && (
                     <div className="mt-4 flex gap-2 border-t border-white/10 pt-3">
-                         <EditNewsModal item={article} />
+                        <EditNewsModal item={article} />
                         <button
                             onClick={(e) => {
                                 e.stopPropagation(); // מונע מעבר לכתבה בלחיצה על עריכה
