@@ -101,7 +101,7 @@ export default function CommentCard({
 
                                 {(isAdmin || isOwner) && (
                                     <button
-                                        onClick={() => onDelete(comment.id)}
+                                        onClick={() => onDelete(comment)}
                                         className="text-gray-600 hover:text-red-500 transition-colors p-1.5 bg-gray-900 rounded-lg border border-transparent hover:border-red-500/20"
                                         title="Delete"
                                     >

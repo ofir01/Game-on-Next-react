@@ -29,6 +29,7 @@ try {
 
 // --- טעינה ידנית של המודלים - זה מה שפותר את השגיאה הדינמית ---
 db.User = require('./User')(sequelize, Sequelize.DataTypes);
+db.Warning = require('./Warning')(sequelize, Sequelize.DataTypes);
 db.Comment = require('./Comment')(sequelize, Sequelize.DataTypes);
 db.Games = require('./Games')(sequelize, Sequelize.DataTypes);
 db.GameCategories = require('./GameCategories')(sequelize, Sequelize.DataTypes);

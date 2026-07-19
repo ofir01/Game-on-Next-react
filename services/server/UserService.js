@@ -62,7 +62,7 @@ export const UserService = {
         const user = await db.User.findOne({ where: { email } });
         if (!user) return { error: 'NOT_FOUND' };
 
-        const emailData = await sendMessage(type, user, customMessage);
+        const emailData = await sendMessage(type, { user, message: customMessage });
         await resend.emails.send(emailData);
 
         return { success: true };

@@ -65,11 +65,17 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.DATE,
             allowNull: true,
         },
+        // שדה לניהול חסימות בעקבות אזהרות
+        isBanned: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false,
+            allowNull: false,
+        },
     }, {
         tableName: 'users',
         timestamps: true, // מאפשר יצירת שדות createdAt ו-updatedAt אוטומטית
     });
-    
+
 
     User.associate = (models) => {
         User.hasMany(models.UserGame, { foreignKey: 'userId', as: 'userRatings' });
@@ -85,6 +91,12 @@ module.exports = (sequelize, DataTypes) => {
             foreignKey: 'userId',
             as: 'wishlistGames'
         });
+
+        // קשר לקבלת כל האזהרות שמשתמש זה קיבל
+        User.hasMany(models.Warning, { foreignKey: 'userId', as: 'warningsReceived' });
+
+        // קשר לקבלת כל האזהרות שמשתמש זה (שהוא אדמין) נתן למשתמשים אחרים
+        User.hasMany(models.Warning, { foreignKey: 'adminId', as: 'warningsIssued' });
     };
     return User;
 };

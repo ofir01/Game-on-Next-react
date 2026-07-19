@@ -59,6 +59,11 @@ module.exports = {
                 type: Sequelize.DATE,
                 allowNull: true,
             },
+            isBanned: {
+                type: Sequelize.BOOLEAN,
+                defaultValue: false,
+                allowNull: false,
+            },
             createdAt: {
                 type: Sequelize.DATE,
                 allowNull: false,

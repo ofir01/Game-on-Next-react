@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { X,Home,Gamepad2,Trophy,Settings } from 'lucide-react';
+﻿import { useState } from 'react';
+import { X, Home, Gamepad2, Trophy, Settings, Menu } from 'lucide-react';
 
 export default function Sidebar() {
     const [collapsed, setCollapsed] = useState(false);

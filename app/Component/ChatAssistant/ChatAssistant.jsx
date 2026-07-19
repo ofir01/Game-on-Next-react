@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Send, MessageSquare, RefreshCw, AlertCircle, Bot, User, Sparkles, WandSparkles, Gamepad2, Newspaper, Trophy, Flame, } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
+
 import { chatService } from '../../../services/client/chatService';
 
 const quickActions = [
@@ -73,25 +74,54 @@ export default function ChatAssistant() {
     setInput('');
     setIsLoading(true);
 
+    // הוספת הודעת בוט ריקה שתתמלא בחלקים (Stream)
+    setMessages((prev) => [...prev, { role: 'bot', content: '' }]);
+
     try {
+      // שימוש ב-fetch ישיר במקום chatService.getAnswer כדי לתמוך ב-Streaming
       const response = await chatService.getAnswer(updatedMessages);
 
-      setMessages((prev) => [
-        ...prev,
-        {
-          role: 'bot',
-          content: response?.text || 'לא התקבלה תשובה מהשרת.',
-        },
-      ]);
+      if (!response) throw new Error('No response body');
+
+      const reader = response.getReader();
+      const decoder = new TextDecoder();
+      let done = false;
+      let isFirstChunk = true;
+
+      while (!done) {
+        const { value, done: doneReading } = await reader.read();
+        done = doneReading;
+
+        const chunkValue = decoder.decode(value, { stream: true });
+
+        if (chunkValue) {
+          if (isFirstChunk) {
+            setIsLoading(false); // ברגע שמתחיל להגיע טקסט, מפסיקים את אנימציית הטעינה
+            isFirstChunk = false;
+          }
+
+          setMessages((prev) => {
+            const newMessages = [...prev];
+            const lastIndex = newMessages.length - 1;
+            newMessages[lastIndex] = {
+              ...newMessages[lastIndex],
+              content: newMessages[lastIndex].content + chunkValue
+            };
+            return newMessages;
+          });
+        }
+      }
     } catch (error) {
       console.error('Chat Error:', error);
-      setMessages((prev) => [
-        ...prev,
-        {
-          role: 'bot',
-          content: 'אופס, משהו השתבש בחיבור. נסה שוב.',
-        },
-      ]);
+      setMessages((prev) => {
+        const newMessages = [...prev];
+        const lastIndex = newMessages.length - 1;
+        // במקרה של שגיאה, אם ההודעה נשארה ריקה, נציג הודעת שגיאה
+        if (!newMessages[lastIndex].content) {
+          newMessages[lastIndex].content = 'אופס, משהו השתבש בחיבור. נסה שוב.';
+        }
+        return newMessages;
+      });
     } finally {
       setIsLoading(false);
     }
@@ -233,46 +263,38 @@ export default function ChatAssistant() {
                   >
                     <div
                       className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border ${msg.role === 'user'
-                          ? 'border-indigo-400/20 bg-indigo-500 text-white'
-                          : 'border-white/10 bg-white/5 text-indigo-300'
+                        ? 'border-indigo-400/20 bg-indigo-500 text-white'
+                        : 'border-white/10 bg-white/5 text-indigo-300'
                         }`}
                     >
                       {msg.role === 'user' ? <User size={14} /> : <Bot size={14} />}
                     </div>
 
+
                     <div
                       className={`rounded-[22px] px-4 py-3 text-sm leading-relaxed shadow-lg ${msg.role === 'user'
-                          ? 'rounded-tl-sm border border-indigo-400/20 bg-gradient-to-br from-indigo-500 via-violet-500 to-cyan-500 text-white'
-                          : 'rounded-tr-sm border border-white/10 bg-slate-900/80 text-slate-200'
+                        ? 'rounded-tl-sm border border-indigo-400/20 bg-gradient-to-br from-indigo-500 via-violet-500 to-cyan-500 text-white'
+                        : 'rounded-tr-sm border border-white/10 bg-slate-900/80 text-slate-200'
                         }`}
                     >
                       <div className="prose prose-invert prose-sm max-w-none prose-p:leading-relaxed">
-                        <ReactMarkdown>{msg.content}</ReactMarkdown>
+
+                        {msg.role === 'bot' && !msg.content ? (
+                          <div className="flex items-center gap-1.5 py-2">
+                            <div className="h-1.5 w-1.5 animate-bounce rounded-full bg-indigo-400" />
+                            <div className="h-1.5 w-1.5 animate-bounce rounded-full bg-indigo-400 [animation-delay:0.2s]" />
+                            <div className="h-1.5 w-1.5 animate-bounce rounded-full bg-indigo-400 [animation-delay:0.4s]" />
+                          </div>
+                        ) : (
+                          <ReactMarkdown>{msg.content}</ReactMarkdown>
+                        )}
                       </div>
                     </div>
                   </div>
                 </motion.div>
               ))}
 
-              {isLoading && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className="flex justify-start"
-                >
-                  <div className="flex max-w-[85%] gap-3">
-                    <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/5 text-indigo-300">
-                      <Bot size={14} />
-                    </div>
-                    <div className="flex items-center gap-1.5 rounded-[22px] rounded-tr-sm border border-white/10 bg-slate-900/80 px-4 py-4 shadow-lg">
-                      <div className="h-1.5 w-1.5 animate-bounce rounded-full bg-indigo-400" />
-                      <div className="h-1.5 w-1.5 animate-bounce rounded-full bg-indigo-400 [animation-delay:0.2s]" />
-                      <div className="h-1.5 w-1.5 animate-bounce rounded-full bg-indigo-400 [animation-delay:0.4s]" />
-                    </div>
-                  </div>
-                </motion.div>
-              )}
-
+              
               <div ref={messagesEndRef} />
             </div>
 

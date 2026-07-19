@@ -1,4 +1,5 @@
-
+import { WarningService } from './WarningService';
+import { UserService } from './UserService';
 const db = require('../../db/models');
 
 export const CommentService = {
@@ -60,9 +61,9 @@ export const CommentService = {
     // יצירת תגובה חדשה עם בדיקות מניעת כפילות/תגובה עצמית
     create: async ({ userId, gameId, content, parentId }) => {
 
-        const user = await db.User.findByPk(userId);
+        const user = await UserService.getUserById(userId);
         if (!user) return { error: 'USER_NOT_FOUND' };
-       
+
         if (!parentId) {
             const existing = await db.Comment.findOne({ where: { gameId, userId, parentId: null, isDeleted: false } });
             if (existing) return { error: 'ALREADY_POSTED' };
@@ -71,8 +72,8 @@ export const CommentService = {
             if (parent && String(parent.userId) === String(userId)) return { error: 'SELF_REPLY' };
         }
 
-        return { 
-            comment: await db.Comment.create({ content, gameId, userId, parentId: parentId || null }) 
+        return {
+            comment: await db.Comment.create({ content, gameId, userId, parentId: parentId || null })
         };
     },
 
@@ -88,11 +89,11 @@ export const CommentService = {
     },
 
     // מחיקה (לוגית)
-    delete: async (commentId, userId) => {
+    delete: async (commentId, userId, warningReason,sendWarning) => {
         const comment = await db.Comment.findByPk(commentId);
         if (!comment) return { error: 'NOT_FOUND' };
 
-        const user = await db.User.findByPk(userId);
+        const user = await UserService.getUserById(userId);
         const isOwner = String(comment.userId) === String(userId);
         const isAdmin = user?.role === 'ADMIN';
 
@@ -100,6 +101,36 @@ export const CommentService = {
 
         comment.isDeleted = true;
         await comment.save();
-        return { success: true };
+
+        let userBanned = false;
+        let warningCount = 0;
+        let authorEmail = null;
+
+        // אם מדובר באדמין שמספק סיבה, ניצור אזהרה למשתמש
+        if (isAdmin && sendWarning === 'true' && !isOwner) {
+            console.log(`Admin ${userId} is deleting comment ${commentId} with sendWarning reason: ${sendWarning}`);
+            // שליפת כותב התגובה כדי לקחת את האימייל שלו!
+            const commentAuthor = await UserService.getUserById(comment.userId);
+            if (commentAuthor) {
+                authorEmail = commentAuthor.email;
+            }
+
+            await WarningService.create({ userId: comment.userId, adminId: userId, reason: warningReason });
+
+            // 2. ספירת סך האזהרות שיש למשתמש הזה כעת
+            warningCount = await WarningService.getWarningCount(comment.userId);
+
+            // 3. חסימת המשתמש אם הגיע ל-3 אזהרות ומעלה
+            if (warningCount >= 3) {
+                await db.User.update(
+                    { isBanned: true },
+                    { where: { id: comment.userId } }
+                );
+                userBanned = true;
+            }
+        }
+
+        return { success: true, warningCount, userBanned, authorEmail };
     }
+
 };

@@ -1,6 +1,6 @@
 "use client";
 import { useAuth } from '../Context/AuthContext'; 
-import { authService } from '../../services/client/authService'; // שימוש ב-Service
+import { authService } from '../../services/client/authService'; 
 import { toast } from 'sonner'
 import { useState } from "react";
 import "./FlipCard.css";

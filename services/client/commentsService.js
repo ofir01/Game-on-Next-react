@@ -19,5 +19,5 @@ export const commentsService = {
     // שינוי קטן כאן: ב-Hook שלך השתמשת ב-postReply, וודא שהשם תואם למה שה-Hook קורא לו
     postReply: (Slug, data) => api.post(`/api/games/${Slug}/comments`, data),
     edit: (Slug, data) => api.put(`/api/games/${Slug}/comments`, data),
-    delete: (Slug, id) => api.delete(`/api/games/${Slug}/comments?id=${id}`),
+    delete: (Slug, { commentId, warningReason, sendWarning }) => api.delete(`/api/games/${Slug}/comments?id=${commentId}&warningReason=${warningReason}&sendWarning=${sendWarning}`),
 };

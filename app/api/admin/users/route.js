@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { UserService } from '../../../../services/server/UserService';
 
+
 // שליפת משתמשים בעלי תפקיד
 export async function GET() {
     try {
@@ -32,8 +33,8 @@ export async function POST(req) {
             return NextResponse.json({ message: 'User not found' }, { status: 404 });
         }
 
-        const successMessage = result.count 
-            ? `Broadcast sent successfully to ${result.count} users.` 
+        const successMessage = result.count
+            ? `Broadcast sent successfully to ${result.count} users.`
             : 'Message sent successfully';
 
         return NextResponse.json({ message: successMessage, details: result.details || null }, { status: 200 });

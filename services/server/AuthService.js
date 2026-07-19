@@ -17,6 +17,8 @@ export const AuthService = {
 
         const user = await db.User.findByPk(userId);
         if (!user) return { error: 'NOT_FOUND' };
+        if (user.isBanned) return { error: 'USER_BANNED' };
+
 
         const isEmailChanged = email && email !== user.email;
         const isPasswordChanging = newPassword && newPassword.trim() !== '';
@@ -142,6 +144,7 @@ export const AuthService = {
     register: async ({ name, email, password, initialGames }) => {
         const existingUser = await db.User.findOne({ where: { email } });
         if (existingUser) return { error: 'EMAIL_EXISTS' };
+        if (existingUser.isBanned) return { error: 'USER_BANNED' };
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -191,6 +194,8 @@ export const AuthService = {
     login: async (email, password) => {
         const user = await db.User.findOne({ where: { email } });
         if (!user) return { error: 'USER_NOT_FOUND' };
+        if (user.isBanned) return { error: 'USER_BANNED' };
+
 
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if (!isPasswordValid) return { error: 'INVALID_CREDENTIALS' };
@@ -279,6 +284,7 @@ export const AuthService = {
     getProfile: async (userId) => {
         const user = await db.User.findByPk(userId);
         if (!user) return null;
+        if (user.isBanned) return null;
         return await createSession(user);
     }
 };

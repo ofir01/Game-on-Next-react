@@ -26,9 +26,13 @@ export const useGameComments = (Slug, page = 1, rating = null) => {
 
     // 3. מוטציה למחיקת תגובה
     const deleteMutation = useMutation({
-        mutationFn: (commentId) => commentsService.delete(Slug, commentId),
+        mutationFn: ({ commentId, warningReason = null, sendWarning = false }) =>
+            commentsService.delete(Slug, { commentId, warningReason, sendWarning }),
         onSuccess: (data) => {
-            queryClient.invalidateQueries(['comments', Slug]);
+            queryClient.invalidateQueries({
+                queryKey: ['comments', Slug],
+                exact: false // כדי להבטיח ריענון של כל העמודים
+            });
             toast.success(data.message || "Comment deleted successfully!");
         },
     });

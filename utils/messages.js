@@ -2,7 +2,7 @@
 export async function sendMessage(type, payload) {
     // אנו מצפים ש-payload יכיל את פרטי המשתמש, ואולי גם לינקים או הודעה מותאמת אישית
     const { user, message, link } = payload;
-    
+
     let htmlBody;
     const templateContent = WARNING_TYPES[type];
 
@@ -65,7 +65,7 @@ const WARNING_TYPES = {
         themeColor: "linear-gradient(to right, #4facfe 0%, #00f2fe 100%)",
         headerBg: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
     },
-    
+
     // --- הודעות התראה, אבטחה ומנהלים ---
     Security_Notice: {
         subject: "התראת אבטחה - GAME ON",
@@ -91,6 +91,14 @@ const WARNING_TYPES = {
         body: "החשבון שלך סומן עקב הפרות חוזרות ונשנות. זוהי אזהרה אחרונה. כל הפרה נוספת תוביל לחסימה לצמיתות של חשבונך.",
         severityColor: "#ef4444" // אדום
     },
+    banned: {
+        subject: "Account Banned - GAME ON",
+        title: "החשבון שלך נחסם",
+        body: "עקב הפרות חוזרות ונשנות של כללי הקהילה, החשבון שלך נחסם לצמיתות. אם אתה חושב שמדובר בטעות, אנא צור קשר עם התמיכה שלנו.",
+        severityColor: "#ee0303" // אדום כהה
+    },
+
+    // --- הודעות מערכת כלליות ---
     System_Message: {
         subject: "System Message - GAME ON",
         title: "עדכון מערכת",

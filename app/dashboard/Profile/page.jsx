@@ -4,7 +4,9 @@ import React, { useState, useEffect } from 'react';
 import { toast } from 'sonner'
 
 import { useAuth } from '../../Context/AuthContext';
-import { authService } from '../../../services/client/authService'
+import { authService } from '../../../services/client/authService';
+import ForgotPassword from '../../Component/ForgotPassword/ForgotPassword';
+
 export default function ProfileSettingsPage() {
   const { user, login } = useAuth();
   // 1. שליפת הנתונים הנוכחיים (כאן זה מוק, בפועל יבוא מה-Context או מה-API)
@@ -142,6 +144,12 @@ export default function ProfileSettingsPage() {
               />
             </div>
           </div>
+
+
+
+          {/* קישור שכחתי סיסמה */}
+          <ForgotPassword />
+
 
           {/* כפתור שמירה */}
           <div className="pt-6">
