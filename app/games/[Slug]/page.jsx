@@ -1,12 +1,12 @@
 "use client";
-import { Play, Heart, Eye, ShoppingCart, Clock, Lock } from 'lucide-react';
+import { Play, Heart, Eye, Clock, Lock } from 'lucide-react';
 import DataHandler from '../../Component/DataHandler/DataHandler.jsx';
-import { useGameSlug } from "../../hooks/useGame";
+import { useGameSlug } from "../../hooks/games/useGame.js";
 import { useParams } from 'next/navigation';
 import Description from './Description';
 import GameScreenshots from '../../Component/Screenshots/GameScreenshots';
 import Tabs from '../../Component/Tabs/Tabs';
-import Card from '../../Component/Card/Card';
+import Card from '../../Component/game/Card/Card.jsx';
 import Breadcrumbs from '../../Component/Breadcrumbs/Breadcrumbs';
 import GameComments from '../../Component/Comment/GameComments';
 import { useAuth } from '../../Context/AuthContext';
@@ -14,7 +14,9 @@ import Wishlist from '../../Component/Wishlist/Wishlist';
 import FormatDate from '../../Component/FormatDate/FormatDate';
 import ShareButton from '../../Component/ShareButton/ShareButton';
 import FuturisticGameResultsTable from './FuturisticGameResultsTable';
-import { useGameTopWinners } from '../../hooks/useGameSession';
+import { useGameTopWinners } from '../../hooks/games/useGameSession.js';
+import { useGetPaymentStatus } from '../../hooks/games/usePurchaseGame.js';
+import PurchaseButton from '../../Component/SecurePayment/PurchaseButton.jsx';
 
 import Link from 'next/link';
 
@@ -31,7 +33,8 @@ export default function GameDetailsPage() {
     const params = useParams();
     const { user } = useAuth();
     const { data: gamesData, isLoading: isGamesLoading, isError: isErrorHome } = useGameSlug(params.Slug);
-    const { data: topWinners = [], isLoading: isTopWinnersLoading, isError: isTopWinnersError, } = useGameTopWinners({ gameId: gamesData?.id });
+    const { data: topWinners = [], isLoading: isTopWinnersLoading, isError: isTopWinnersError } = useGameTopWinners({ gameId: gamesData?.id });
+
 
     // הגדרת הטאבים
     const myTabs = {
@@ -49,13 +52,15 @@ export default function GameDetailsPage() {
     };
 
     // משתנים קריטיים ללוגיקת התצוגה והפעולה של הכפתורים
-    const isLoggedIn = user;
-    const isReleased = !!gamesData?.releaseDate;
-    const isPaid = gamesData?.price > 0;
-    const status = gamesData?.status !== ('OUT OF STOCK' || 'Coming Soon');
+    const isLoggedIn = user;//יש משתמש מחובר
+    const isReleased = !!gamesData?.releaseDate;// האם המשחק שוחרר (יש לו תאריך שחרור)
+    const isPaid = gamesData?.price > 0;// האם המשחק עולה כסף (לא חינמי)
+    const isAvailable = gamesData?.status !== 'OUT OF STOCK' && gamesData?.status !== 'Coming Soon';// האם המשחק זמין לרכישה (לא אזל מהמלאי או בקרוב)
+    const { data: paymentStatusData } = useGetPaymentStatus(gamesData?.id, isPaid, isReleased, isAvailable, user);
 
-    // לוגיקת ניווט לכפתור הפעולה
-    const playButtonHref = gamesData?.gameUrl || '#';
+    // המשתמש יכול לשחק אם המשחק בחינם, או אם הוא כבר נרכש (מהשרת או בסשן הנוכחי)
+    const canPlay = !isPaid || paymentStatusData?.isPurchased; //מחיר חינם או נרכש , 
+
 
 
 
@@ -88,7 +93,7 @@ export default function GameDetailsPage() {
 
                         {/* תגיות קטגוריה */}
                         <div className="flex gap-2 mb-4">
-                            {gamesData?.categories.map(tag => (
+                            {gamesData?.categories?.map(tag => (
                                 <Link key={tag} href={`/Search?categories=${tag}`}>
                                     <span className="px-3 py-1 bg-cyan-500/20 border border-cyan-500/30 text-cyan-300 text-xs rounded-full font-bold uppercase tracking-wider hover:bg-cyan-500 hover:text-black transition-colors">
                                         {tag}
@@ -125,33 +130,28 @@ export default function GameDetailsPage() {
                         <div className="flex flex-col gap-4">
                             <div className="flex items-center gap-4">
 
-                                {isReleased && status ? (
-                                    <Link
-                                        href={playButtonHref}
-                                        onClick={() => storeGameSessionIdentity(gamesData?.id)}
-                                        className={`relative px-10 py-4 ${isPaid
-                                            ? 'bg-green-500 hover:bg-green-400'
-                                            : 'bg-cyan-500 hover:bg-cyan-400'
-                                            } text-black font-black text-lg uppercase tracking-wider rounded-xl transition-all hover:scale-105 flex items-center gap-3 shadow-lg`}
-                                    >
-                                        {isPaid ? (
-                                            <ShoppingCart className="w-6 h-6" />
-                                        ) : (
+                                {isReleased && isAvailable ? (
+                                    canPlay ? (
+                                        /* כפתור יציאה למשחק (חינם או רכוש) */
+                                        <Link
+                                            href={gamesData?.gameUrl || '#'}
+                                            onClick={() => storeGameSessionIdentity(gamesData?.id)}
+                                            className="relative px-10 py-4 bg-cyan-500 hover:bg-cyan-400 text-black font-black text-lg uppercase tracking-wider rounded-xl transition-all hover:scale-105 flex items-center gap-3 shadow-lg cursor-pointer"
+                                        >
                                             <Play className="w-6 h-6 fill-black" />
-                                        )}
-
-                                        <span>
-                                            {isPaid ? 'רכוש עכשיו' : 'התחל לשחק'}
-                                        </span>
-                                    </Link>
+                                            <span>התחל לשחק</span>
+                                        </Link>
+                                    ) : (
+                                        /* כפתור פתיחת חלון תשלום */
+                                        <PurchaseButton gamesData={gamesData} />
+                                    )
                                 ) : (
                                     <div className="flex items-center gap-3 bg-white/5 border border-white/10 p-1 rounded-xl">
                                         <div className="px-6 py-4 bg-gray-700/50 text-gray-400 font-bold text-lg rounded-lg flex items-center gap-3 cursor-not-allowed">
                                             <Clock className="w-6 h-6" />
-                                            <span>coming soon...</span>
+                                            <span>בקרוב...</span>
                                         </div>
 
-                                        {/* רשימת משאלות מותנית התחברות */}
                                         <Wishlist
                                             gameId={gamesData?.id}
                                             showText={true}
@@ -160,12 +160,11 @@ export default function GameDetailsPage() {
                                     </div>
                                 )}
 
-                                {/* {כפתור שיתוף} */}
+                                {/* כפתור שיתוף */}
                                 <ShareButton />
 
-
-                                {/* ווישליסט קטן */}
-                                {isReleased && isLoggedIn && status && (
+                                {/* ווישליסט */}
+                                {isReleased && isLoggedIn && isAvailable && (
                                     <Wishlist
                                         gameId={gamesData?.id}
                                         disabled={!isLoggedIn}
@@ -181,46 +180,43 @@ export default function GameDetailsPage() {
                                 )}
                             </div>
 
-                            {/* מחיר */}
+                            {/* תצוגת מחיר */}
                             <div className="flex items-center gap-3 min-h-[30px] px-1">
                                 {!isReleased ? (
                                     <span className="text-yellow-500 font-bold text-sm uppercase tracking-widest animate-pulse flex items-center gap-2">
-                                        The game is not yet available to play
+                                        המשחק עדיין אינו זמין למשחק
                                     </span>
-                                ) : isPaid ? (
+                                ) : canPlay ? (
+                                    <span className="text-emerald-400 font-bold text-sm uppercase tracking-widest flex items-center gap-1">
+                                        {paymentStatusData ? '✓ המשחק בבעלותך' : 'חינם למשחק'}
+                                    </span>
+                                ) : (
                                     <>
                                         <span className="text-2xl font-black text-white">
-                                            ₪{gamesData.finalPrice?.toFixed(2)}
+                                            ₪{gamesData?.finalPrice?.toFixed(2) || gamesData?.price?.toFixed(2)}
                                         </span>
 
-                                        {gamesData.isOnSale && (
+                                        {gamesData?.isOnSale && (
                                             <div className="flex items-center gap-2">
                                                 <span className="text-gray-500 line-through text-sm font-bold">
-                                                    ₪{gamesData.price}
+                                                    ₪{gamesData?.price}
                                                 </span>
 
-                                                <span className="bg-green-500/20 text-green-400 text-xs font-bold px-2 py-0.5 rounded border border-green-500/30">
-                                                    -{gamesData.discountPercentage}% הנחה
+                                                <span className="bg-emerald-500/20 text-emerald-400 text-xs font-bold px-2 py-0.5 rounded border border-emerald-500/30">
+                                                    -{gamesData?.discountPercentage}% הנחה
                                                 </span>
                                             </div>
                                         )}
                                     </>
-                                ) : (
-                                    <span className="text-cyan-400 font-bold text-sm uppercase tracking-widest opacity-80">
-                                        Free to Play
-                                    </span>
                                 )}
                             </div>
                         </div>
                     </div>
                 </div>
 
-
-
                 {/* ----------------- CONTENT GRID ----------------- */}
                 <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-3 gap-12">
                     <div className="lg:col-span-2 space-y-12">
-
                         <Tabs tabsData={myTabs} />
 
                         <div className="space-y-6">
@@ -243,6 +239,8 @@ export default function GameDetailsPage() {
                         {!isGamesLoading && <GameComments />}
                     </div>
                 </div>
+
+
             </div>
         </DataHandler>
     );

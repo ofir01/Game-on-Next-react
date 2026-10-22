@@ -1,24 +1,23 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
-import { Filter, X, Check, Gamepad2, DollarSign } from "lucide-react";
+import { Filter, X, Check, DollarSign } from "lucide-react";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 
 
 // ייבוא הקומפוננטות וההוקים 
-import GamingLoader from '../Component/GamingLoader/GamingLoader.jsx';// רכיב לטעינה עם אנימציה של גיימינג
-import { useCategories } from "../hooks/useCategories";
-import { useAdvancedGameSearch } from "../hooks/useGame";
-import Card from "../Component/Card/Card.jsx";
+import GamingLoader from '../Component/game/GamingLoader/GamingLoader.jsx';// רכיב לטעינה עם אנימציה של גיימינג
+import { useCategories } from "../hooks/games/useCategories.js";
+import { useAdvancedGameSearch } from "../hooks/games/useGame.js";
 import CategoryFilter from "../Component/Category/Category.jsx";
-import Pagination from "../Component/Pagination/Pagination.jsx";
 import PriceFilter from "../Component/PriceFilter/PriceFilter";
-import SortSelect from '../Component/SortSelect/SortSelect.jsx'
+import SortSelect from '../Component/SortSelect/SortSelect.jsx';
+ import GamesGrid from '../Component/game/GamesGrid/GamesGrid.jsx';
 
-/**
- * קומפוננטת חיפוש משחקים מתקדם
- * מנהלת את כל הפילטרים דרך ה-URL לטובת SEO ושיתוף לינקים
- */
+//=========================================
+// קומפוננטת חיפוש משחקים מתקדם
+//מנהלת את כל הפילטרים דרך ה-URL לטובת SEO ושיתוף לינקים
+//=========================================
 export default function AdvancedGameSearch() {
     const [isFirstLoad, setIsFirstLoad] = useState(true);
 
@@ -234,45 +233,17 @@ export default function AdvancedGameSearch() {
 
 
                 {/* גריד המשחקים / מצבי טעינה */}
-                <div >
-                    {isGamesLoading ? (
-                        /* שלד טעינה (Skeleton) */
-                        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6">
-                            {[...Array(8)].map((_, i) => (
-                                <div key={i} className="h-[380px] bg-white/[0.02] animate-pulse rounded-2xl border border-white/5" />
-                            ))}
-                        </div>
-                    ) : gamesData?.games?.length > 0 ? (
-                        /* הצגת הכרטיסים */
-                        <div className={`grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6 transition-opacity duration-300 ${isFetching ? 'opacity-50' : 'opacity-100'}`}>
-                            {gamesData.games.map((game) => (
-                                <Card key={game.id} game={game} />
-                            ))}
-                        </div>
-                    ) : (
-                        /* הודעת "אין תוצאות" */
-                        <div className="flex flex-col items-center justify-center py-32 text-center bg-white/[0.02] border border-white/5 rounded-3xl">
-                            <Gamepad2 className="w-16 h-16 text-slate-700 mb-6" />
-                            <h3 className="text-2xl font-bold text-white mb-2">No games found</h3>
-                            <p className="text-slate-400 max-w-md mb-8">Try adjusting your filters to find what you're looking for.</p>
+              {/* קומפוננטה גנרית*/}
+                <GamesGrid
+                    games={gamesData?.games}
+                    isLoading={isGamesLoading}
+                    isFetching={isFetching}
+                    totalItems={totalItems}
+                    totalPages={totalPages}
+                    currentPage={pageFromUrl}
+                    onPageChange={handlePageChange}
+                />
 
-                        </div>
-                    )}
-                </div>
-
-                {/* --- דפדוף (Pagination) --- */}
-                {totalPages > 1 && (
-                    <div className="mt-8 pt-8 border-t border-white/5 flex flex-col items-center">
-                        <Pagination
-                            totalPages={totalPages}
-                            currentPage={pageFromUrl}
-                            onPageChange={handlePageChange}
-                        />
-                        <div className="text-center text-xs font-medium text-slate-500 mt-4 tracking-widest uppercase">
-                            Showing {gamesData?.games?.length || 0} of {totalItems} games
-                        </div>
-                    </div>
-                )}
             </main>
         </div>
         </div>

@@ -1,11 +1,12 @@
 import { NextResponse } from 'next/server';
 import { RatingService } from '../../../../../services/server/RatingService';
+import {getUserId} from '../../../../../utils/verification.js';
 
-
+// GET: שליפת דירוג משחק
 export async function GET(req, { params }) {
     try {
         const { Slug } = await params;
-        const userId = req.headers.get('x-user-id');
+        const userId = await getUserId(req);
 
         const result = await RatingService.get(Slug, userId);
 
@@ -18,11 +19,12 @@ export async function GET(req, { params }) {
     }
 }
 
+// POST: עדכון דירוג משחק
 export async function POST(req, { params }) {
     try {
         const { Slug } = await params;
         const { rating } = await req.json();
-        const userId = req.headers.get('x-user-id');
+        const userId = await getUserId(req);
 
         if (!userId) {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

@@ -73,12 +73,17 @@ export const UserService = {
         const targetUser = await db.User.findOne({ where: { email } });
 
         if (!targetUser) {
-            return { error: 'NOT_FOUND' };
+            return { error: 'User not found'};
         }
 
-        // 2. הגנה על חשבונות מנהל - מניעת שינוי תפקיד ל-ADMIN קיים
-        if (targetUser.role === 'ADMIN') {
-            return { error: 'FORBIDDEN' };
+        // 2. הגנה על חשבונות מנהל - מניעת שינוי תפקיד ל-ADMIN קיים או שינוי תפקיד של מנהל ראשי
+        if (targetUser.role === 'ADMIN' || newRole === 'ADMIN') {
+            return { error: 'forbidden' };
+        }
+     
+        //3.חסימה כאשר התפקיד כבר קיים
+        if (targetUser.role === newRole) {
+            return { error: 'User already has the specified role' };
         }
 
         // 3. ביצוע העדכון

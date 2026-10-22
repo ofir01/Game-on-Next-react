@@ -1,4 +1,5 @@
 const db = require('../../db/models');
+import { formatGameCard } from '../../utils/gameCard';
 
 /**
  * מחזיר הגדרת SQL Literal לחישוב ממוצע דירוגים לכל משחק.
@@ -11,9 +12,9 @@ export const getAvgRatingLiteral = () => [
     db.sequelize.literal(`(
         SELECT AVG(rating)
         FROM user_games AS ug
-        WHERE ug.GameId = Games.id
+        WHERE ug."gameId" = "Games".id
     )`),
-    'avgRating'
+    "avgrating"
 ];
 
 
@@ -22,10 +23,10 @@ export const getFavoriteCountLiteral = () => [
     db.sequelize.literal(`(
                 SELECT COUNT(*)
                 FROM user_games AS ug
-                WHERE ug.gameId = Games.id
-                AND ug.isFavorite = true
+                WHERE ug."gameId" = "Games".id
+                AND ug."isFavorite" = true
             )`),
-    'favoriteCount'
+    "favoriteCount"
 ];
 
 // שימוש ב-Literal עבור ספירת כמות הביקורות (דירוגים) - פותר את בעיית ה-Group By והצמצום של הנתונים
@@ -33,10 +34,11 @@ export const getTotalReviewsLiteral = () => [
     db.sequelize.literal(`(
                     SELECT COUNT(*)
       FROM user_games AS ug
-      WHERE ug.gameId = Games.id AND ug.rating > 0
+      WHERE ug."gameId" = "Games".id AND ug.rating > 0
     )`),
-    'totalReviews'
+    "totalReviews"
 ];
+
 
 
 
@@ -85,6 +87,52 @@ export const getHardQuery = () => ({
     include: getCommonInclude(),
     distinct: true
 });
+
+
+
+// פונקציית עזר להחזרת תשובה ריקה 
+// פונקציית עזר להחזרת תשובה ריקה (חוסך קוד)
+export const getEmptyPagination = (page) => ({
+    games: [],
+    pagination: {
+        totalItems: 0,
+        totalPages: 1,
+        currentPage: page,
+        hasNextPage: false
+    }
+});
+
+
+// פונקציה גנרית המקבלת את התנאים, מבצעת את השליפה ומסדרת את הפגינציה
+export const fetchPaginatedGames = async ({ queryOptions = {}, page, limit, offset, order }) => {
+    const hardQuery = getHardQuery();
+
+    const { count, rows } = await db.Games.findAndCountAll({
+        ...hardQuery,
+        ...queryOptions,
+        include: [
+            ...(hardQuery.include || []),
+            ...(queryOptions.include || [])
+        ],
+        limit,
+        offset,
+        distinct: true,
+        order: order || queryOptions.order || [['createdAt', 'DESC']]
+    });
+
+    const totalPages = Math.ceil(count / limit) || 1;
+
+    return {
+        games: rows.map(formatGameCard),
+        pagination: {
+            totalItems: count,
+            totalPages,
+            currentPage: page,
+            hasNextPage: offset + rows.length < count
+        }
+    };
+};
+
 
 
 

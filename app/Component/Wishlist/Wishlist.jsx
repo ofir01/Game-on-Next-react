@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useWishlist } from '../../hooks/useWishlist'; // ה-Hook האמיתי של השרת
+import { useWishlist } from '../../hooks/user/useWishlist'; // ה-Hook האמיתי של השרת
 
 
 // ============================================================================

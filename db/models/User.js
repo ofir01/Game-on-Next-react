@@ -20,7 +20,15 @@ module.exports = (sequelize, DataTypes) => {
         },
         password: {
             type: DataTypes.STRING,
-            allowNull: false,
+            allowNull: true, // אפשר לשנות ל-true אם רוצים לאפשר התחברות דרך גוגל ללא סיסמה
+        },
+        profilePicture: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        },
+        googleId: {
+            type: DataTypes.STRING,
+            allowNull: true,
         },
         role: {
             type: DataTypes.STRING,
@@ -81,7 +89,6 @@ module.exports = (sequelize, DataTypes) => {
         User.hasMany(models.UserGame, { foreignKey: 'userId', as: 'userRatings' });
 
         User.hasMany(models.GameSession, { foreignKey: 'userId', as: 'gameSessions' });
-        User.hasMany(models.HighScore, { foreignKey: 'userId', as: 'highScores' });
 
         User.hasMany(models.Comment, { foreignKey: 'userId', as: 'comments' })
 
@@ -97,6 +104,9 @@ module.exports = (sequelize, DataTypes) => {
 
         // קשר לקבלת כל האזהרות שמשתמש זה (שהוא אדמין) נתן למשתמשים אחרים
         User.hasMany(models.Warning, { foreignKey: 'adminId', as: 'warningsIssued' });
+
+        // קשר לקבלת כל המשחקים שהמשתמש קנה
+        User.hasMany(models.Purchases, { foreignKey: 'userId', as: 'userPurchases' });
     };
     return User;
 };

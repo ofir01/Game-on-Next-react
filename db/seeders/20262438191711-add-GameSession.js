@@ -5,12 +5,11 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     // מכינים את הנתונים: הופכים את שדה ה-data למחרוזת JSON תקינה עבור ה-DB
     const sanitizedSessions = GameSession.map(session => ({
-      id: session.id,
       userId: session.userId,
       gameId: session.gameId,
       status: session.status,
       result: session.result,
-      // המרה קריטית כאן:
+      // המרה קריטית למחרוזת JSON, אחרת הסיקוולייז לא יוכל להכניס את הנתונים לטבלה:
       data: session.data ? JSON.stringify(session.data) : null,
       createdAt: new Date(session.createdAt),
       updatedAt: new Date(session.updatedAt)

@@ -13,7 +13,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'Users', // ודא שזה שם הטבלה המדויק ב-DB שלך
+          model: 'users',
           key: 'id'
         },
         onUpdate: 'CASCADE',
@@ -23,7 +23,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'Games', 
+          model: 'games', 
           key: 'id'
         },
         onUpdate: 'CASCADE',

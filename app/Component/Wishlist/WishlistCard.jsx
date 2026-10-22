@@ -1,5 +1,5 @@
 import { Bookmark } from 'lucide-react';
-import { useWishlist } from '../../hooks/useWishlist'; 
+import { useWishlist } from '../../hooks/user/useWishlist'; 
 import { motion } from 'framer-motion';
 
 export default function WishlistCard({ gameId }) {

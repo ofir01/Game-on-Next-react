@@ -1,7 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-
-    const GameSession = sequelize.define('GameSession', {
-
+    const GameSession = sequelize.define('game_sessions', {
         id: {
             type: DataTypes.INTEGER,
             autoIncrement: true,
@@ -40,9 +38,17 @@ module.exports = (sequelize, DataTypes) => {
             defaultValue: 'started',
         },
 
-        data: {
-            type: DataTypes.JSON,
-            allowNull: true,
+        score: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            defaultValue: 0,
+        },
+
+        // עמודה אמתית במסד הנתונים כדי לאפשר מיון מהיר ב-SQL
+        durationSeconds: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            defaultValue: 0,
         },
 
         result: {
@@ -50,22 +56,11 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: true,
         },
 
-        durationSeconds: {
-            type: DataTypes.VIRTUAL,
-            get() {
-                const createdAt = this.getDataValue('createdAt');
-                const updatedAt = this.getDataValue('updatedAt');
-                if (!createdAt || !updatedAt) return 0;
-
-                return Math.max(
-                    0,
-                    Math.floor((new Date(updatedAt).getTime() - new Date(createdAt).getTime()) / 1000)
-                );
-            },
+        data: {
+            type: DataTypes.JSON,
+            allowNull: true,
         },
-
     }, {
-        tableName: 'game_sessions',
         timestamps: true,
 
         indexes: [
@@ -78,27 +73,25 @@ module.exports = (sequelize, DataTypes) => {
             {
                 fields: ['status'],
             },
+            // אינדקס מורכב לשליפת 3 המובילים במהירות מרבית
+            {
+                name: 'game_sessions_leaderboard_index',
+                fields: ['gameId', 'result', 'score', 'durationSeconds'],
+            },
         ],
     });
 
     GameSession.associate = (models) => {
-
-        // קשר למשתמש
         GameSession.belongsTo(models.User, {
             foreignKey: 'userId',
             as: 'user',
         });
 
-        // קשר למשחק
         GameSession.belongsTo(models.Games, {
             foreignKey: 'gameId',
             as: 'game',
         });
-
     };
 
     return GameSession;
 };
-
-
-

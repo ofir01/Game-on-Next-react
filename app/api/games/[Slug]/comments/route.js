@@ -2,11 +2,12 @@ import { NextResponse } from 'next/server';
 import { CommentService } from '../../../../../services/server/commentService';
 import { GameService } from '../../../../../services/server/GameService';
 import { UserService } from '../../../../../services/server/UserService';
+import {getUserId} from '../../../../../utils/verification.js';
 
 
 
 
-
+// GET - שליפת תגובות עם פגינציה, סטטיסטיקות ופילטרים
 export async function GET(req, { params }) {
     try {
         const { Slug } = await params;
@@ -31,11 +32,12 @@ export async function GET(req, { params }) {
     }
 }
 
+// POST - יצירת תגובה חדשה עם בדיקות מניעת כפילות/תגובה עצמית
 export async function POST(req, { params }) {
     try {
         const { Slug } = await params;
         const body = await req.json();
-        const userId = req.headers.get('x-user-id');
+        const userId = await getUserId(req);
         const gameId = await GameService.getGameSlug(Slug);
 
         if (!userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -52,15 +54,17 @@ export async function POST(req, { params }) {
 
         return NextResponse.json(result.comment, { status: 201 });
     } catch (error) {
-        return NextResponse.json({ error: error.message }, { status: 500 });
+        //console.error("Validation details:", error.errors ? error.errors.map(e => e.message) : error.message);
+        return NextResponse.json({ error: error.errors ? error.errors[0].message : error.message }, { status: 500 });
     }
 }
 
+// PUT - עדכון תגובה קיימת עם בדיקות הרשאות
 export async function PUT(req, { params }) {
     try {
         const { Slug } = await params;
         const body = await req.json();
-        const userId = req.headers.get('x-user-id');
+        const userId = await getUserId(req);
 
         if (!userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
@@ -74,6 +78,7 @@ export async function PUT(req, { params }) {
     }
 }
 
+// DELETE - מחיקת תגובה עם בדיקות הרשאות ושליחת אזהרות במייל
 export async function DELETE(req, { params }) {
     try {
         const { searchParams } = new URL(req.url);
@@ -81,7 +86,7 @@ export async function DELETE(req, { params }) {
         const rawReason = searchParams.get('warningReason');
         const warningReason = (rawReason && rawReason.trim() !== "") ? rawReason : "No reason provided";
         const sendWarning = searchParams.get('sendWarning');
-        const userId = req.headers.get('x-user-id');
+        const userId = await getUserId(req);
 
         if (!userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 

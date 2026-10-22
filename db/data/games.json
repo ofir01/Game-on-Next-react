@@ -137,7 +137,7 @@
     "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1r7h.jpg",
     "gameUrl": "/games/EternalLegends",
     "price": 59.99,
-    "status": "Out of Stock",
+    "status": "OUT OF STOCK",
     "releaseDate": "2023-09-01",
     "discountPercentage": 10,
     "discountUntil": "2026-12-31T23:59:59Z"
@@ -214,7 +214,7 @@
     "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1r79.jpg",
     "gameUrl": "/games/ZombieX",
     "price": 19.99,
-    "status": "OUT_OF_STOCK",
+    "status": "OUT OF STOCK",
     "releaseDate": "2020-10-30",
     "discountPercentage": 0,
     "discountUntil": null
@@ -306,5 +306,27 @@
     "releaseDate": null,
     "discountPercentage": 0,
     "discountUntil": null
+  },
+  {
+    "title": "PicturePuzzle",
+    "description": "Fast-paced arcade soccer with special abilities.",
+    "imageUrl": "/Games/react-game/PicturePuzzle/PicturePuzzle.jpg",
+    "gameUrl": "/games/react/PicturePuzzle",
+    "price": 0.00,
+    "status": "AVAILABLE",
+    "releaseDate": "2023-11-15",
+    "discountPercentage": 0,
+    "discountUntil": "2026-06-01T00:00:00Z"
+  },
+  {
+    "title": "slidingPuzzle",
+    "description": "Fast-paced arcade soccer with special abilities.",
+    "imageUrl": "/Games/react-game/slidingPuzzle/slidingPuzzle.jpg",
+    "gameUrl": "/games/react/slidingPuzzle",
+    "price": 0.00,
+    "status": "AVAILABLE",
+    "releaseDate": "2023-11-15",
+    "discountPercentage": 0,
+    "discountUntil": "2026-06-01T00:00:00Z"
   }
 ]

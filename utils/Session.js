@@ -9,6 +9,7 @@ export async function createSession(user) {
     email: user.email,
     role: user.role,
     isVerified: user.isVerified,
+    profilePicture: user.profilePicture,
   }
   // 1. יצירת הטוקן
   const token = jwt.sign(

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Star } from 'lucide-react';
 import AverageStars from '../../Component/AverageStars/AverageStars';
-import GameRating from './UserRating';
+import UserRating from './UserRating';
 
 export default function RatingSummary({ stats, selectedRating, onRatingSelect, totalComments }) {
 
@@ -165,7 +165,7 @@ export default function RatingSummary({ stats, selectedRating, onRatingSelect, t
                 <div className="absolute inset-0 bg-gradient-to-r from-sky-500/[0.03] via-transparent to-pink-500/[0.03]" />
 
                 <div className="relative z-10">
-                    <GameRating />
+                    <UserRating />
                 </div>
             </div>
         </div>

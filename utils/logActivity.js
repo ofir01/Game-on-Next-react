@@ -1,4 +1,5 @@
 const db = require('../db/models');
+import {getUserId} from './verification.js';
 
 // פונקציה לרישום פעילות משתמש
 export const logActivity = async ({ req, action, targetType, targetId }) => {
@@ -9,7 +10,7 @@ export const logActivity = async ({ req, action, targetType, targetId }) => {
             ip = ip.split(',')[0].trim();
         }
 
-        const userId = req.headers.get('x-user-id');
+        const userId = await getUserId(req);
         if (!userId) { return `[AuditLog] Action ${action} performed by unauthenticated user/guest.`; }
 
 

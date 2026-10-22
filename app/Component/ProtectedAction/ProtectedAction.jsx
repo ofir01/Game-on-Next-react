@@ -2,9 +2,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '../../Context/AuthContext';
-import { motion, AnimatePresence, useAnimation } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
-    X, Gamepad2, Sparkles, Trophy, Users, Heart, MessageCircle, Rocket
+    X, Gamepad2, Sparkles, Trophy, Heart, MessageCircle, Rocket
 } from 'lucide-react';
 
 export default function ProtectedAction({
@@ -36,7 +36,7 @@ export default function ProtectedAction({
         e.preventDefault();
         e.stopPropagation();
 
-        if (!user) {
+        if (!user || !user.isVerified) {
             setIsModalOpen(true);
         } else {
             if (onClick) onClick(e);
@@ -189,7 +189,7 @@ export default function ProtectedAction({
                                         {title}
                                     </h2>
                                     <p className="text-slate-400 text-center text-sm sm:text-base max-w-[280px]">
-                                        Create an account to interact, play, and level up with thousands of other gamers.
+                                        Create and verify your account to interact, play, and level up with thousands of other gamers.
                                     </p>
                                 </div>
 
@@ -222,7 +222,7 @@ export default function ProtectedAction({
                                     <motion.button
                                         whileHover={{ scale: 1.02 }}
                                         whileTap={{ scale: 0.98 }}
-                                        onClick={() => router.push('/Login')}
+                                        onClick={() => router.push('/login')}
                                         className="w-full sm:w-4/5 bg-gradient-to-r from-fuchsia-600 to-violet-600 text-white font-black text-lg py-5 px-6 rounded-2xl shadow-[0_0_40px_-10px_rgba(217,70,239,0.6)] relative overflow-hidden group flex items-center justify-center gap-3"
                                     >
                                         {/* אפקט ברק שעובר על הכפתור */}

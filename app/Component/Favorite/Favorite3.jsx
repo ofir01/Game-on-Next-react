@@ -1,7 +1,7 @@
 'use client';
-import { useState, useRef, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useLibrary } from '../../hooks/useLibrary';
+import { useUserLibrary } from '../../hooks/user/useLibrary';
 
 // ============================================================================
 // מתמטיקה ואנימציות חלקיקים (Geometric Particles)
@@ -119,7 +119,7 @@ const CrystalIcon = ({ active, ...props }) => {
 // הקומפוננטה הראשית: Favorite Crystal Power-Up
 // ============================================================================
 export default function Favorite({ id }) {
-    const { isFavorite, updateGame } = useLibrary();
+    const { isFavorite, updateGame } = useUserLibrary();
     const favorite = isFavorite(id);
     
     // סטייט לניהול אפקט הטעינה והפיצוץ

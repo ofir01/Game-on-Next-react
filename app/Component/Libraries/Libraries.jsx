@@ -22,10 +22,22 @@ const PROJECT_LIBRARIES = [
         detail: "Styling",
     },
     {
-        name: "MySQL",
-        packageName: "mysql2",
-        image: "/imges/lib/mysql.svg",
-        detail: "Database driver",
+        name: "Framer Motion",
+        packageName: "framer-motion",
+        image: "/imges/lib/framer-motion.svg",
+        detail: "Animations & UI transitions",
+    },
+    {
+        name: "Neon",
+        packageName: "pg",
+        image: "/imges/lib/neon.svg",
+        detail: "Serverless Postgres Database",
+    },
+    {
+        name: "PostgreSQL",
+        packageName: "pg",
+        image: "/imges/lib/postgresql.svg",
+        detail: "PostgreSQL Database (Neon)",
     },
     {
         name: "Sequelize",
@@ -34,12 +46,86 @@ const PROJECT_LIBRARIES = [
         detail: "ORM",
     },
     {
+        name: "React Query",
+        packageName: "@tanstack/react-query",
+        image: "/imges/lib/react-query.svg",
+        detail: "Async state management & data fetching",
+    },
+    {
+        name: "Socket.IO",
+        packageName: "socket.io",
+        image: "/imges/lib/socket-io.svg",
+        detail: "Real-time WebSocket communication",
+    },
+    {
+        name: "Recharts",
+        packageName: "recharts",
+        image: "/imges/lib/recharts.svg",
+        detail: "Data visualization & charts",
+    },
+    {
+        name: "Resend",
+        packageName: "resend",
+        image: "/imges/lib/resend.svg",
+        detail: "Email API for transactional emails",
+    },
+    {
+        name: "Google Gemini",
+        packageName: "@google/generative-ai",
+        image: "/imges/lib/gemini.svg",
+        detail: "LLM & Generative AI integration",
+    },
+    {
+        name: "Google Auth",
+        packageName: "googleapis",
+        image: "/imges/lib/google.svg",
+        detail: "Google OAuth & API integration",
+    },
+    {
+        name: "JSON Web Token",
+        packageName: "jsonwebtoken",
+        image: "/imges/lib/json-web-tokens.svg",
+        detail: "JWT authentication & token handling",
+    },
+    {
+        name: "Bcrypt.js",
+        packageName: "bcryptjs",
+        image: "/imges/lib/Bcrypt.svg",
+        detail: "Password hashing & security",
+    },
+    {
+        name: "Sonner",
+        packageName: "sonner",
+        image: "/imges/lib/sonner.svg",
+        detail: "Toast notification system",
+    },
+    {
+        name: "Lucide Icons",
+        packageName: "lucide-react",
+        image: "/imges/lib/Lucide-Icons.svg",
+        detail: "Modern UI icon library",
+    },
+    {
+        name: "React Markdown",
+        packageName: "react-markdown",
+        image: "/imges/lib/react-markdown.svg",
+        detail: "Markdown parser & renderer",
+    },
+    {
+        name: "dotenvx",
+        packageName: "@dotenvx/dotenvx",
+        image: "/imges/lib/dotenvx.svg",
+        detail: "Secure environment variables & encryption",
+    },
+    {
         name: "JavaScript",
         packageName: "language",
         image: "/imges/lib/JavaScript.svg",
         detail: "Client logic",
     },
 ];
+
+
 
 // רכיב שמציג את הספריות והטכנולוגיות שבהן הפרוייקט משתמש, עם אנימציית מרקיזה חלקה שמכפילה את הרשימה כדי ליצור לולאה אינסופית, ומוודאים שהרשימה המקורית לא משתנה כדי לאפס את האנימציה. כל פריט מציג לוגו, שם, פרטים וקישור לחבילה.
 export default function Libraries({ libraries = PROJECT_LIBRARIES }) {

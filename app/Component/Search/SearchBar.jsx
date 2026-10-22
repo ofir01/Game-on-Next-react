@@ -1,7 +1,7 @@
 'use client';
 
 import  { useState, useEffect, useRef } from 'react';
-import { useGameSearch } from '../../hooks/useGame';
+import { useGameSearch } from '../../hooks/games/useGame';
 import SearchDropdown from './SearchDropdown';
 import { Search, X } from 'lucide-react';
 import { useRouter } from "next/navigation";

@@ -12,6 +12,9 @@ export const authService = {
     // הרשמה עם שם, אימייל וסיסמה
     register: (data) => api.post('/api/auth/register', data),
 
+    // התחברות עם גוגל
+    googleLogin: (data) => api.post('/api/auth/googleLogin', data),
+
     // יציאה מהמערכת (ניקוי Session/Cookies)
     logout: () => api.post('/api/auth/logout'),
 
@@ -45,5 +48,5 @@ export const authService = {
     deleteUser: (userEmail) => api.delete(`/api/admin/users/${userEmail}`),
 
     // עדכון תפקיד של משתמש 
-    updateUserRole: (email, role) => api.put(`/api/admin/users/${email}`, { role }),
+    updateUserRole: (email, role = null) => api.put(`/api/admin/users/${email}`, { role }),
 };

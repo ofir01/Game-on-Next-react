@@ -19,7 +19,7 @@ const Footer = () => {
           <p className="text-xs font-bold uppercase tracking-[0.35em] text-cyan-200/70">GAME-ON LABS</p>
           <h2 className="mt-2 text-2xl font-black tracking-wide text-white">Other Projects</h2>
           <p className="mt-2 max-w-md text-sm leading-6 text-slate-400">
-            Small apps collected in one clean place, without letting their styles leak into the main site.
+            Small apps collected in one clean place.
           </p>
         </div>
 

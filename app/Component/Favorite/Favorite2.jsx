@@ -2,7 +2,7 @@
 import { useState, useRef } from 'react';
 import { Heart } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useLibrary } from '../../hooks/useLibrary';
+import { useUserLibrary } from '../../hooks/user/useLibrary';
 
 // פונקציית עזר ליצירת חלקיקים רנדומליים לפיצוץ
 // אנחנו מייצרים אותם מראש כדי שלא יהיו קפיצות ברנדור
@@ -24,7 +24,7 @@ const generateParticles = (count) => {
 };
 
 export default function Favorite({ id }) {
-    const { isFavorite, updateGame } = useLibrary();
+    const { isFavorite, updateGame } = useUserLibrary();
     const favorite = isFavorite(id);
 
     // סטייט שמנהל את הפיצוץ עצמו (קורה רק לשבריר שנייה בעת הלחיצה)

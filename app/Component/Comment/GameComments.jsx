@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { MessageSquare, Loader2, AlertTriangle, Trash2, X } from 'lucide-react';
 import { useAuth } from '../../Context/AuthContext';
-import { useGameComments } from "../../hooks/useGameComments";
+import { useGameComments } from "../../hooks/games/useGameComments";
 import { useParams } from 'next/navigation';
 import CommentCard from './CommentCard';
 import Pagination from '../Pagination/Pagination';
@@ -107,7 +107,7 @@ export default function GameComments() {
             />
 
             {/* הטופס */}
-            {user ? <CommentForm /> : <p className="text-center text-gray-500">Log in to post a comment</p>}
+            {user && user.isVerified ? <CommentForm /> : <p className="text-center text-gray-500">Please log in and verify your account to post a comment.</p>}
 
             {/* רשימת תגובות */}
             {isLoading ? (

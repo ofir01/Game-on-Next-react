@@ -1,22 +1,9 @@
 import React, { useState } from 'react';
-import { Trash2, Reply, Pencil, X, ChevronDown, ChevronUp } from 'lucide-react'; // הוספתי Chevrons
+import { Trash2, Reply, Pencil, X, ChevronDown, ChevronUp } from 'lucide-react';
 import RatingStars from '../RatingStars/RatingStars';
 import ProtectedAction from '../ProtectedAction/ProtectedAction';
 
-export default function CommentCard({
-    comment,
-    isDeleted,
-    currentUser,
-    isAdmin,
-    onDelete,
-    activeReplyId,
-    setActiveReplyId,
-    onReplySubmit,
-    activeEditId,
-    setActiveEditId,
-    onEditSubmit,
-    depth = 0
-}) {
+export default function CommentCard({comment,isDeleted,currentUser,isAdmin,onDelete,activeReplyId,setActiveReplyId,onReplySubmit,activeEditId,setActiveEditId,onEditSubmit,depth = 0}) {
     // סטייטים מקומיים
     const [replyText, setReplyText] = useState("");
     const [editText, setEditText] = useState(comment.content);
@@ -150,7 +137,7 @@ export default function CommentCard({
                         {/* כפתור Reply מוגבל רק לעומק 0 כדי למנוע קינון יתר */}
                         {depth === 0 && (
                             <ProtectedAction
-                                onClick={() => setActiveReplyId(isReplying ? null : comment.id)}
+                                onClick={() => setActiveReplyId(isReplying  ? null : comment.id)}
                                 title="JOIN THE CHAT"
                                 className={`text-xs font-bold flex items-center gap-1.5 transition-colors ${isReplying ? 'text-indigo-400' : 'text-gray-500 hover:text-gray-300'
                                     }`}

@@ -6,7 +6,7 @@ import { AuthService } from "../../../../services/server/AuthService.js";
 export async function POST(req) {
     try {
         const body = await req.json();
-        const { name, email, password, initialGames } = body;
+        const { name, email, password} = body;
 
         // ולידציה בסיסית של הקלט
         if (email) {
@@ -22,7 +22,7 @@ export async function POST(req) {
         }
 
         // קריאה לשירות הרישום
-        const result = await AuthService.register({ name, email, password, initialGames });
+        const result = await AuthService.register({ name, email, password});
 
         // טיפול בשגיאות לוגיות
         if (result.error) {

@@ -11,9 +11,9 @@ module.exports = {
       },
       userId: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references: {
-          model: 'Users',
+          model: 'users',
           key: 'id'
         },
         onUpdate: 'CASCADE',
@@ -21,9 +21,9 @@ module.exports = {
       },
       gameId: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references: {
-          model: 'Games',
+          model: 'games',
           key: 'id'
         },
         onUpdate: 'CASCADE',

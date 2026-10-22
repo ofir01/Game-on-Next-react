@@ -1,6 +1,10 @@
-import GoogleLoginWrapper from './GoogleLogin/GoogleLoginWrapper'
+import GoogleLoginWrapper from '../../Component/GoogleLoginWrapper/GoogleLoginWrapper'
+import GoogleLogin from './GoogleLogin/GoogleLogin';
+
 export default function page() {
     return (
-        <GoogleLoginWrapper />
+        <GoogleLoginWrapper >
+            <GoogleLogin />
+        </GoogleLoginWrapper>
     )
 }

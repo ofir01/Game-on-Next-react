@@ -24,7 +24,7 @@ export const AuthService = {
         const isPasswordChanging = newPassword && newPassword.trim() !== '';
 
         // אימות סיסמה נוכחית לשינויים רגישים
-        if (isEmailChanged || isPasswordChanging) {
+        if ((isEmailChanged || isPasswordChanging) && user.password) {
             if (!currentPassword) return { error: 'MISSING_PASSWORD' };
             const isPasswordValid = await bcrypt.compare(currentPassword, user.password);
             if (!isPasswordValid) return { error: 'INVALID_PASSWORD' };
@@ -141,43 +141,30 @@ export const AuthService = {
     // ==========================================
     // 3. רישום משתמש חדש
     // ==========================================
-    register: async ({ name, email, password, initialGames }) => {
+    register: async ({ name, email, password }) => {
         const existingUser = await db.User.findOne({ where: { email } });
         if (existingUser) return { error: 'EMAIL_EXISTS' };
-        if (existingUser.isBanned) return { error: 'USER_BANNED' };
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const newUserResult = await db.sequelize.transaction(async (t) => {
-            const newUser = await db.User.create({
-                name,
-                email,
-                password: hashedPassword,
-                role: 'USER',
-                isVerified: false,
-                verificationToken: crypto.randomBytes(32).toString('hex'),
-                tokenExpires: new Date(Date.now() + 2 * 60 * 60 * 1000)
-            }, { transaction: t });
-
-            if (initialGames && Array.isArray(initialGames) && initialGames.length > 0) {
-                const gamesToInsert = initialGames.map(game => ({
-                    userId: newUser.id,
-                    gameId: game.gameId,
-                    status: game.status || 'Backlog',
-                    rating: game.rating || null,
-                    isFavorite: game.isFavorite || false
-                }));
-                await db.UserGame.bulkCreate(gamesToInsert, { transaction: t });
-            }
-            return newUser;
+        const newUser = await db.User.create({
+            name,
+            email,
+            password: hashedPassword,
+            role: 'USER',
+            isVerified: false,
+            verificationToken: crypto.randomBytes(32).toString('hex'),
+            tokenExpires: new Date(Date.now() + 2 * 60 * 60 * 1000)
         });
 
-        const userData = await createSession(newUserResult);
+
+        // יצירת Session למשתמש החדש
+        const userData = await createSession(newUser);
 
         try {
-            const verificationLink = `${process.env.NEXT_PUBLIC_BASE_URL}/verify-email?token=${newUserResult.verificationToken}`;
+            const verificationLink = `${process.env.NEXT_PUBLIC_BASE_URL}/verify-email?token=${newUser.verificationToken}`;
             const emailData = await sendMessage("Welcome", {
-                user: newUserResult,
+                user: newUser,
                 link: verificationLink
             });
             await resend.emails.send(emailData);
@@ -281,10 +268,58 @@ export const AuthService = {
 
         return { success: true };
     },
+
+    // ==========================================
+    // 8. קבלת פרופיל משתמש (לבדוק אם מחובר)
+    // ==========================================
     getProfile: async (userId) => {
         const user = await db.User.findByPk(userId);
         if (!user) return null;
         if (user.isBanned) return null;
         return await createSession(user);
+    },
+
+
+    // ==========================================
+    // 9. התחברות עם גוגל (Google OAuth)
+    // ==========================================
+    googleLogin: async ({ email, name, picture, googleId }) => {
+        let user = await db.User.findOne({ where: { email } });
+
+        if (!user) {
+            user = await db.User.create({
+                email,
+                name,
+                profilePicture: picture,
+                googleId,
+                role: 'USER',
+                isVerified: true // משתמשים שמתחברים דרך גוגל נחשבים מאומתים 
+            });
+
+        } else {
+
+            // בדיקה האם המשתמש נחסם (במידה והוא כבר קיים)
+            if (user.isBanned) {
+                return { error: 'USER_BANNED' };
+            }
+
+            // אם המשתמש קיים אבל עדיין אין לו את ה-googleId (נרשם בעבר רגיל), אפשר לעדכן אותו
+            if (!user.googleId) {
+                user.googleId = googleId;
+                await user.save();
+            }
+
+            user.profilePicture = picture; // עדכון תמונת פרופיל במקרה שהמשתמש שינה אותה בגוגל
+            user.isVerified = true; // משתמשים שמתחברים דרך גוגל נחשבים מאומתים
+            await user.save();
+
+        }
+
+
+        // יצירת Session למשתמש המחובר
+        const userData = await createSession(user);
+        return { success: true, user: userData };
     }
+
+
 };

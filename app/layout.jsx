@@ -1,6 +1,4 @@
 
-
-
 import { Toaster } from 'sonner'; // בשביל התראות
 import Navbar from './Component/Navbar/Navbar';// סרגל כלים עליון
 import { AuthProvider } from './Context/AuthContext'; //בשביל המשתמש מחובר

@@ -20,7 +20,15 @@ module.exports = {
             },
             password: {
                 type: Sequelize.STRING,
-                allowNull: false,
+                allowNull: true, // אפשר לשנות ל-true אם רוצים לאפשר התחברות דרך גוגל ללא סיסמה
+            },
+            profilePicture: {
+                type: Sequelize.STRING,
+                allowNull: true,
+            },
+            googleId: {
+                type: Sequelize.STRING,
+                allowNull: true,
             },
             role: {
                 type: Sequelize.STRING(50),
@@ -72,7 +80,8 @@ module.exports = {
             updatedAt: {
                 type: Sequelize.DATE,
                 allowNull: false,
-                defaultValue: Sequelize.literal('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'),
+                defaultValue: Sequelize.fn('NOW')
+                //defaultValue: Sequelize.literal('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'), תחביר של MySQL, לא עובד עם postgres
             },
         });
     },

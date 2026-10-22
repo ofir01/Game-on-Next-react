@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { Gamepad2, Flame } from 'lucide-react';
 import { useAuth } from '../../Context/AuthContext';
-import { useNews } from '../../hooks/useNews'; // ייבוא ה-Hook לצורך מחיקה
+import { useNews } from '../../hooks/News/useNews'; 
 import EditNewsModal from './EditNewsModal';
 import FormatDate from '../../Component/FormatDate/FormatDate';
 

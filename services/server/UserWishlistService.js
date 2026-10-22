@@ -1,9 +1,13 @@
 
 const db = require('../../db/models');
-const { Op } = require('sequelize');
 
-import { formatGameCard } from '../../utils/gameCard';
-import {  getHardQuery } from './gameQueries';
+import { fetchPaginatedGames } from './gameQueries';
+
+
+
+
+
+
 
 /**
  * UserWishlistService
@@ -12,40 +16,19 @@ import {  getHardQuery } from './gameQueries';
 export const UserWishlistService = {
 
     // 1. שליפת רשימת המשחקים המלאה (עבור דף הווישליסט)
-    get: async (userId, limit = 12, offset = 0) => {
-        // שלב א': שליפת ה-IDs של המשחקים בווישליסט קודם
-        // זה פותר את בעיית ה-Association וגם יותר מהיר בביצועים
-        const wishlistEntries = await db.Wishlist.findAll({
-            where: { userId },
-            attributes: ['gameId'],
-            raw: true
-        });
-
-        const gameIds = wishlistEntries.map(entry => entry.gameId);
-
-        if (gameIds.length === 0) {
-            return { games: [], totalItems: 0, hasNextPage: false };
-        }
-
-        // שלב ב': שליפת המשחקים עצמם לפי ה-IDs
-        const { count, rows } = await db.Games.findAndCountAll({
-            ...getHardQuery(),
-            where: {
-                id: { [Op.in]: gameIds }
+    getWishlist: async (userId, page, limit, offset) => {
+        return fetchPaginatedGames({
+            queryOptions: {
+                include: [{
+                    model: db.Wishlist,
+                    as: 'wishlists',
+                    where: { userId },
+                    attributes: [],
+                    required: true
+                }]
             },
-            limit: parseInt(limit),
-            offset: parseInt(offset),
-            distinct: true,
-            // אם אתה רוצה למיין לפי מתי זה נוסף לווישליסט, 
-            // כרגע נשתמש במיון רגיל כדי לוודא שזה עובד
-            order: [['createdAt', 'DESC']]
+            page, limit, offset
         });
-
-        return {
-            games: rows.map(formatGameCard),
-            totalItems: count,
-            hasNextPage: offset + rows.length < count
-        };
     },
 
     // 2. שליפת מפת הווישליסט (לשימוש ב-Hook בכל האתר)

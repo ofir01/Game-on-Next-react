@@ -21,11 +21,11 @@ export async function POST(req) {
             return NextResponse.json({ error: 'Please fill in all required fields' }, { status: 400 });
         }
 
-        // 3. חילוץ נתונים טכניים (כולל המפתח האישי שלך)
+        // 3. חילוץ נתונים טכניים (כולל המפתח האישי של המשתמש)
         const headerList = await headers();
         const ip = headerList.get('x-forwarded-for')?.split(',')[0] || '0.0.0.0';//כתובת ה-IP של המשתמש
         const userAgent = headerList.get('user-agent') || 'unknown';//פרטי המחשב
-        const customUserId = await getUserId(); // מפתח ייחודי שמגיע מהלקוח 
+        const customUserId = await getUserId(req); // מפתח ייחודי שמגיע מהלקוח 
 
         // 4. בדיקה בשרת: האם המשתמש קיים במסד הנתונים?
         const user = await UserService.verifyUserExists(customUserId);

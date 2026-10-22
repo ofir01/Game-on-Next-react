@@ -1,7 +1,7 @@
 "use client";
-import { useMemo, useCallback, createContext, useContext, useEffect } from 'react';
+import { useMemo, useCallback, createContext, useContext } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
-import { useUserProfile } from '../hooks/useUserProfile';
+import { useUserProfile } from '../hooks/user/useUserProfile';
 import { authService } from '../../services/client/authService';
 import { toast } from 'sonner';
 
@@ -54,12 +54,17 @@ export const AuthProvider = ({ children }) => {
     loading: isLoading,
     login,
     logout,
-    refreshUser, 
+    refreshUser,
     resendVerification,
     isAdmin: user?.role === 'ADMIN',
   }), [user, isLoading, login, logout, refreshUser, resendVerification]);
 
   return (
+    <AuthContext.Provider value={value}>
+      {children}
+    </AuthContext.Provider>
+    /*
+    //בפעם הראשונה גורם לכל האתר להמתין עד שיאושר אם המשתמש הוא אדמין או לא, לפני הצגת הדף
     <AuthContext.Provider value={value}>
       {isLoading ? (
         <div className="flex items-center justify-center h-screen bg-slate-950">
@@ -67,6 +72,7 @@ export const AuthProvider = ({ children }) => {
         </div>
       ) : children}
     </AuthContext.Provider>
+    */
   );
 };
 

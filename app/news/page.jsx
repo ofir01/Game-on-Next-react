@@ -4,9 +4,9 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Loader2, Tag, Layers, Search } from 'lucide-react';
-import { useNews } from '../hooks/useNews';
+import { useNews } from '../hooks/News/useNews';
 import ArticleCard from '../Component/ArticleCard/ArticleCard';
-import { getNewsCategories } from '../hooks/useNews';
+import { getNewsCategories } from '../hooks/News/useNews';
 
 export default function NewsPage() {
     const router = useRouter();

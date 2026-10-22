@@ -1,7 +1,7 @@
 'use client';
 import { useState, useMemo } from 'react';
 import { motion, AnimatePresence, useAnimation } from 'framer-motion';
-import { useLibrary } from '../../hooks/useLibrary';
+import { useUserLibrary } from '../../hooks/user/useLibrary';
 
 // ============================================================================
 // לוגיקת חלקיקי סייבר (Binary & Glitch Particles)
@@ -118,7 +118,7 @@ const CyberHeartIcon = ({ active }) => (
 // הקומפוננטה הראשית
 // ============================================================================
 export default function Favorite({ id }) {
-    const { isFavorite, updateGame } = useLibrary();
+    const { isFavorite, updateGame } = useUserLibrary();
     const favorite = isFavorite(id);
     
     const [isExploding, setIsExploding] = useState(false);

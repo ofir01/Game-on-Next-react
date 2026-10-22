@@ -3,7 +3,7 @@
 import { Play, ShoppingBag } from "lucide-react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import GameModel3D from "../Component/GameModel3D/GameModel3D.jsx";
+import GameModel3D from "../Component/game/GameModel3D/GameModel3D.jsx";
 
 import { Reveal } from "./page.jsx";
 

@@ -2,7 +2,7 @@
 import { toast } from 'sonner'
 import React, { useState } from 'react';
 import { Gamepad2, Globe, Image as ImageIcon, Type, FileText, CheckCircle2, PlusCircle, Activity, Calendar, DollarSign, Percent, Clock } from 'lucide-react';
-import { useCategories } from "../../hooks/useCategories";
+import { useCategories } from "../../hooks/games/useCategories";
 import Category from '../../Component/Category/Category.jsx';
 import { gameService } from '../../../services/client/gameService.js';
 

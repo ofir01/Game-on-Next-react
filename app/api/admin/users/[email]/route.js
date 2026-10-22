@@ -46,29 +46,33 @@ export async function DELETE(req, { params }) {
 export async function PUT(req, { params }) {
     try {
         const { email } = await params;
-        const { role } = await req.json();
+        let { role } = await req.json();
 
         if (!email) {
             return NextResponse.json({ message: 'Email is required' }, { status: 400 });
+        }
+        // הגדרת תפקיד ברירת מחדל אם לא סופק
+        role = role || 'USER';
+
+
+        // בדיקה אם התפקיד שהוזן הוא תפקיד חוקי
+        if (['ADMIN'].includes(role)) {
+            return NextResponse.json({ message: 'Invalid role specified' }, { status: 400 });
         }
 
         // קריאה ל-Service לביצוע העדכון והבדיקות
         const result = await UserService.updateRole(email, role);
 
-        // טיפול בשגיאות לוגיות שחזרו מה-Service
-        if (result.error === 'NOT_FOUND') {
-            return NextResponse.json({ message: 'משתמש לא נמצא במערכת' }, { status: 404 });
-        }
-
-        if (result.error === 'FORBIDDEN') {
-            return NextResponse.json({ message: 'forbidden' }, { status: 400 });
+        // טיפול במקרה של שגיאה מה-Service
+        if (result.error) {
+            return NextResponse.json({ message: result.error }, { status: 400 });
         }
 
         // רישום פעילות לוג
         const log = await logActivity({
             req,
             action: 'UPDATE',
-            targetType: 'User',
+            targetType: role,
             targetId: email
         });
 
@@ -77,7 +81,7 @@ export async function PUT(req, { params }) {
         }
 
         return NextResponse.json({
-            message: 'ההרשאות ניתנו בהצלחה',
+            message: 'Permissions updated successfully',
             user: result.user
         }, { status: 200 });
 

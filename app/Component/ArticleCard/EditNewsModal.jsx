@@ -3,8 +3,8 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { Edit3, X, Send, Loader2, Sparkles, Image as ImageIcon } from 'lucide-react';
-import { useNews } from '../../hooks/useNews';
-import { getNewsCategories } from '../../hooks/useNews';
+import { useNews } from '../../hooks/News/useNews';
+import { getNewsCategories } from '../../hooks/News/useNews';
 
 export default function EditNewsModal({ item }) {
     const [isOpen, setIsOpen] = useState(false);

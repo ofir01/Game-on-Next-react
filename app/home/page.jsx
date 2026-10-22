@@ -2,8 +2,8 @@
 
 import { motion, useReducedMotion, } from "framer-motion";
 import { Sparkles, } from "lucide-react";
-import { useHomeData } from "../hooks/useGame";
-import { useNews } from '../hooks/useNews';
+import { useHomeData } from "../hooks/games/useGame";
+import { useNews } from '../hooks/News/useNews';
 
 import StatsSection from "./StatsSection";
 import Libraries from "../Component/Libraries/Libraries.jsx";

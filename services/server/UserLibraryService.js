@@ -1,7 +1,6 @@
 
 const db = require('../../db/models');
-import { formatGameCard } from '../../utils/gameCard';
-import {  getHardQuery } from './gameQueries';
+import { fetchPaginatedGames } from './gameQueries';
 
 /**
  * UserLibraryService
@@ -9,28 +8,19 @@ import {  getHardQuery } from './gameQueries';
  */
 export const UserLibraryService = {
     // שליפת רשימת המשחקים המועדפים של המשתמש עם תמיכה בדף וגבול פריטים
-    get: async (userId, limit = 12, offset = 0) => {
-        const { count, rows } = await db.Games.findAndCountAll({
-            ...getHardQuery(),
-            include: [
-                ...getHardQuery().include,
-                {
+    getFavorites: async (userId, page, limit, offset) => {
+        return fetchPaginatedGames({
+            queryOptions: {
+                include: [{
                     model: db.UserGame,
                     as: 'userStatus',
                     where: { userId, isFavorite: true },
-                    attributes: []
-                }
-            ],
-            limit: parseInt(limit),
-            offset: parseInt(offset),
-            distinct: true
+                    attributes: [],
+                    required: true
+                }]
+            },
+            page, limit, offset
         });
-
-        return {
-            games: rows.map(formatGameCard),
-            totalItems: count,
-            hasNextPage: offset + rows.length < count
-        };
     },
 
     // שליפת מפת הספרייה של המשתמש (רזה, רק סטטוס ודירוג לכל משחק)

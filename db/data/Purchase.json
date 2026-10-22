@@ -1,0 +1,137 @@
+[
+    {
+        "userId": 21,
+        "gameId": 20,
+        "pricePaid": 19.99,
+        "transactionId": "TXN_4KRNLXZPY",
+        "createdAt": "2026-08-15 14:37:06",
+        "updatedAt": "2026-08-15 14:37:06",
+        "status": "completed"
+    },
+    {
+        "userId": 21,
+        "gameId": 15,
+        "pricePaid": 44.99,
+        "transactionId": "TXN_E0OGOP3KQ",
+        "createdAt": "2026-08-15 15:18:22",
+        "updatedAt": "2026-08-15 15:18:22",
+        "status": "completed"
+    },
+    {
+        "userId": 21,
+        "gameId": 26,
+        "pricePaid": 29.99,
+        "transactionId": "TXN_6YT3TUN87",
+        "createdAt": "2026-08-18 15:40:05",
+        "updatedAt": "2026-08-18 15:40:05",
+        "status": "completed"
+    },
+    {
+        "userId": 21,
+        "gameId": 9,
+        "pricePaid": 39.99,
+        "transactionId": "TXN_7FGH8X2NM",
+        "createdAt": "2026-08-19 10:15:33",
+        "updatedAt": "2026-08-19 10:15:33",
+        "status": "completed"
+    },
+    {
+        "userId": 21,
+        "gameId": 10,
+        "pricePaid": 49.99,
+        "transactionId": "TXN_L9P2QW4ZK",
+        "createdAt": "2026-08-20 12:45:10",
+        "updatedAt": "2026-08-20 12:45:10",
+        "status": "completed"
+    },
+    {
+        "userId": 21,
+        "gameId": 11,
+        "pricePaid": 19.99,
+        "transactionId": "TXN_M3N8BV6CJ",
+        "createdAt": "2026-08-21 09:22:41",
+        "updatedAt": "2026-08-21 09:22:41",
+        "status": "completed"
+    },
+    {
+        "userId": 21,
+        "gameId": 12,
+        "pricePaid": 24.99,
+        "transactionId": "TXN_R5T9YV1PL",
+        "createdAt": "2026-08-21 16:30:05",
+        "updatedAt": "2026-08-21 16:30:05",
+        "status": "completed"
+    },
+    {
+        "userId": 21,
+        "gameId": 13,
+        "pricePaid": 59.99,
+        "transactionId": "TXN_W2K7JD5GH",
+        "createdAt": "2026-08-22 18:05:12",
+        "updatedAt": "2026-08-22 18:05:12",
+        "status": "completed"
+    },
+    {
+        "userId": 21,
+        "gameId": 14,
+        "pricePaid": 14.99,
+        "transactionId": "TXN_X8C4MQ9BN",
+        "createdAt": "2026-08-23 11:14:55",
+        "updatedAt": "2026-08-23 11:14:55",
+        "status": "completed"
+    },
+    {
+        "userId": 21,
+        "gameId": 16,
+        "pricePaid": 9.99,
+        "transactionId": "TXN_B6V2ZP3LK",
+        "createdAt": "2026-08-24 14:50:22",
+        "updatedAt": "2026-08-24 14:50:22",
+        "status": "completed"
+    },
+    {
+        "userId": 21,
+        "gameId": 17,
+        "pricePaid": 29.99,
+        "transactionId": "TXN_Q1W5ER8TY",
+        "createdAt": "2026-08-25 08:33:17",
+        "updatedAt": "2026-08-25 08:33:17",
+        "status": "completed"
+    },
+    {
+        "userId": 21,
+        "gameId": 18,
+        "pricePaid": 4.99,
+        "transactionId": "TXN_U7I3OP4AS",
+        "createdAt": "2026-08-26 21:10:08",
+        "updatedAt": "2026-08-26 21:10:08",
+        "status": "completed"
+    },
+    {
+        "userId": 21,
+        "gameId": 21,
+        "pricePaid": 12.50,
+        "transactionId": "TXN_D4F6GH9JK",
+        "createdAt": "2026-08-27 15:42:30",
+        "updatedAt": "2026-08-27 15:42:30",
+        "status": "completed"
+    },
+    {
+        "userId": 21,
+        "gameId": 22,
+        "pricePaid": 34.99,
+        "transactionId": "TXN_Z9X1CV2BN",
+        "createdAt": "2026-08-28 19:20:45",
+        "updatedAt": "2026-08-28 19:20:45",
+        "status": "completed"
+    },
+    {
+        "userId": 21,
+        "gameId": 23,
+        "pricePaid": 49.99,
+        "transactionId": "TXN_M5N3BV7CX",
+        "createdAt": "2026-08-29 10:05:11",
+        "updatedAt": "2026-08-29 10:05:11",
+        "status": "completed"
+    }
+]

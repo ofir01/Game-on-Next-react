@@ -9,9 +9,9 @@ export const CommentService = {
 
         // 1. חישוב סטטיסטיקות דירוגים
         const statsRaw = await db.sequelize.query(`
-            SELECT rating, COUNT(userId) as count
+            SELECT rating, COUNT("userId") as count
             FROM user_games
-            WHERE gameId = ${gameId} AND rating IS NOT NULL
+            WHERE "gameId" = ${gameId} AND "rating" IS NOT NULL
             GROUP BY rating
         `, { type: db.sequelize.QueryTypes.SELECT });
 
@@ -23,7 +23,7 @@ export const CommentService = {
 
         if (ratingFilter && ratingFilter !== 'all') {
             const usersWithRating = await db.sequelize.query(`
-                SELECT userId FROM user_games WHERE gameId = ${gameId} AND rating = ${parseInt(ratingFilter)}
+                SELECT "userId" FROM user_games WHERE "gameId" = ${gameId} AND "rating" = ${parseInt(ratingFilter)}
             `, { type: db.sequelize.QueryTypes.SELECT });
 
             const userIds = usersWithRating.map(u => u.userId);
@@ -39,7 +39,7 @@ export const CommentService = {
             order: [['updatedAt', 'DESC']],
             attributes: [
                 'id', 'content', 'updatedAt', 'userId', 'isDeleted',
-                [db.sequelize.literal(`(SELECT rating FROM user_games AS ug WHERE ug.userId = Comment.userId AND ug.gameId = ${gameId} LIMIT 1)`), 'userRating']
+                [db.sequelize.literal(`(SELECT rating FROM user_games AS ug WHERE ug."userId" = comments."userId" AND ug."gameId" = ${gameId} LIMIT 1)`), "userRating"]
             ],
             include: [
                 { model: db.User, as: 'User', attributes: ['name'] },
@@ -60,6 +60,8 @@ export const CommentService = {
 
     // יצירת תגובה חדשה עם בדיקות מניעת כפילות/תגובה עצמית
     create: async ({ userId, gameId, content, parentId }) => {
+
+        console.log(`Creating comment for userId: ${userId}, gameId: ${gameId}, parentId: ${parentId || 'null'}`);
 
         const user = await UserService.getUserById(userId);
         if (!user) return { error: 'USER_NOT_FOUND' };

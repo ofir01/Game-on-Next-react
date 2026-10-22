@@ -5,7 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Calendar, Sparkles, ArrowRight, Tag, Gamepad2, Clock, CheckCircle2, Quote, Flame } from 'lucide-react';
-import { useSingleNews } from '../../hooks/useNews';
+import { useSingleNews } from '../../hooks/News/useNews';
 import Breadcrumbs from '../../Component/Breadcrumbs/Breadcrumbs';
 
 

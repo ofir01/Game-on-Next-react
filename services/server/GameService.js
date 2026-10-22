@@ -65,12 +65,12 @@ export const GameService = {
     },
 
     // שליפת ID של משחק לפי Slug (כותרת) - שימושי ליצירת קישורים או בדיקות
-    getGameId: async (id) => {
+    getGameById: async (id) => {
         const game = await db.Games.findByPk(id);
-        return game ? game.id : null;
+        return game || null;
     },
 
-    // שליפת ID של משחק לפי Slug (כותרת) - שימושי ליצירת קישורים או בדיקות
+    // שליפת Slug של משחק לפי ID - שימושי ליצירת קישורים או בדיקות
     getGameSlug: async (slug) => {
         const game = await db.Games.findOne({ where: { title: slug } });
         return game ? game.id : null;
@@ -135,7 +135,8 @@ export const GameService = {
                 through: { attributes: [] }
             }],
             limit: limit,
-            order: db.sequelize.literal('RAND()'),
+            order: db.sequelize.literal('RANDOM()')
+            //order: db.sequelize.literal('RAND()'), משמש ב-MySQL, אבל ב-PostgreSQL צריך להשתמש ב-RANDOM()
         });
 
         // שימוש בפורמט הקיים שלך לכרטיסי משחק
@@ -170,7 +171,7 @@ export const GameService = {
             attributes: [
                 'id',
                 'name',
-                [db.sequelize.fn('COUNT', db.sequelize.col(`games.id`)), 'gamesCount']
+                [db.sequelize.fn('COUNT', db.sequelize.col(`games.id`)), "gamescount"]
             ],
             group: ['Category.id', 'Category.name'],
             subQuery: false,
@@ -195,9 +196,9 @@ export const GameService = {
         // לוגיקה של מחיר סופי
         const effectivePriceQuery = `
             CASE 
-                WHEN discountPercentage > 0 AND (discountUntil IS NULL OR discountUntil > NOW()) 
-                THEN price * (1.0 - (discountPercentage / 100.0)) 
-                ELSE price 
+                WHEN "discountPercentage" > 0 AND ("discountUntil" IS NULL OR "discountUntil" > NOW()) 
+                THEN "price" * (1.0 - ("discountPercentage" / 100.0)) 
+                ELSE "price" 
             END
         `;
 
@@ -311,7 +312,7 @@ export const GameService = {
             attributes: [
                 'id',
                 'name',
-                [db.sequelize.fn('COUNT', db.sequelize.col('games.id')), 'gamesCount']
+                [db.sequelize.fn('COUNT', db.sequelize.col('games.id')), "gamescount"]
             ],
             include: [{
                 model: db.Games,
@@ -320,7 +321,7 @@ export const GameService = {
                 through: { attributes: [] }
             }],
             group: ['Category.id', 'Category.name'],
-            order: [[db.sequelize.literal('gamesCount'), 'DESC'], ['name', 'ASC']],
+            order: [[db.sequelize.literal("gamescount"), 'DESC'], ['name', 'ASC']],
             limit,
             subQuery: false,
             raw: true

@@ -51,18 +51,7 @@ const assertGameEvent = (event) => {
 const assertSessionResult = (result) => {
     if (result === undefined || result === null) return null;
 
-    const normalizedResult = String(result).toLowerCase();
-    const resultMap = {
-        win: 'won',
-        won: 'won',
-        success: 'won',
-        loss: 'lost',
-        lose: 'lost',
-        lost: 'lost',
-        fail: 'lost',
-        failed: 'lost',
-    };
-    const safeResult = resultMap[normalizedResult];
+    const safeResult = String(result).toLowerCase();
 
     if (!safeResult || !SESSION_RESULTS.includes(safeResult)) {
         const error = new Error(`result must be one of: ${SESSION_RESULTS.join(', ')}`);
@@ -115,8 +104,8 @@ const serializeHighScore = (highScore) => {
     if (!plain) return null;
 
     return {
-       // id: plain.id,
-       // gameId: plain.gameId,
+        // id: plain.id,
+        // gameId: plain.gameId,
         name: plain.user?.name || 'Player',
         score: plain.score,
         data: plain.data,
@@ -165,7 +154,7 @@ const updateHighScore = async (userId, gameId, data, transaction) => {
     const score = getScore(data);
     if (score === null) return null;
 
-    const [highScore, created] = await db.HighScore.findOrCreate({
+    const [highScore, created] = await db.GameSession.findOrCreate({
         where: { userId, gameId },
         defaults: {
             score,
@@ -191,19 +180,28 @@ export const gameSessionService = {
 
         await resolveGame(safeGameId);
 
-        const highScores = await db.HighScore.findAll({
-            where: { gameId: safeGameId },
+        // שליפה מטבלת GameSession לפי הניקוד והתוצאה
+        const topWinners = await db.GameSession.findAll({
+            where: {
+                gameId: safeGameId,
+                result: 'won', // סינון רק לסשנים שהסתיימו בניצחון
+            },
             include: [{
                 model: db.User,
                 as: 'user',
-                attributes: ['name'],
+                attributes: ['id', 'name'], // שליפת שם המשתמש
             }],
-            order: [['score', 'DESC'], ['updatedAt', 'ASC']],
+            // מיון לפי האינדקס המורכב: הניקוד הגבוה ביותר, ובמקרה של תיקו – הזמן הקצר ביותר
+            order: [
+                ['score', 'DESC'],
+                ['durationSeconds', 'ASC'],
+            ],
             limit: safeLimit,
         });
 
-        return highScores.map(serializeHighScore).filter(Boolean);
+        return topWinners.map(serializeHighScore).filter(Boolean);
     },
+
 
     start: async (userId, { gameId } = {}) => {
         const safeUserId = toPositiveInt(userId, 'userId');

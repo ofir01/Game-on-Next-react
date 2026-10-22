@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 
-import GamingLoader from '../GamingLoader/GamingLoader';// רכיב לטעינה עם אנימציה של גיימינג
+import GamingLoader from '../game/GamingLoader/GamingLoader';// רכיב לטעינה עם אנימציה של גיימינג
 
 //רכיב שמטפל בהצגת נתונים ושגיאות וטעינות
 export default function DataHandler({

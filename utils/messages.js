@@ -1,3 +1,10 @@
+
+//import { Resend } from 'resend';
+//const resend = new Resend(process.env.RESEND_API_KEY);
+
+
+
+
 // פונקציה ראשית לשליחת הודעות
 export async function sendMessage(type, payload) {
     // אנו מצפים ש-payload יכיל את פרטי המשתמש, ואולי גם לינקים או הודעה מותאמת אישית
@@ -22,7 +29,7 @@ export async function sendMessage(type, payload) {
     if (link) finalContent.actionLink = link; // הוספת הלינק לתוכן
 
     // עיבוד ה-HTML לפי הסוג
-    if (["Welcome", "Confirm_Email", "ResetPassword"].includes(type)) {
+    if (["Welcome", "Confirm_Email", "ResetPassword", "Purchase_Receipt"].includes(type)) {
         htmlBody = generateActionEmailHtml(finalContent, user.name);
     } else {
         htmlBody = generateAlertEmailHtml(finalContent, user.name);
@@ -104,7 +111,17 @@ const WARNING_TYPES = {
         title: "עדכון מערכת",
         body: "", // יוזן מה-message
         severityColor: "#8b5cf6" // סגול
-    }
+    },
+
+    //קבלה על קניה
+    Purchase_Receipt: {
+        subject: "קבלה על רכישת משחק - GAME ON",
+        title: "תתחדש! המשחק שלך מחכה לך 🎮",
+        body: "", // יקבל את פרטי הקבלה מהקוד שלך דינמית
+        buttonText: "לספריית המשחקים שלי",
+        themeColor: "linear-gradient(to right, #4facfe 0%, #00f2fe 100%)",
+        headerBg: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
+    },
 };
 
 // 1. תבנית למיילים של פעולה (ברוך הבא, איפוס סיסמה, אימות אימייל)

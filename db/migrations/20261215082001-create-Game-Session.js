@@ -2,9 +2,7 @@
 
 module.exports = {
     async up(queryInterface, Sequelize) {
-
         await queryInterface.createTable('game_sessions', {
-
             id: {
                 type: Sequelize.INTEGER,
                 autoIncrement: true,
@@ -46,13 +44,27 @@ module.exports = {
                 defaultValue: 'started',
             },
 
-            data: {
-                type: Sequelize.JSON,
-                allowNull: true,
+            // עמודות ייעודיות לטובת מיון ושליפה קלה של הטופ 3
+            score: {
+                type: Sequelize.INTEGER,
+                allowNull: false,
+                defaultValue: 0,
+            },
+
+            durationSeconds: {
+                type: Sequelize.INTEGER,
+                allowNull: false,
+                defaultValue: 0,
             },
 
             result: {
                 type: Sequelize.ENUM('won', 'lost'),
+                allowNull: true,
+            },
+
+            // עמודה למידע נוסף שאינו דורש מיון או חיפוש אינטנסיבי
+            data: {
+                type: Sequelize.JSON,
                 allowNull: true,
             },
 
@@ -67,24 +79,29 @@ module.exports = {
                 type: Sequelize.DATE,
                 defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
             },
-
         });
 
-        // אינדקסים
+        // אינדקסים בסיסיים
         await queryInterface.addIndex('game_sessions', ['userId']);
-
         await queryInterface.addIndex('game_sessions', ['gameId']);
-
         await queryInterface.addIndex('game_sessions', ['status']);
+
+        // אינדקס ייעודי וחשוב לשליפה מהירה של דירוג השחקנים 
+        // מותאם לשליפת המנצחים, מהניקוד הגבוה לנמוך, והזמן מהנמוך לגבוה
+        await queryInterface.addIndex('game_sessions', ['gameId', 'result', 'score', 'durationSeconds'], {
+            name: 'game_sessions_leaderboard_index'
+        });
     },
 
     async down(queryInterface, Sequelize) {
-
         await queryInterface.dropTable('game_sessions');
 
-        // חשוב ל-PostgreSQL כדי למחוק ENUM
+        // מחיקת סוגי ה-ENUM כדי למנוע שגיאות ביצירה מחדש (חשוב ל-PostgreSQL)
         await queryInterface.sequelize.query(
             'DROP TYPE IF EXISTS "enum_game_sessions_status";'
+        );
+        await queryInterface.sequelize.query(
+            'DROP TYPE IF EXISTS "enum_game_sessions_result";'
         );
     }
 };

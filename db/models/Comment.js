@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
     const Comment = sequelize.define(
-        'Comment',
+        'comments',
         {
             id: {
                 type: DataTypes.INTEGER,
@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
             }
         },
         {
-            tableName: 'comments',
+           // tableName: 'comments',
             timestamps: true,
             indexes: [ // אינדקסים לשיפור ביצועים על השדות שמשמשים לחיפושים וסינון
                 { fields: ['parentId'] },

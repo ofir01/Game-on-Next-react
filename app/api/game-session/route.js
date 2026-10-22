@@ -17,14 +17,14 @@ export async function GET(req) {
     try {
         const { searchParams } = new URL(req.url);
         const id = searchParams.get('gameId');
-        const gameId = await GameService.getGameId(id);
+        const gameId = await GameService.getGameById(id);
         if (!gameId) {
             return NextResponse.json({ message: 'gameId is required' }, { status: 400 });
         }
 
         if (searchParams.get('view') === 'top-winners') {
             const winners = await gameSessionService.getTopWinners({
-                gameId,
+                gameId: gameId.id,
                 limit: searchParams.get('limit'),
             });
 
@@ -40,7 +40,7 @@ export async function GET(req) {
 // טיפול ב-POST ליצירת סשן חדש או שליחת אירוע
 export async function POST(req) {
     try {
-        const userId = await getUserId();
+        const userId = await getUserId(req);
         if (!userId) return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
 
         const body = await req.json();
@@ -60,7 +60,7 @@ export async function POST(req) {
 // טיפול ב-PUT לעדכון סטטוס סשן או שליחת אירוע
 export async function PUT(req) {
     try {
-        const userId = await getUserId();
+        const userId = await getUserId(req);
         if (!userId) return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
 
         const body = await req.json();

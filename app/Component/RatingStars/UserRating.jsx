@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Star, Loader2 } from 'lucide-react';
 import { useAuth } from '../../Context/AuthContext';
-import { useUserRating } from '../../hooks/useUserRating';
+import { useUserRating } from '../../hooks/user/useUserRating';
 import { useParams } from 'next/navigation';
 
 export default function UserRating() {

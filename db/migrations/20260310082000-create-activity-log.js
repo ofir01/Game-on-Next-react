@@ -13,7 +13,7 @@ module.exports = {
                 type: Sequelize.INTEGER,
                 allowNull: true, // מאפשר לוגים גם לאורחים אם תרצה
                 references: {
-                    model: 'Users', // מוודא קשר לטבלת משתמשים
+                    model: 'users', // מוודא קשר לטבלת משתמשים
                     key: 'id'
                 },
                 onUpdate: 'CASCADE',

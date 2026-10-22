@@ -21,6 +21,5 @@ export const wishlistService = {
     /**
      * פונקציית עזר למשיכת המשחקים המלאים (עבור ה-Infinite Query ב-Hook).
      */
-    getWishlistGames: (page = 1) =>
-        api.get(`/api/user/wishlist?includeGames=true&page=${page}`),
+    getWishlistGames: (page = 1) => api.get(`/api/user/wishlist?includeGames=true&page=${page}`),
 };

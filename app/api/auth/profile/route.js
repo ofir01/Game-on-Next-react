@@ -3,6 +3,7 @@ import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 import { validateInput } from "../../../../utils/verification.js";
 import { AuthService } from '../../../../services/server/AuthService.js';
+import {getUserId} from '../../../../utils/verification.js';
 
 
 // אימות טוקן ה-JWT
@@ -56,7 +57,7 @@ export async function GET() {
 // עדכון פרופיל משתמש כולל בדיקות אבטחה
 export async function PUT(req) {
     try {
-        const userId = req.headers.get('x-user-id');
+        const userId = await getUserId(req);
         if (!userId) {
             return NextResponse.json({ message: "לא מורשה - יש להתחבר למערכת" }, { status: 401 });
         }
@@ -86,7 +87,7 @@ export async function PUT(req) {
         return NextResponse.json({ message: statusMessage, user: result.userData }, { status: 200 });
 
     } catch (error) {
-        console.error("Update Profile Error:", error);
+        console.error("Update Profile Error:", error.message);
         return NextResponse.json({ error: "שגיאת שרת פנימית" }, { status: 500 });
     }
 }

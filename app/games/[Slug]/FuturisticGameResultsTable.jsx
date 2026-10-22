@@ -4,10 +4,7 @@ import { useMemo } from "react";
 import { motion } from "framer-motion";
 import { Crown, Medal, Trophy } from "lucide-react";
 
-//תאריך מסודר למשתמש
-//          {new Date(game.updatedAt).toLocaleDateString('en-GB', { month: 'short', day: 'numeric' })}
-
-// מיפוי של עיצוב לכל מקום בטבלה לפי הדירוג
+// מיפוי עיצוב לכל מקום בטבלה לפי הדירוג
 const rankStyles = [
     {
         label: "1",
@@ -29,37 +26,50 @@ const rankStyles = [
     },
 ];
 
-
-//למחוק לאחר סידור בשרת
-// פונקציה לקבלת העמודות המובילות מתוך הנתונים, עם עדיפות לשדות מסוימים
-const getColumns = (rows) => {
-    const keys = [];
-
-    // קודם כל נוסיף את השדות המובילים אם הם קיימים
+// פונקציה לחילוץ עמודות בלבד שמכילות ערכים תקינים (לא אובייקטים מורכבים ולא id)
+const getColumns = (rows = []) => {
+    if (!Array.isArray(rows) || rows.length === 0) return [];
+    
+    const keys = new Set();
     rows.forEach((row) => {
-        Object.keys(row || {}).forEach((key) => {
-            keys.push(key);
-        });
+        if (row && typeof row === "object") {
+            Object.keys(row).forEach((key) => {
+                // מונע הצגת שדות מזהה פנימיים או שדות לא רלוונטיים
+                if (key !== "id" && key !== "updatedAt" && key !== "createdAt") {
+                    keys.add(key);
+                }
+            });
+        }
     });
 
-    return keys.filter((key, index) => {
-        // שומרים רק את המפתחות הראשונים של כל שורה (הניקוד והשם), ומונעים כפילויות
-        return index === keys.findIndex((k) => k === key);
-    });
+    return Array.from(keys);
 };
 
+// פונקציית עזר להצגה בטוחה של תא בטבלה (מונעת קריסה מול אובייקטים)
+const formatCellValue = (value) => {
+    if (value === null || value === undefined) return "-";
+    
+    // אם הערך הוא אובייקט (למשל אובייקט user)
+    if (typeof value === "object") {
+        if (value.name) return value.name; // אם יש שדה name
+        if (value.title) return value.title; // אם יש שדה title
+        return JSON.stringify(value); // ברירת מחדל בטוחה
+    }
 
-export default function FuturisticGameResultsTable({ data, title, subtitle, isLoading, isError }) {
+    if (typeof value === "boolean") return value ? "Yes" : "No";
 
-    const columns = useMemo(() => getColumns(data), [data]);
-    const isEmpty = !isLoading && (data.length === 0);
+    return String(value);
+};
 
-    //toast.success('Data loaded: ' + JSON.stringify(columns));
+export default function FuturisticGameResultsTable({ data = [], title, subtitle, isLoading, isError }) {
+    const safeData = Array.isArray(data) ? data : [];
+    const columns = useMemo(() => getColumns(safeData), [safeData]);
+    const isEmpty = !isLoading && safeData.length === 0;
 
     return (
         <aside
-            className={`relative overflow-hidden rounded-2xl border border-white/10 bg-[#101722]/90 text-white shadow-2xl shadow-black/35`}
-            aria-label='Top Winners Table'
+            className="relative overflow-hidden rounded-2xl border border-white/10 bg-[#101722]/90 text-white shadow-2xl shadow-black/35"
+            aria-label="Top Winners Table"
         >
             <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-300/70 to-transparent" />
 
@@ -75,7 +85,7 @@ export default function FuturisticGameResultsTable({ data, title, subtitle, isLo
                 </div>
 
                 <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-xs font-semibold text-white/65">
-                    Top {data.length || 3}
+                    Top {safeData.length || 3}
                 </span>
             </div>
 
@@ -109,13 +119,13 @@ export default function FuturisticGameResultsTable({ data, title, subtitle, isLo
                             </thead>
 
                             <tbody className="text-sm">
-                                {data.map((row, index) => {
+                                {safeData.map((row, index) => {
                                     const rank = rankStyles[index] || rankStyles[2];
                                     const Icon = rank.Icon;
 
                                     return (
                                         <motion.tr
-                                            key={row.id || `${row.name || "winner"}-${index}`}
+                                            key={row.id || `${index}`}
                                             initial={{ opacity: 0, x: -10 }}
                                             animate={{ opacity: 1, x: 0 }}
                                             transition={{ delay: index * 0.06, duration: 0.25 }}
@@ -130,7 +140,8 @@ export default function FuturisticGameResultsTable({ data, title, subtitle, isLo
                                             {columns.map((column, columnIndex) => (
                                                 <td key={column} className="max-w-[140px] px-2 py-3 align-middle">
                                                     <span className={columnIndex === 0 ? "block truncate font-semibold text-white" : "block truncate font-mono text-white/75"}>
-                                                        {row[column]}
+                                                        {/* שימוש בכימוס בטוח לביצוע רינדור למחרוזת/מספר */}
+                                                        {formatCellValue(row[column])}
                                                     </span>
                                                 </td>
                                             ))}

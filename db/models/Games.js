@@ -53,10 +53,11 @@ module.exports = (sequelize, DataTypes) => {
                 const rawPrice = parseFloat(this.getDataValue('price'));
                 const discount = this.getDataValue('discountPercentage');
                 const until = this.getDataValue('discountUntil');
-                
+
                 const now = new Date();
                 const isDiscountValid = discount > 0 && (!until || new Date(until) > now);
 
+                // אם ההנחה בתוקף, מחשבים את המחיר הסופי אחרי ההנחה, אחרת מחזירים את המחיר המקורי
                 if (isDiscountValid) {
                     const savings = rawPrice * (discount / 100);
                     return parseFloat((rawPrice - savings).toFixed(2));
@@ -72,7 +73,7 @@ module.exports = (sequelize, DataTypes) => {
                 const discount = this.getDataValue('discountPercentage');
                 const until = this.getDataValue('discountUntil');
                 const now = new Date();
-                
+
                 return discount > 0 && (!until || new Date(until) > now);
             }
         }
@@ -100,7 +101,6 @@ module.exports = (sequelize, DataTypes) => {
 
         // סשנים של משתמשים במשחק
         Games.hasMany(models.GameSession, { foreignKey: 'gameId', as: 'sessions' });
-        Games.hasMany(models.HighScore, { foreignKey: 'gameId', as: 'highScores' });
 
         // תגובות
         Games.hasMany(models.Comment, { foreignKey: 'gameId', as: 'comments' });
@@ -115,7 +115,23 @@ module.exports = (sequelize, DataTypes) => {
             as: 'wishlistStatus'
         });
 
-       
+        //רשימת המשאלות של המשתמש
+        Games.hasMany(models.Wishlist, { foreignKey: 'gameId', as: 'wishlists' });
+
+        // רכישות של המשחק
+        Games.belongsToMany(models.User, {
+            through: models.Purchases,
+            foreignKey: 'gameId',
+            otherKey: 'userId', // מומלץ להוסיף כדי למנוע בלבול
+            as: 'buyers'        //  (מערך של משתמשים)
+        });
+
+        // 2. קשר ישיר לטבלת הרכישות עצמה
+        Games.hasMany(models.Purchases, {
+            foreignKey: 'gameId',
+            as: 'gamePurchases'     //  מחזיר מערך של רכישות
+        });
+
     };
 
     return Games;

@@ -1,0 +1,77 @@
+[
+    {
+        "userId": 21,
+        "gameId": 2,
+        "addedAt": "2026-08-15 13:30:25"
+    },
+    {
+        "userId": 21,
+        "gameId": 7,
+        "addedAt": "2026-08-15 13:30:28"
+    },
+    {
+        "userId": 21,
+        "gameId": 20,
+        "addedAt": "2026-08-15 14:38:51"
+    },
+    {
+        "userId": 21,
+        "gameId": 1,
+        "addedAt": "2026-08-15 19:09:07"
+    },
+    {
+        "userId": 21,
+        "gameId": 3,
+        "addedAt": "2026-08-15 19:09:08"
+    },
+    {
+        "userId": 21,
+        "gameId": 4,
+        "addedAt": "2026-08-15 19:09:09"
+    },
+    {
+        "userId": 21,
+        "gameId": 9,
+        "addedAt": "2026-08-15 19:09:10"
+    },
+    {
+        "userId": 21,
+        "gameId": 8,
+        "addedAt": "2026-08-15 19:09:11"
+    },
+    {
+        "userId": 21,
+        "gameId": 6,
+        "addedAt": "2026-08-15 19:09:12"
+    },
+    {
+        "userId": 21,
+        "gameId": 10,
+        "addedAt": "2026-08-15 19:09:14"
+    },
+    {
+        "userId": 21,
+        "gameId": 11,
+        "addedAt": "2026-08-15 19:09:15"
+    },
+    {
+        "userId": 21,
+        "gameId": 12,
+        "addedAt": "2026-08-15 19:09:16"
+    },
+    {
+        "userId": 21,
+        "gameId": 13,
+        "addedAt": "2026-08-15 19:09:17"
+    },
+    {
+        "userId": 21,
+        "gameId": 14,
+        "addedAt": "2026-08-15 19:09:20"
+    },
+    {
+        "userId": 21,
+        "gameId": 15,
+        "addedAt": "2026-08-15 19:09:21"
+    }
+]

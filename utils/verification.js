@@ -1,4 +1,4 @@
-import { headers } from 'next/headers';
+//import { headers } from 'next/headers';
 
 // פונקציה לאימות קלט של אימייל וסיסמה
 export function validateInput(data) {
@@ -20,7 +20,9 @@ export function validateInput(data) {
 
 
 //פונקציה לאימות המשתמש
-export async function getUserId() {
-    const headerList = await headers();
-    return headerList.get('x-user-id');
+export async function getUserId(req) {
+    return await req.headers.get('x-user-id');
+    //const headersList = await headers();
+    //return headersList.get('x-user-id');
 }
+

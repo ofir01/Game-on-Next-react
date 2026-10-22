@@ -1,11 +1,10 @@
 'use client';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Send, MailWarning, Loader2, Clock } from 'lucide-react';
-import { useVerificationBanner } from '../../hooks/useVerificationBanner'; // ייבוא ה-Hook החדש
-import { toast } from 'sonner';
+import { useVerificationBanner } from '../../hooks/VerificationBanner/useVerificationBanner'; 
 
 export default function VerificationBanner() {
-    // משיכת כל הלוגיקה מה-Hook שלנו
+    // משיכת כל הלוגיקה מה-Hook 
     const {
         dontShowBanner,
         cooldown,

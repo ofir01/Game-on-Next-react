@@ -6,7 +6,7 @@ import { UserService } from '../../../services/server/UserService';
 import { GameService } from '../../../services/server/GameService';
 import { NewsService } from '../../../services/server/NewsService';
 
-const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GENERATION_CONFIG_API_KEY);
+const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GOOGLE_GENERATION_CONFIG_API_KEY);
 const generativeModel = 'gemini-flash-lite-latest';
 
 //מחזיר מערך בשביל לענות לכמה בקשות של משתמש,
@@ -15,7 +15,7 @@ const generativeModel = 'gemini-flash-lite-latest';
 export async function POST(req) {
     try {
         const body = await req.json();
-        const userContext = await getUserContext();
+        const userContext = await getUserContext(req);
 
         if (!body || !Array.isArray(body) || body.length === 0) {
             return NextResponse.json({ text: 'Conversation history is empty.' }, { status: 400 });
@@ -105,8 +105,8 @@ export async function POST(req) {
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 //מידע על המשתמש
-async function getUserContext() {
-    const userId = await getUserId();
+async function getUserContext(req) {
+    const userId = await getUserId(req);
     const user = userId ? await UserService.getUserById(userId) : null;
     return { name: user?.name || 'guest' };
 }

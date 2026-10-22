@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Star } from 'lucide-react'; 
-import { useUserRating } from '../../hooks/useUserRating';
+import { useUserRating } from '../../hooks/user/useUserRating';
 import { useParams } from 'next/navigation';
 
 export default function AverageStars() {

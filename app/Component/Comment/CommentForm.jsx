@@ -3,8 +3,8 @@
 import React, { useState, useMemo } from 'react';
 import { Send, AlertCircle, Loader2, MessageSquareQuote } from 'lucide-react';
 import { useParams } from 'next/navigation';
-import { useSubmitComment } from '../../hooks/useGameComments';
-import { useGameComments } from '../../hooks/useGameComments';
+import { useSubmitComment } from '../../hooks/games/useGameComments';
+import { useGameComments } from '../../hooks/games/useGameComments';
 import { useAuth } from '../../Context/AuthContext';
 
 export default function CommentForm() {
