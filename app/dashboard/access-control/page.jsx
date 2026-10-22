@@ -162,32 +162,32 @@ export default function AdminManagement() {
                         </p>
                     </div>
 
-                <div className="w-full lg:w-64 relative group">
-    {/* אפקט זוהר עדינה ברקע שנדלקת בריחוף או פוקוס */}
-    <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-500 via-indigo-500 to-blue-500 rounded-2xl opacity-30 group-hover:opacity-75 group-focus-within:opacity-100 transition-opacity duration-500 blur-sm pointer-events-none"></div>
+                    <div className="w-full lg:w-64 relative group">
+                        {/* אפקט זוהר עדינה ברקע שנדלקת בריחוף או פוקוס */}
+                        <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-500 via-indigo-500 to-blue-500 rounded-2xl opacity-30 group-hover:opacity-75 group-focus-within:opacity-100 transition-opacity duration-500 blur-sm pointer-events-none"></div>
 
-    {/* תיבת הבחירה הראשית */}
-    <select
-        value={selectedRole}
-        onChange={(e) => setSelectedRole(e.target.value)}
-        className="relative w-full appearance-none bg-slate-950/90 border border-slate-700/80 rounded-xl px-4 py-3.5 pr-11 focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all duration-300 text-slate-200 cursor-pointer shadow-2xl group-hover:border-purple-500/50"
-    >
-        {AVAILABLE_ROLES.map((role) => (
-            <option
-                key={role.id}
-                value={role.id}
-                className="bg-slate-900 text-slate-200 py-3 px-4 font-medium"
-            >
-                {role.name} — {role.description}
-            </option>
-        ))}
-    </select>
+                        {/* תיבת הבחירה הראשית */}
+                        <select
+                            value={selectedRole}
+                            onChange={(e) => setSelectedRole(e.target.value)}
+                            className="relative w-full appearance-none bg-slate-950/90 border border-slate-700/80 rounded-xl px-4 py-3.5 pr-11 focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all duration-300 text-slate-200 cursor-pointer shadow-2xl group-hover:border-purple-500/50"
+                        >
+                            {AVAILABLE_ROLES.map((role) => (
+                                <option
+                                    key={role.id}
+                                    value={role.id}
+                                    className="bg-slate-900 text-slate-200 py-3 px-4 font-medium"
+                                >
+                                    {role.name} — {role.description}
+                                </option>
+                            ))}
+                        </select>
 
-    {/* חץ דינמי שזז וזוהר בריחוף */}
-    <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-purple-400 transition-all duration-300 group-hover:scale-110 group-hover:text-purple-300">
-        <ChevronDown size={18} />
-    </div>
-</div>
+                        {/* חץ דינמי שזז וזוהר בריחוף */}
+                        <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-purple-400 transition-all duration-300 group-hover:scale-110 group-hover:text-purple-300">
+                            <ChevronDown size={18} />
+                        </div>
+                    </div>
 
 
                     <button
