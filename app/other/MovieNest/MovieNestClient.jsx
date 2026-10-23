@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useParams, usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, Suspense, useMemo, useState } from 'react';
 import { AlertTriangle, CalendarDays, Check, ChevronLeft, ChevronRight, Clapperboard, Film, Heart, Home, Languages, LoaderCircle, Menu, Moon, Play, Search, SlidersHorizontal, Star, Sun, Tv, UserRound, X } from 'lucide-react';
 
 const IMG = 'https://image.tmdb.org/t/p/';
@@ -42,7 +42,7 @@ function href(movie, mediaType) { const type = cleanMediaType(movie, mediaType);
 function watchHref(item, mediaType) { return `https://67movies.gd/watch/${cleanMediaType(item, mediaType) === 'tv' ? 'tv' : 'movie'}/${item.id}`; }
 async function api(params) { const res = await fetch(`/api/other/movienest?${params}`); const data = await res.json(); if (!res.ok) throw new Error(data.error || 'MovieNest request failed'); return data; }
 
-export default function MovieNestClient({ view = 'home' }) {
+function MovieNestContent({ view = 'home' }) {
   const router = useRouter();
   const params = useParams();
   const pathname = usePathname();
@@ -217,3 +217,14 @@ function Loader({ copy }) { return <div className="grid min-h-64 place-items-cen
 function Status({ message }) { return <p className="mt-4 inline-flex items-center gap-2 rounded-xl border border-amber-400/35 bg-amber-500/10 px-4 py-3 text-sm font-bold text-amber-700 dark:text-amber-200"><AlertTriangle size={17} />{message}</p>; }
 function ErrorPanel({ copy, message, retry }) { return <div className="rounded-2xl border border-amber-400/35 bg-amber-500/10 p-8 text-center backdrop-blur-xl"><AlertTriangle className="mx-auto text-amber-500" size={44} /><h1 className="mt-4 text-3xl font-black">{copy.error}</h1><p className="mt-3 opacity-75">{message}</p>{retry && <button onClick={retry} className="mt-5 rounded-xl bg-[var(--mn-accent)] px-5 py-3 font-black text-[var(--mn-on-accent)]">Retry</button>}</div>; }
 function Fallback({ icon: Icon = Clapperboard }) { return <div className="grid h-full w-full place-items-center bg-gradient-to-br from-[#dcefe9] via-[#8acac1] to-[#315f68] text-[#10211f]"><Icon size={44} /></div>; }
+
+
+
+
+export default function MovieNestClient(props) {
+  return (
+    <Suspense fallback={<div className="flex min-h-screen items-center justify-center">טוען...</div>}>
+      <MovieNestContent {...props} />
+    </Suspense>
+  );
+}

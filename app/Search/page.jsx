@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, Suspense } from "react";
 import { Filter, X, Check, DollarSign } from "lucide-react";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 
@@ -18,7 +18,7 @@ import SortSelect from '../Component/SortSelect/SortSelect.jsx';
 // קומפוננטת חיפוש משחקים מתקדם
 //מנהלת את כל הפילטרים דרך ה-URL לטובת SEO ושיתוף לינקים
 //=========================================
-export default function AdvancedGameSearch() {
+function GameSearch() {
     const [isFirstLoad, setIsFirstLoad] = useState(true);
 
     const router = useRouter();
@@ -248,4 +248,14 @@ export default function AdvancedGameSearch() {
         </div>
         </div>
     );
+}
+
+
+
+export default function AdvancedGameSearch() {
+  return (
+    <Suspense fallback={<div>טוען...</div>}>
+      <GameSearch />
+    </Suspense>
+  );
 }

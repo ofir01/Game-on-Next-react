@@ -1,11 +1,11 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { authService } from '../../services/client/authService';
 import { toast } from 'sonner';
 
-export default function ResetPasswordPage() {
+function ResetPasswordForm() {
     const searchParams = useSearchParams();
     const router = useRouter();
     const token = searchParams.get('token');
@@ -57,7 +57,7 @@ export default function ResetPasswordPage() {
         <div className="min-h-screen flex items-center justify-center bg-slate-950 p-4">
             <div className="max-w-md w-full bg-slate-900 rounded-2xl shadow-2xl border border-slate-800 p-8">
                 <h1 className="text-2xl font-bold text-white text-center mb-6">קביעת סיסמה חדשה</h1>
-                
+
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
                         <label className="block text-slate-300 text-sm font-medium mb-1">סיסמה חדשה</label>
@@ -93,4 +93,15 @@ export default function ResetPasswordPage() {
             </div>
         </div>
     );
+}
+
+
+
+//עוטף את הטופס ברכיב Suspense כדי להציג fallback בזמן טעינה
+export default function ResetPasswordPage() {
+  return (
+    <Suspense fallback={<div>טוען...</div>}>
+      <ResetPasswordForm />
+    </Suspense>
+  );
 }

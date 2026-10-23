@@ -3,10 +3,10 @@ import { Op } from 'sequelize';
 import bcrypt from "bcryptjs";
 import { createSession } from "../../utils/Session";
 import { sendMessage } from '../../utils/messages';
-import { Resend } from 'resend';
+import { getResendClient } from '../../utils/messages';
 import crypto from 'crypto';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = await getResendClient();
 
 export const AuthService = {
     // ==========================================

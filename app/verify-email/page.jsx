@@ -1,13 +1,13 @@
 "use client";
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { authService } from '../../services/client/authService';
 import { useAuth } from '../Context/AuthContext';
 
 import { toast } from 'sonner';
 
-export default function VerifyEmailPage() {
+function VerifyEmail() {
     const searchParams = useSearchParams();
     const router = useRouter();
     const token = searchParams.get('token');
@@ -89,5 +89,15 @@ export default function VerifyEmailPage() {
                 )}
             </div>
         </div>
+    );
+}
+
+
+
+export default function VerifyEmailPage() {
+    return (
+        <Suspense fallback={<div>טוען...</div>}>
+            <VerifyEmail />
+        </Suspense>
     );
 }

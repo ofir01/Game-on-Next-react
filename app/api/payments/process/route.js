@@ -5,9 +5,9 @@ import { PurchaseService } from '../../../../services/server/PurchaseService';
 import { checkMockPayment } from '../../../../utils/checkPayment';
 import { getUserId } from '../../../../utils/verification.js';
 import { sendMessage } from '../../../../utils/messages';
-import { Resend } from 'resend';
+import { getResendClient } from '../../../../utils/messages';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = await getResendClient();
 
 
 // פונקציה זו תטפל בבקשות POST כדי לבצע את תהליך התשלום

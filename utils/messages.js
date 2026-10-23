@@ -1,8 +1,27 @@
 
-//import { Resend } from 'resend';
-//const resend = new Resend(process.env.RESEND_API_KEY);
+import { Resend } from 'resend';
 
 
+// פונקציה לקבלת לקוח Resend עם בדיקה של מפתח ה-API
+export async function getResendClient() {
+    const apiKey = process.env.RESEND_API_KEY;
+
+    // אם אין מפתח (למשל בזמן Build), נחזיר דמה במקום לזרוק שגיאה שתפיל את הכל
+    if (!apiKey || apiKey.startsWith('re_dummy')) {
+        console.warn('⚠️ Using dummy Resend client for build/development.');
+        // מחזירים אובייקט דמה שלא יקרוס
+        return {
+            emails: {
+                send: async () => {
+                    console.log('Mock email sent.');
+                    return { id: 'mock-id' };
+                }
+            }
+        };
+    }
+
+    return new Resend(apiKey);
+}
 
 
 // פונקציה ראשית לשליחת הודעות
